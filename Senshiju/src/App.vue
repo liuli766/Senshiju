@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <!-- 导航 -->
+    <Header></Header>
     <transition :name="transitionName">
       <router-view class="Router"></router-view>
     </transition>
@@ -7,8 +9,12 @@
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
 export default {
   name: 'App',
+  components: {
+    Header
+  },
   data () {
     return {
       transitionName: '' // 动画效果
@@ -36,7 +42,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-.Router {
+/* .Router {
   position: absolute;
   top: 0;
   left: 0;
@@ -46,7 +52,7 @@ export default {
   transition: all .5s ease;
   -webkit-transition: all .5s ease;
   -moz-transition: all .5s ease;
-}
+} */
 .slideleft-enter,
  .slideright-leave-active {
   opacity: 1;
