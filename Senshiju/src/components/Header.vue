@@ -1,9 +1,13 @@
 <template>
   <div>
-    <ul>
-      <li v-for="(item,index) in navList" :key='index'
-       @click="changeNav(item)" :class="{'header-active':navActiveCode === item.code}">{{item.name}}</li>
-    </ul>
+    <nav class="header">
+      <img src="../assets/image/logo.png" alt="">
+      <ul>
+        <li v-for="(item,index) in navList" :key='index'
+        @click="changeNav(item)" :class="{'header-active':navActiveCode === item.code}">{{item.name}}</li>
+      </ul>
+    </nav>
+    
   </div>
 </template>
 
@@ -56,14 +60,19 @@ export default {
 }
 </script>
 
-<style scoped>
-ul{
-height:100px
-}
-li{
-  width: 100px;
-  line-height: 80px;
-  float: left;
+<style scoped lang='scss'>
+nav{
+  overflow: hidden;
+  img{
+    margin-right: 70px;
+  }
+  ul{
+    width: 912px;
+    display:flex ;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 120px;
+  }
 }
 .header-active{
   color:red;

@@ -7,6 +7,7 @@
 <script>
 import recommendData from '../product.js'
 export default {
+  
 }
 </script>
 
