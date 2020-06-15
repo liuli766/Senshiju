@@ -60,20 +60,8 @@ export default {
 }
 </script>
 
-<style scoped lang='scss'>
-nav{
-  overflow: hidden;
-  img{
-    margin-right: 70px;
-  }
-  ul{
-    width: 912px;
-    display:flex ;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 120px;
-  }
-}
+<style>
+
 .header-active{
   color:red;
 }
