@@ -55,6 +55,14 @@ const routes = [
       title: '建房百科'
     },
     component: (resolve) => require(['@/pages/BuildingEncyclopedia'], resolve)
+  },
+  {
+    path: '/search',
+    name: 'search',
+    meta: {
+      title: '建房百科'
+    },
+    component: (resolve) => require(['@/pages/search'], resolve)
   }
 ]
 
