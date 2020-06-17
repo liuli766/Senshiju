@@ -3,7 +3,7 @@
     <!-- 导航 -->
     <Header></Header>
     <transition :name="transitionName">
-      <router-view class="Router"></router-view>
+      <router-view></router-view>
     </transition>
   </div>
 </template>
@@ -42,17 +42,6 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-/* .Router {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: auto;
-  transition: all .5s ease;
-  -webkit-transition: all .5s ease;
-  -moz-transition: all .5s ease;
-} */
 .slideleft-enter,
  .slideright-leave-active {
   opacity: 1;

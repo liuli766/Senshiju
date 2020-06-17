@@ -1,18 +1,41 @@
-.header{
+.header,.parent,.hot,.presell,.service,.process{
     width: 1200px;
     margin: 0 auto;
+}
+/*  */
+.poniter{
+    cursor: pointer;
 }
 /* 颜色 */
 .theme{
     color: #fdd45f;
 }
+.color98{
+    color: #989898;
+}
+.colord2{
+    color: #d2d2d2;
+}
+.bgcolorf6{
+    background: #f6f6f6;
+}
 /* 字体 */
+.font12{
+    font-size: 12px;
+}
 .font14{
     font-size: 14px;
+}
+.font20{
+    font-size: 20px;
+}
+.font22{
+    font-size: 22px;
 }
 .font40{
     font-size: 40px;
 }
+
 input::-webkit-input-placeholder{
     color:#fff;
 }

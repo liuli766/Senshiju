@@ -6,11 +6,12 @@ fieldset, button, input, textarea, /* form elements 表单元素 */
 th, td { /* table elements 表格元素 */
     margin: 0;
     padding: 0;
+    color: #000;
 }
 /* 设置默认字体 */
 body,
 button, input, select, textarea { /* for ie */
-    font: 12px/1 Tahoma, Helvetica, Arial, "宋体", sans-serif;
+    font: 12px/1 Tahoma, Helvetica, Arial, "Microsoft Ya Hei", sans-serif;
     
 }
 
