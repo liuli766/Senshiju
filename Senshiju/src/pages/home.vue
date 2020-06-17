@@ -78,6 +78,26 @@
     <!-- VR实例 -->
     <VRScene></VRScene>
     <!-- 别墅资讯 -->
+    <div class="hot bgcolorf6">
+      <h4 class="font40">别墅<span class="theme">·资讯</span></h4>
+      <div class="flex colord2">
+        <div class="font20 flex"><div class="line"></div>·</div>
+        <div class="txt ">INFORMATION</div>
+        <div class="font20 flex">·<div class="line"></div></div>
+      </div>
+      <p class="colord2">不上班茶几上成绩按开始此是世界第三代不上班茶几上成绩按开始此是世界第三代</p>
+      <div class="hotnav">
+        <span v-for="(item,index) in inforList" :key="index"
+        :class="{'hot_active':item===typeinfor}"
+        @click="handInfor(item)">{{item}}</span>
+      </div>
+    </div>
+    <!-- 资讯展示 -->
+    <div style="height:600px">
+        <transition  name='bounce' mode="out-in" class="mationparent">
+          <information :maition="hotdata"></information>
+        </transition>
+      </div>
   </div>
 </template>
 
@@ -85,10 +105,12 @@
 import recommendData from '../product.js'
 import hotlist from '@/components/hostList.vue'
 import VRScene from '@/components/VRScene.vue'
+import information from '@/components/information.vue'
 export default {
   components: {
     hotlist,
-    VRScene
+    VRScene,
+    information
   },
   data () {
     return {
@@ -148,7 +170,9 @@ export default {
       ],
       type: '新中式',
       morelist: [], // 查看更多
-      idx: 2
+      idx: 2,
+      inforList: ['建房资讯', '建房百科', '设计百科', '装修百科', '施工百科', '风水百科'],
+      typeinfor: '建房资讯'
     }
   },
   watch: {
@@ -173,12 +197,22 @@ export default {
       this.type = nav
       this.hotlist = list
     },
+    handInfor (nav) {
+      let list = [...this.hotdata]// 拷贝原数组
+      list = list.filter(item => item.type === nav)
+      this.typeinfor = nav
+      this.hotlist = list
+    },
     handmore () { // 每点击一次增加一条内容
       this.idx++;
       let list = [...this.morelist]
       this.morelist = [...list, ...this.hotdata.slice(this.idx, this.idx + 1)]
       console.log(this.morelist)
     }
+  },
+  mounted () {
+    let nav = document.querySelector('.nav')
+    nav.style.display = 'block'
   }
 }
 </script>
@@ -276,7 +310,7 @@ p{
   margin: 40px auto;
 }
 .bounce-enter-active {
-  animation: slideInUp .5s;
+  animation: slideInLeft .5s;
 }
 .bounce-leave-active {
   animation: slideInDown 0s;
@@ -344,5 +378,7 @@ p{
   height: 260px;
   border:1px solid #dcdcdc;
   padding: 16px 0;
+  right: 0;
+  left: 0;
 }
 </style>

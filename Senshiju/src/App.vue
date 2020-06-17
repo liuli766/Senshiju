@@ -2,33 +2,27 @@
   <div id="app">
     <!-- 导航 -->
     <Header></Header>
-    <transition :name="transitionName">
+    <transition name="bounce">
       <router-view></router-view>
     </transition>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 export default {
   name: 'App',
   components: {
-    Header
+    Header,
+    Footer
   },
   data () {
     return {
-      transitionName: '' // 动画效果
     }
   },
   watch: {
-    $route () {
-      if (this.$router.isleft) {
-        this.transitionName = 'slideleft'
-      }
-      if (this.$router.isright) {
-        this.transitionName = 'slideright'
-      }
-    }
   }
 }
 </script>
@@ -41,6 +35,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.bounce-enter-active {
+  animation: fadeIn .8s;
+}
+.bounce-leave-active {
+  animation: fadeIn 0s;
 }
 .slideleft-enter,
  .slideright-leave-active {

@@ -1,4 +1,4 @@
-.header,.parent,.hot,.presell,.service,.process{
+.header,.parent,.hot,.presell,.service,.process,.inforparent,.footer_item,.build_bg{
     width: 1200px;
     margin: 0 auto;
 }
@@ -32,10 +32,30 @@
 .font22{
     font-size: 22px;
 }
+.font24{
+    font-size: 24px;
+}
+.font18{
+    font-size: 18px;
+}
 .font40{
     font-size: 40px;
 }
-
+/*  */
+.one-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.two-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 input::-webkit-input-placeholder{
     color:#fff;
 }

@@ -7,7 +7,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '觀察生活，感悟真滴',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 1,
@@ -17,7 +19,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '房源真實',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 2,
@@ -27,7 +31,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '房源可靠',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 3,
@@ -37,7 +43,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '觀察生活，感悟真滴',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 4,
@@ -47,7 +55,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '靠近地鐵',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 5,
@@ -57,7 +67,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '靈寶入住',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 6,
@@ -67,7 +79,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '靈寶入住',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   },
   {
     id: 7,
@@ -77,7 +91,9 @@ export default [
     mianj: '231m²',
     jaime: '23-79',
     yulu: '房源真實',
-    shejiprice: '298'
+    shejiprice: '298',
+    time: 19 - 11 - 12,
+    mation: '年轻人都爱看的喜讯'
   }
 
 ]
