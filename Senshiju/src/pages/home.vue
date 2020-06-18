@@ -30,7 +30,9 @@
         </transition-group>
       </div>
     <!-- 设计师 -->
+    <div class="designer">
 
+    </div>
     <!-- 图纸预售 -->
     <div class="hot bgcolorf6">
       <h4 class="font40">图纸<span class="theme">·预售</span></h4>
@@ -206,8 +208,7 @@ export default {
     handmore () { // 每点击一次增加一条内容
       this.idx++;
       let list = [...this.morelist]
-      this.morelist = [...list, ...this.hotdata.slice(this.idx, this.idx + 1)]
-      console.log(this.morelist)
+      this.morelist = [...list, ...this.hotdata.slice(this.idx++, this.idx + 3)]
     }
   },
   mounted () {
@@ -218,7 +219,11 @@ export default {
 </script>
 
 <style scoped>
-
+.designer{
+  background:url('../assets/image/bgteam.png') ;
+  background-size:100% 100% ;
+  height:733px;
+}
 p{
   width: 448px;
   margin: 0 auto 36px auto;

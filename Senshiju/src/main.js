@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
+
 import './assets/comm/reset.css'
 import './assets/comm/comm.css'
 import './assets/comm/animate.min.css'
@@ -14,6 +16,7 @@ import 'swiper/css/swiper.css'
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 Vue.use(ElementUI)
+Vue.use(Vuex)
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)
 new Vue({
   el: '#app',

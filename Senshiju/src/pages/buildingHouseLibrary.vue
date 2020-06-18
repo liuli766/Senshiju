@@ -14,7 +14,7 @@
         <div class="bulid_child">
           <span class="style">风格</span>
           <div class="line_h"><li v-for="(item,index) in arr"
-          :key='index' >{{item.text}}</li></div>
+          :key='index' :class="{'bg_active':item.selected}" @click="handselted(item)">{{item.text}}</li></div>
         </div>
         <div class="bulid_child">
           <span class="style">面宽</span>
@@ -54,6 +54,18 @@
         <div class="theme font18"><span>排序</span><span>人气</span><span>面积</span><span>最新</span></div>
       </div>
     </div>
+    <!-- 图纸设计 -->
+    <div class="drawing_box">
+      <div class="drawing poniter" v-for="(item,index) in arr1" :key='index'
+      @click="handdetail">
+        <img :src="item.img" alt="">
+        <p class="one-wrap">{{item.p}}</p>
+        <div class="bot">
+          <span>占地面积：<i>228m</i></span><span>图纸编号：<i>B203</i></span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -86,11 +98,38 @@ export default {
           text: '微派',
           selected: false
         }
+      ],
+      arr1: [
+        {
+          img: require('../../static/jf.png'),
+          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
+        },
+        {
+          img: require('../../static/jf.png'),
+          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
+        },
+        {
+          img: require('../../static/jf.png'),
+          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
+        }
       ]
     }
   },
   methods: {
-
+    handselted (item) {
+      // 选中当前
+      // eslint-disable-next-line valid-typeof
+      if (typeof item.selected === 'undefind') {
+        this.$set(item, 'selected', true)
+      } else {
+        item.selected = !item.selected
+      }
+    },
+    handdetail () {
+      this.$router.push({
+        path: '/builddetail'
+      })
+    }
   },
   mounted () {
     let nav = document.querySelector('.nav')
@@ -191,5 +230,40 @@ export default {
 }
 .theme.font18 span+span{
   margin-left: 50px;
+}
+.drawing {
+  width:384px;
+  height:428px;
+  transition: all .3s;
+}
+.drawing:hover{
+  box-shadow: 10px 10px 5px #E2E1E1;
+}
+.drawing img{
+  width:384px;
+  height:313px;
+}
+.drawing p{
+  width:339px;
+  margin: 18px 27px 19px 18px;
+  font-size:21px;
+  font-family:SimHei;
+  font-weight:400;
+  color:rgba(71,71,71,1)
+}
+.drawing_box{
+  margin-top:50px;
+  display: flex;
+  justify-content: space-between;
+}
+.bot{
+  padding: 24px 13px;
+  border-top: 1px dashed #B5B5B5;
+  display: flex;
+  justify-content: space-between;
+}
+i{
+  font-style: normal;
+  color: #E8342B;
 }
 </style>
