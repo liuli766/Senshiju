@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="team">
+  <!-- <div class="team">
     <div class="nav1">
       <div class="serchbox">
         <div class="serch"><input type="text" placeholder="请输入关键词" ></div>
@@ -13,7 +13,7 @@
       </ul>
     </nav>
   </div>
-  </div>
+  </div> -->
   <!-- 村野人家设计团队 -->
   <h5>村野人家设计团队</h5>
   <div class='teamen'>INTRODUCTION OF DESIGNER</div>
@@ -213,11 +213,11 @@ export default {
     }
   },
   mounted () {
-    let nav = document.querySelector('.nav')
-    nav.style.display = 'none'
-    if (location.pathname === '/DesignTteam') {
+    // let nav = document.querySelector('.nav')
+    // nav.style.display = 'none'
+    // if (location.pathname === '/DesignTteam') {
 
-    }
+    // }
   },
   methods: {
     // 点击导航栏

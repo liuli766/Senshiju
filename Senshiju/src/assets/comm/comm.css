@@ -1,5 +1,5 @@
 .header,.parent,.hot,.presell,.service,.process,.inforparent,.footer_item,.build_bg,.designeteam,.loadmore,
-.drawing_box,.builddetail{
+.drawing_box,.builddetail,.mationmain,.designer_box,.presell_bottom,.mapshow{
     width: 1200px;
     margin: 0 auto;
 }
@@ -68,6 +68,11 @@
     align-items: center;
     justify-content: space-between;
 }
+.fl_ar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 .fl_center{
     display: flex;
     align-items: center;
@@ -99,3 +104,6 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
  .swiper-pagination-bullet-active {
     background:#fdd45f !important;
  }
+ .el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before, .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+    content:'' !important;
+  }

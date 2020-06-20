@@ -1,4 +1,5 @@
 <template>
+<!-- 热销 ·推荐详情 -->
   <div>
 
   </div>
@@ -6,10 +7,7 @@
 
 <script>
 export default {
-  mounted () {
-    let nav = document.querySelector('.nav')
-    nav.style.display = 'block'
-  }
+
 }
 </script>
 

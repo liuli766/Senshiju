@@ -24,17 +24,16 @@ export default {
 </script>
 
 <style scoped>
-.hotlist:nth-of-type(3n-1){
-  margin-left: 15px;
-}
+
 .hotlist_info{
-  width:390px;
-  background: #f6f6f6;
+  width:392px;
+  background: #fff;
   margin-bottom: 30px;
   padding-bottom: 10px;
 }
 .hotlist_info img{
-  width: 100%;
+  width: 392;
+  height:238px;
 }
 .bold{
   font: bold  22px/1 "Microsoft Ya Hei";

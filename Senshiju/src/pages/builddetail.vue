@@ -22,22 +22,24 @@
         </div>
         <div class="tel">: 176-8324-2994</div>
         <div class="button fl_be">
-          <button>立即购买此套图纸</button>
-          <button>申请按此套图纸施工</button>
+          <button class="poniter">立即购买此套图纸</button>
+          <button class="poniter">申请按此套图纸施工</button>
         </div>
       </div>
     </div>
     <!-- 轮播 -->
     <div class="swiper">
-        <div class="swiper_slide">
-            <img :src="item" alt="" v-for="(item,index) in pic.slice(0,2)" :key='index'>
-        </div>
-        <img src="../assets/image/back.png" alt="" @click="handprve">
-        <img src="../assets/image/back.png" alt="" @click="handnext">
+      <div class="swiper_slide">
+        <img :src="item" alt v-for="(item,index) in listdata" :key="index" />
+      </div>
+      <img src="../assets/image/back.png" alt @click="handprve" />
+      <img src="../assets/image/back.png" alt @click="handnext" />
     </div>
     <!--  -->
-    <div class="explain">购图前重要说明： </div>
-    <p class="p">购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
+    <div class="explain">购图前重要说明：</div>
+    <p
+      class="p"
+    >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
   </div>
 </template>
 
@@ -52,67 +54,62 @@ export default {
         '主体参考造价：25~30万左右',
         '主体参考造价：25~30万左右'
       ],
-      pic: [require('../../static/h.png'), require('../../static/pic.png'), require('../../static/jf.png')],
-      num: 0
+      pic: [
+        require('../../static/h.png'),
+        require('../../static/pic.png'),
+        require('../../static/jf.png'),
+        require('../../static/h.png')
+      ],
+      listdata: []
     }
   },
   created () {
+    this.listdata = this.pic.slice(0, 2)
+    setInterval(this.handprve, 1000)
   },
   methods: {
     handprve () {
-      this.num++
-      let list = [...this.pic]
-      console.log(list)
-      if (list.length === 2) {
-        list = [...this.pic]
-        console.log(list)
-        this.num = 0
-      } else {
-        this.pic = list.slice(this.num++, this.num + 1)
-      }
+      let first = this.pic.shift()
+      this.pic.push(first)
+      this.listdata = this.pic.slice(0, 2)
     },
     handnext () {
-      let list = [...this.pic]
-      console.log(list)
-      if (list.length === 2) {
-        list = [...this.pic]
-        console.log(list)
-        this.num = 0
-      } else {
-        this.pic = list.slice(this.pic.length - 1, this.pic.length)
-      }
+      let last = this.pic.pop()
+      this.pic.unshift(last)
+      this.listdata = this.pic.slice(0, 2)
     }
   }
 }
 </script>
 
 <style scoped>
-.swiper{
-    width:681px;
-    overflow: hidden;
-    margin: 10px 0 43px 0;
-    position: relative;
-    display: flex;
-    padding-left: 30px;
+.swiper {
+  width: 681px;
+  overflow: hidden;
+  margin: 10px 0 43px 0;
+  position: relative;
+  display: flex;
+  padding-left: 30px;
 }
-.swiper>img{
-    background: yellow;
-    width:20px;
-    height:20px;
-    position: absolute;
-    top: 50%;
-    margin-top: -10px;
+.swiper > img {
+  background: yellow;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  transition: all 0.5s;
 }
-.swiper>img:nth-of-type(1){
-    right:0;
+.swiper > img:nth-of-type(1) {
+  right: 0;
 }
-.swiper>img:nth-of-type(2){
-    left:0;
+.swiper > img:nth-of-type(2) {
+  left: 0;
 }
-.swiper_slide img{
-    width:202px;
-    height:136px;
-    margin-right: 14px;
+.swiper_slide img {
+  width: 202px;
+  height: 136px;
+  margin-right: 14px;
 }
 .builddetail {
   margin-top: 22px;
@@ -197,19 +194,19 @@ export default {
   border-radius: 10px;
   outline: none;
   border: 0;
-  font:21px/28px 'Adobe Heiti Std';
+  font: 21px/28px 'Adobe Heiti Std';
   color: #fff;
 }
-.explain{
-    font:30px/40px '';
-    color: #4E4E4E;
-    text-align: left;
-    height:94px;
-    line-height: 94px;
+.explain {
+  font: 30px/40px '';
+  color: #4e4e4e;
+  text-align: left;
+  height: 94px;
+  line-height: 94px;
 }
-.p{
-    font:20px/40px '';
-    color: #4E4E4E;
-    text-align: left;
+.p {
+  font: 20px/40px '';
+  color: #4e4e4e;
+  text-align: left;
 }
 </style>

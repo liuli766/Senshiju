@@ -2,8 +2,8 @@
   <div id="app">
     <!-- 导航 -->
     <Header></Header>
-    <transition name="bounce">
-      <router-view></router-view>
+    <transition name="bounce" >
+      <router-view ></router-view>
     </transition>
     <Footer></Footer>
   </div>
@@ -35,6 +35,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.roter{
+  padding-top: 118px;
 }
 .bounce-enter-active {
   animation: fadeIn .8s;
