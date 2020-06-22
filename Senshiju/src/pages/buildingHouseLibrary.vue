@@ -21,14 +21,8 @@
       <div class="build">
         <div class="bulid_child">
           <span class="style">风格</span>
-          <div class="line_h">
-            <li
-              v-for="(item,index) in arr"
-              :key="index"
-              :class="{'bg_active':item.selected}"
-              @click="handselted(item)"
-            >{{item.text}}</li>
-          </div>
+          <div class="line_h"><li v-for="(item,index) in arr"
+          :key='index' :class="{'bg_active':item.selected}" @click="handselted(item)">{{item.text}}</li></div>
         </div>
         <div class="bulid_child">
           <span class="style">面宽</span>
@@ -104,6 +98,18 @@
         </div>
       </div>
     </div>
+    <!-- 图纸设计 -->
+    <div class="drawing_box">
+      <div class="drawing poniter" v-for="(item,index) in arr1" :key='index'
+      @click="handdetail">
+        <img :src="item.img" alt="">
+        <p class="one-wrap">{{item.p}}</p>
+        <div class="bot">
+          <span>占地面积：<i>228m</i></span><span>图纸编号：<i>B203</i></span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
