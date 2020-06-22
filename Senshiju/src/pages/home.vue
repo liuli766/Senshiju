@@ -47,7 +47,7 @@
       </transition-group>
     </div>
     <!-- 设计师 -->
-    <swiper :options="swiperOption">
+    <swiper >
       <swiper-slide>
         <div class="designer">
           <div class="designer_box">
@@ -251,6 +251,10 @@
         <div class="txt1">村墅人家覆盖265个大城市，服务全国1030个地区</div>
         <div class="txt2">真实客户案例2000+</div>
       </div>
+      <!--  -->
+      <div class="map">
+        <img src="../assets/image/map.png" alt="">
+      </div>
     </div>
   </div>
 </template>
@@ -442,5 +446,5 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/index.css'
+@import '../assets/index.css'
 </style>
