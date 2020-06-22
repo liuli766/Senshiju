@@ -100,6 +100,8 @@ nav img{
   font-size: 16px;
 }
 .header-active{
-
+  background: #FED560;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>

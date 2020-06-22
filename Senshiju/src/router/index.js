@@ -63,6 +63,22 @@ const routes = [
       title: '建房百科'
     },
     component: (resolve) => require(['@/pages/search'], resolve)
+  },
+  {
+    path: '/teamDetail',
+    name: 'teamDetail',
+    meta: {
+      title: '设计详情'
+    },
+    component: (resolve) => require(['@/pages/teamdetail'], resolve)
+  },
+  {
+    path: '/productDetail',
+    name: 'productDetail',
+    meta: {
+      title: '建房图库详情'
+    },
+    component: (resolve) => require(['@/pages/productDetail'], resolve)
   }
 ]
 
