@@ -112,6 +112,7 @@
           :key="index"
           :src="item.image"
           :alt="item.id"
+          @click="handprodetail(item)"
         />
       </div>
     </div>
@@ -256,6 +257,29 @@
         <img src="../assets/image/map.png" alt="">
       </div>
     </div>
+    <!-- 首页联系客服 -->
+      <div class="fixed">
+          <div>
+            <img src="../assets/image/fixed/kf.png" alt="">
+            <span>联系客服</span>
+          </div>
+          <div>
+            <img src="../assets/image/fixed/erwm.png" alt="">
+            <span>二维码</span>
+          </div>
+          <div>
+            <img src="../assets/image/fixed/ddan.png" alt="">
+            <span>订单</span>
+          </div>
+          <div>
+            <img src="../assets/image/fixed/gwuc.png" alt="">
+            <span>购物车</span>
+          </div>
+          <div @click="handtop"> 
+            <img src="../assets/image/fixed/fhdb.png" alt="">
+            <span>返回顶部</span>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -435,6 +459,14 @@ export default {
     handLearn () {
       this.$router.push({
         path: '/teamDetail'
+      })
+    },
+    handtop(){ //返回顶部
+       window.scrollTo(0, 0)
+    },
+    handprodetail(item){ //跳转产品详情
+      this.$router.push({
+        path: '/productDetail'
       })
     }
   },

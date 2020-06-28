@@ -1,5 +1,5 @@
 <template>
-  <div class="hotlist">
+  <div class="hotlist" @click="handdetail(info)">
     <div class="hotlist_info">
       <img :src="info.image" alt="">
       <h5 class="bold">{{info.name}}</h5>
@@ -18,7 +18,14 @@ export default {
     }
   },
   created () {
-  }
+  },
+  methods: {
+    handdetail(item){
+      this.$router.push({
+        path: '/productDetail'
+      })
+    }
+  },
 
 }
 </script>
