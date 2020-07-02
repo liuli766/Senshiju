@@ -17,6 +17,22 @@ const routes = [
     component: (resolve) => require(['@/pages/home'], resolve)
   },
   {
+    path: '/register',
+    name: '注册',
+    meta: {
+      title: '注册'
+    },
+    component: (resolve) => require(['@/components/register'], resolve)
+  },
+  {
+    path: '/login',
+    name: '登录',
+    meta: {
+      title: '登录页'
+    },
+    component: (resolve) => require(['@/components/login'], resolve)
+  },
+  {
     path: '/buildingHouseLibrary',
     name: 'buildingHouseLibrary',
     meta: {
@@ -39,14 +55,6 @@ const routes = [
       title: '私人订制'
     },
     component: (resolve) => require(['@/pages/PersonalTtailor'], resolve)
-  },
-  {
-    path: '/BuildingLog',
-    name: 'BuildingLog',
-    meta: {
-      title: '建房日志'
-    },
-    component: (resolve) => require(['@/pages/BuildingLog'], resolve)
   },
   {
     path: '/BuildingEncyclopedia',

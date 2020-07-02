@@ -4,17 +4,16 @@ import Vuex from 'vuex'
 import 'es6-promise/auto'
 Vue.use(Vuex)
 
-const store = () => new Vuex.Store({
+export default new Vuex.Store({
   state: {
-
+    Login:false,
+    Register:true
   },
   getters: {
 
   },
+  
   mutations: {
-
+ 
   }
-
 })
-
-export default store

@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuex from 'vuex'
+import store from './store'
 
 import './assets/comm/reset.css'
 import './assets/comm/comm.css'
@@ -16,11 +16,15 @@ import 'swiper/css/swiper.css'
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 Vue.use(ElementUI)
-Vue.use(Vuex)
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)
+import axios from 'axios'
+Vue.prototype.$axios=axios
+// Vue.prototype.api = api;
+
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

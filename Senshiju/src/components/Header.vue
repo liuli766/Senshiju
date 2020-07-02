@@ -1,20 +1,29 @@
 <template>
   <div class="nav">
     <nav class="header">
-      <img src="../assets/image/logo.png" alt="">
+      <img src="../assets/image/logo.png" alt />
       <ul>
-        <li v-for="(item,index) in navList" :key='index'
-        @click="changeNav(item)" :class="{'header-active':navActiveCode === item.code}">{{item.name}}</li>
+        <li
+          v-for="(item,index) in navList"
+          :key="index"
+          @click="changeNav(item)"
+          :class="{'header-active':navActiveCode === item.code}"
+        >{{item.name}}</li>
       </ul>
-      <div class="serch"><input type="text" placeholder="请输入关键词" @click="handsearch"></div>
+      <div class="regieandlogin poniter">
+        <router-link to='/register'>注册</router-link>|
+        <router-link to='/login'>登录</router-link>
+      </div>
+      <div class="serch">
+        <input type="text" placeholder="请输入关键词" @click="handsearch" />
+      </div>
     </nav>
-
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       navList: [
         {
@@ -38,11 +47,6 @@ export default {
           code: 'Ttailor'
         },
         {
-          name: '建房日志',
-          url: '/BuildingLog',
-          code: 'Log'
-        },
-        {
           name: '建房百科',
           url: '/BuildingEncyclopedia',
           code: 'Encyclopedia'
@@ -53,11 +57,11 @@ export default {
   },
   methods: {
     // 点击导航栏
-    changeNav (nav) {
+    changeNav(nav) {
       this.navActiveCode = nav.code
-      this.$router.push({path: nav.url})
+      this.$router.push({ path: nav.url })
     },
-    handsearch () {
+    handsearch() {
       this.$router.push({
         path: '/search'
       })
@@ -67,11 +71,11 @@ export default {
 </script>
 
 <style scoped>
-.nav{
-    display: flex;
-    align-items: center;
+.nav {
+  display: flex;
+  align-items: center;
 }
-nav{
+nav {
   display: flex;
   align-items: center;
 }
@@ -80,28 +84,42 @@ nav ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin:0 112px 0 66px;
+  margin: 0 0 0 30px;
   font-size: 24px;
 }
-nav img{
-  margin-top:14px
+nav img {
+  margin-top: 14px;
 }
-.serch{
+.serch {
   position: relative;
 }
-.serch input{
+.serch input {
   box-sizing: border-box;
   width: 182px;
   height: 35px;
   background: #fdd45f;
   border-radius: 17.5px;
   padding-left: 20px;
-  color:#fff;
+  color: #fff;
   font-size: 16px;
 }
-.header-active{
-  background: #FED560;
+.header-active {
+  background: #fed560;
   padding: 10px;
   border-radius: 10px;
+}
+.regieandlogin {
+  width: 146px;
+  color: #242424;
+  font-size: 18px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  line-height: 32px;
+  background: #eeeeee;
+  border-radius: 10px;
+  margin-right: 46px;
+  margin-left: 95px;
+  padding: 6px 12px;
+  box-sizing: border-box;
 }
 </style>
