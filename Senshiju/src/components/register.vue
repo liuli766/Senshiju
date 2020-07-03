@@ -12,7 +12,7 @@
         <p>打开手机微信APP 在【首页—扫一扫】扫描二维码登录</p>
       </div>
       <div class="swich">
-        <div class="nav">
+        <div class="navnav">
           <span
             v-for="(item,index) in navlist"
             :key="index"
@@ -54,8 +54,8 @@ export default {
   },
   computed: mapState({
     // 箭头函数可使代码更简练
-    Login: state => state.Login,
-    Register: state => state.Register
+    // Login: state => state.Login,
+    // Register: state => state.Register
   }),
   methods: {
     handswich(idx) {
@@ -140,10 +140,10 @@ i:hover {
   padding-bottom: 7px;
   line-height: 25px;
 }
-.swich .nav {
+.swich .navnav {
   margin-bottom: 41px;
 }
-.swich .nav span {
+.swich .navnav span {
   cursor: pointer;
   transition: all 0.6s;
 }

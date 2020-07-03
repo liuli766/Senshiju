@@ -55,8 +55,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
+      // favicon: resolve('favicon.ico')
+      favicon: './favicon.ico'
+
     }),
+    // new HtmlWebpackPlugin({
+    //   filename: config.build.index,
+    //   template: 'index.html',
+    //   inject: true,
+    //   minify: {
+    //     removeComments: true,
+    //     collapseWhitespace: true,
+    //     removeAttributeQuotes: true
+    //   },
+    //   chunksSortMode: 'dependency'
+    // }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

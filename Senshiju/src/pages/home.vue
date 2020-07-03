@@ -163,10 +163,9 @@
         </div>
       </div>
     </div>
-    <!-- VR实例 -->
-    <div class="vr">
-      <img src="../assets/image/vrc.png" alt />
-      <div class="vrmore poniter"></div>
+    <!-- 视频实例 -->
+    <div class="video">
+      <video src=""></video>
     </div>
     <!-- 别墅资讯 -->
     <div class="hot bgcolorf6">
@@ -230,7 +229,7 @@
       </div>
     </div>
     <!-- 地图展示 -->
-    <div>
+    <div style="padding-bottom:40px">
       <div class="hot bgcolorf6">
         <h4 class="font40">
           地图
@@ -251,6 +250,7 @@
       <div class="mapshow">
         <div class="txt1">村墅人家覆盖265个大城市，服务全国1030个地区</div>
         <div class="txt2">真实客户案例2000+</div>
+        <img src="../assets/image/map.png" alt="">
       </div>
     </div>
     <!-- 首页联系客服 -->
@@ -263,7 +263,7 @@
             <img src="../assets/image/fixed/erwm.png" alt="">
             <span>二维码</span>
           </div>
-          <div>
+          <div @click="handorder">
             <img src="../assets/image/fixed/ddan.png" alt="">
             <span>订单</span>
           </div>
@@ -282,7 +282,9 @@
 <script>
 import recommendData from '../product.js'
 import hotlist from '@/components/hostList.vue'
+import { mapState } from 'vuex'
 export default {
+  
   components: {
     hotlist
   },
@@ -464,11 +466,17 @@ export default {
       this.$router.push({
         path: '/productDetail'
       })
+    },
+    handorder(){ //跳转订单
+      this.$router.push({
+        path: '/order'
+      })
     }
   },
   mounted () {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
+
   }
 }
 </script>

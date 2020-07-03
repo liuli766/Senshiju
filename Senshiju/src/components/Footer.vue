@@ -24,7 +24,7 @@ export default {
 .footer{
     width: 100%;
     height: 310px;
-    margin-top: 40px;
+    /* margin-top: 40px; */
     position: relative;
 }
 .footer img{

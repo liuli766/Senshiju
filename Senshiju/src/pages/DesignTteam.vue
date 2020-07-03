@@ -14,6 +14,7 @@
     </nav>
   </div>
   </div> -->
+  <img src="../assets/image/banner.png" class="bannerimg" alt="">
   <!-- 村野人家设计团队 -->
   <h5>村野人家设计团队</h5>
   <div class='teamen'>INTRODUCTION OF DESIGNER</div>
@@ -247,6 +248,10 @@ export default {
 </script>
 
 <style scoped>
+.bannerimg{
+  width: 100%;
+  height: 100%;
+}
 main{
   background: #FAFAFA;
   padding-top: 40px;

@@ -68,7 +68,7 @@ const routes = [
     path: '/search',
     name: 'search',
     meta: {
-      title: '建房百科'
+      title: '搜索'
     },
     component: (resolve) => require(['@/pages/search'], resolve)
   },
@@ -87,6 +87,14 @@ const routes = [
       title: '建房图库详情'
     },
     component: (resolve) => require(['@/pages/productDetail'], resolve)
+  },
+  {
+    path: '/order',
+    name: 'order',
+    meta: {
+      title: '订单列表'
+    },
+    component: (resolve) => require(['@/pages/order'], resolve)
   }
 ]
 

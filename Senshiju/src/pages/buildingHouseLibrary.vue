@@ -1,121 +1,153 @@
 <template>
-  <div>
-    <div class="content">
-      <div class="hot">
-        <h4 class="font40">
-          建房
-          <span class="theme">·图库</span>
-        </h4>
-        <div class="flex colord2">
-          <div class="font20 flex">
-            <div class="line"></div>·
+  <div class="buildhost">
+    <div>
+      <div class="content">
+        <div class="hot">
+          <h4 class="font29">
+            建房
+            <span class="theme">·图库</span>
+          </h4>
+          <div class="flex colord2">
+            <div class="font20 flex">
+              <div class="line"></div>·
+            </div>
+            <div class="txt">BUILDING GALLERY</div>
+            <div class="font20 flex">
+              ·
+              <div class="line"></div>
+            </div>
           </div>
-          <div class="txt">BUILDING GALLERY</div>
-          <div class="font20 flex">
-            ·
-            <div class="line"></div>
+        </div>
+        <!--  -->
+        <div class="build">
+          <div class="bulid_child">
+            <span class="style">风格</span>
+            <div class="line_h">
+              <li
+                v-for="(item,index) in arr"
+                :key="index"
+                :class="{'bg_active':item.selected}"
+                @click="handselted(item)"
+              >{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bulid_child">
+            <span class="style">面宽</span>
+            <div class="line_h">
+              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bulid_child">
+            <span class="style">进深</span>
+            <div class="line_h">
+              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bulid_child">
+            <span class="style">占地</span>
+            <div class="line_h">
+              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bulid_child">
+            <span class="style">层数</span>
+            <div class="line_h">
+              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bulid_child">
+            <span class="style">造价</span>
+            <div class="line_h">
+              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bulid_child">
+            <span class="style">风格</span>
+            <div class="line_h">
+              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+            </div>
+          </div>
+          <div class="bild_b">
+            <div class="font20 theme">已选条件</div>
+            <div class="fl_center">
+              <span class="iconfont icon-delete deleta"></span>清空
+            </div>
           </div>
         </div>
       </div>
       <!--  -->
-      <div class="build">
-        <div class="bulid_child">
-          <span class="style">风格</span>
-          <div class="line_h"><li v-for="(item,index) in arr"
-          :key='index' :class="{'bg_active':item.selected}" @click="handselted(item)">{{item.text}}</li></div>
-        </div>
-        <div class="bulid_child">
-          <span class="style">面宽</span>
-          <div class="line_h">
-            <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+      <div class="build_bg">
+        <img src="../assets/image/bg.png" alt />
+        <div class="build_fiflter">
+          <span class="font24">别墅图纸共有套</span>
+          <div class="theme font18">
+            <span>排序</span>
+            <span>
+              人气
+              <span class="iconfont icon-jiantou-xia"></span>
+            </span>
+            <span>
+              面积
+              <span class="iconfont icon-jiantou-xia"></span>
+            </span>
+            <span>
+              最新
+              <span class="iconfont icon-jiantou-xia"></span>
+            </span>
           </div>
         </div>
-        <div class="bulid_child">
-          <span class="style">进深</span>
-          <div class="line_h">
-            <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
+      </div>
+      <!-- 图纸设计 -->
+      <div class="drawing_box">
+        <div class="drawing poniter" v-for="(item,index) in arr1" :key="index" @click="handdetail">
+          <img :src="item.img" alt />
+          <p class="one-wrap">{{item.p}}</p>
+          <div class="bot">
+            <span>
+              占地面积：
+              <i>228m</i>
+            </span>
+            <span>
+              图纸编号：
+              <i>B203</i>
+            </span>
           </div>
         </div>
-        <div class="bulid_child">
-          <span class="style">占地</span>
-          <div class="line_h">
-            <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-          </div>
-        </div>
-        <div class="bulid_child">
-          <span class="style">层数</span>
-          <div class="line_h">
-            <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-          </div>
-        </div>
-        <div class="bulid_child">
-          <span class="style">造价</span>
-          <div class="line_h">
-            <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-          </div>
-        </div>
-        <div class="bulid_child">
-          <span class="style">风格</span>
-          <div class="line_h">
-            <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-          </div>
-        </div>
-        <div class="bild_b">
-          <div class="font20 theme">已选条件</div>
-          <div class="fl_center">
-            <span class="iconfont icon-delete deleta"></span>清空
+      </div>
+      <!-- 图纸设计 -->
+      <div class="drawing_box">
+        <div class="drawing poniter" v-for="(item,index) in arr1" :key="index" @click="handdetail">
+          <img :src="item.img" alt />
+          <p class="one-wrap">{{item.p}}</p>
+          <div class="bot">
+            <span>
+              占地面积：
+              <i>228m</i>
+            </span>
+            <span>
+              图纸编号：
+              <i>B203</i>
+            </span>
           </div>
         </div>
       </div>
     </div>
-    <!--  -->
-    <div class="build_bg">
-      <img src="../assets/image/bg.png" alt />
-      <div class="build_fiflter">
-        <span class="font24">别墅图纸共有套</span>
-        <div class="theme font18">
-          <span>排序</span>
-          <span>人气<span class="iconfont icon-jiantou-xia"></span></span>
-          <span>面积<span class="iconfont icon-jiantou-xia"></span></span>
-          <span>最新<span class="iconfont icon-jiantou-xia"></span></span>
-        </div>
-      </div>
+    <div style="margin-left: 38px;">
+      <newdesign />
+      <newinfo />
     </div>
-    <!-- 图纸设计 -->
-    <div class="drawing_box">
-      <div class="drawing poniter" v-for="(item,index) in arr1" :key="index" @click="handdetail">
-        <img :src="item.img" alt />
-        <p class="one-wrap">{{item.p}}</p>
-        <div class="bot">
-          <span>
-            占地面积：
-            <i>228m</i>
-          </span>
-          <span>
-            图纸编号：
-            <i>B203</i>
-          </span>
-        </div>
-      </div>
-    </div>
-    <!-- 图纸设计 -->
-    <div class="drawing_box">
-      <div class="drawing poniter" v-for="(item,index) in arr1" :key='index'
-      @click="handdetail">
-        <img :src="item.img" alt="">
-        <p class="one-wrap">{{item.p}}</p>
-        <div class="bot">
-          <span>占地面积：<i>228m</i></span><span>图纸编号：<i>B203</i></span>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script>
+import newdesign from '@/components/newdesign.vue'
+import newinfo from '@/components/newinfo.vue'
 export default {
-  data () {
+  components: {
+    newdesign,
+    newinfo
+  },
+  data() {
     return {
       arr: [
         {
@@ -160,7 +192,7 @@ export default {
     }
   },
   methods: {
-    handselted (item) {
+    handselted(item) {
       // 选中当前
       // eslint-disable-next-line valid-typeof
       if (typeof item.selected === 'undefind') {
@@ -169,13 +201,13 @@ export default {
         item.selected = !item.selected
       }
     },
-    handdetail () {
+    handdetail() {
       this.$router.push({
         path: '/productDetail'
       })
     }
   },
-  mounted () {
+  mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
   }
@@ -183,13 +215,25 @@ export default {
 </script>
 
 <style scoped>
+.buildhost{
+  display: flex;
+}
 .content {
   border: 1px dashed#bfbfbf;
-  width: 1200px;
+  width: 889px;
   margin: 0 auto;
+}
+.build_bg {
+  width: 889px;
+  margin: 0 auto;
+}
+.build_bg > img {
+  width: 889px;
 }
 .hot {
   padding: 50px 0 32px 0;
+  width: 889px;
+  margin: 0 auto;
 }
 .hotnav {
   display: flex;
@@ -217,7 +261,7 @@ export default {
   align-items: center;
 }
 .line {
-  width: 328px;
+  width: 233px;
   height: 1px;
   background: #d2d2d2;
 }
@@ -228,7 +272,7 @@ export default {
 }
 .txt {
   margin: 10px;
-  font: bold 24px/1 '';
+  font: bold 18px/1 '';
 }
 .style {
   display: block;
@@ -245,7 +289,7 @@ export default {
 }
 .build {
   margin: 0 auto;
-  width: 1088px;
+  width: 889px;
 }
 .bg_active {
   background: #fdd45f;
@@ -275,21 +319,21 @@ export default {
   margin-left: 50px;
 }
 .drawing {
-  width: 384px;
-  height: 428px;
+  width: 284px;
+  height: 322px;
   transition: all 0.3s;
 }
 .drawing:hover {
   box-shadow: 10px 10px 5px #e2e1e1;
 }
 .drawing img {
-  width: 384px;
-  height: 313px;
+  width: 284px;
+  height: 238px;
 }
 .drawing p {
-  width: 339px;
-  margin: 18px 27px 19px 18px;
-  font-size: 21px;
+  width: 239px;
+  margin: 12px 16px 15px 13px;
+  font-size: 16px;
   font-family: SimHei;
   font-weight: 400;
   color: rgba(71, 71, 71, 1);
@@ -298,6 +342,7 @@ export default {
   margin-top: 50px;
   display: flex;
   justify-content: space-between;
+  width: 889px;
 }
 .bot {
   padding: 24px 13px;

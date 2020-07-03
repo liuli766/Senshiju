@@ -20,7 +20,8 @@
           </ul>
         </nav>
       </div>
-    </div> -->
+    </div>-->
+    <img src="../assets/image/person.png" alt="" class="bannerimg">
     <main>
       <!-- 私人订制申请 -->
       <div>
@@ -137,10 +138,28 @@
           <img src="../../static/jf.png" alt />
         </div>
         <div class="fl_be show_img">
-          <el-image class="el_image" style="width: 100px; height: 100px" :src="item" v-for="(item,index) in moreList" :key='index'
-          :preview-src-list="picList"></el-image>
+          <el-image
+            class="el_image"
+            style="width: 100px; height: 100px"
+            :src="item"
+            v-for="(item,index) in moreList"
+            :key="index"
+            :preview-src-list="picList"
+          ></el-image>
         </div>
         <div class="more poniter" @click="handmore">查看更多</div>
+      </div>
+      <div class="license">
+        <h5>我们的口碑您来决定</h5>
+        <p>为您与客户真实的聊天记录</p>
+        <div>
+          <div class>
+            <img src alt />
+            <img src alt />
+            <img src alt />
+          </div>
+        </div>
+        <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
       </div>
     </main>
   </div>
@@ -148,7 +167,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       navList: [
         {
@@ -239,11 +258,11 @@ export default {
       idx: 3
     }
   },
-  mounted () {
+  mounted() {
     // let nav = document.querySelector('.nav')
     // nav.style.display = 'none'
   },
-  created () {
+  created() {
     if (this.picList < 4) {
       this.moreList = this.picList
     } else {
@@ -252,12 +271,12 @@ export default {
   },
   methods: {
     // 点击导航栏
-    changeNav (nav) {
+    changeNav(nav) {
       this.navActiveCode = nav.code
       this.$router.push({ path: nav.url })
     },
     // 提交申请
-    submitForm (formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           alert('submit!')
@@ -268,8 +287,8 @@ export default {
       })
     },
     // 加载更多
-    handmore () {
-      this.idx++;
+    handmore() {
+      this.idx++
       let list = [...this.moreList]
       this.moreList = [...list, ...this.picList.slice(this.idx++, this.idx + 1)]
     }
@@ -278,9 +297,14 @@ export default {
 </script>
 
 <style scoped>
+.bannerimg{
+  width: 100%;
+  height:100%;
+}
 main {
   width: 1200px;
   margin: 0 auto;
+  padding-bottom: 40px;
 }
 .serchbox {
   width: 1200px;
@@ -430,7 +454,7 @@ nav img {
 .show {
   background: #fff;
   padding: 40px 0;
-  margin-bottom: 49.2px;
+  /* margin-bottom: 49.2px; */
 }
 .teamsupport h5,
 .license h5,
@@ -478,20 +502,31 @@ nav img {
   width: 576px;
   height: 402px;
 }
-.el_image{
-  width:280px !important;
-  height:195px !important;
+.el_image {
+  width: 280px !important;
+  height: 195px !important;
   margin-bottom: 19px;
 }
-.more{
-  width:122px;
-  height:40px;
+.more {
+  width: 122px;
+  height: 40px;
   line-height: 40px;
-  border:1px solid rgba(0,0,0,1);
+  border: 1px solid rgba(0, 0, 0, 1);
   margin: 0 auto;
-  margin-top:40px;
-  }
-  .show_img{
-    flex-wrap: wrap;
-  }
+  margin-top: 40px;
+}
+.show_img {
+  flex-wrap: wrap;
+}
+.morekf {
+  width: 334px;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 1);
+  font-size: 22px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+  color: rgba(1, 1, 1, 1);
+  line-height: 40px;
+  margin:auto;
+}
 </style>

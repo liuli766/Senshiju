@@ -6,14 +6,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    Login:false,
-    Register:true
+    meauid:0, //建房百科菜单
   },
   getters: {
 
   },
   
   mutations: {
- 
+    meauidfn(state,num){
+      state.meauid=num
+    }
   }
 })

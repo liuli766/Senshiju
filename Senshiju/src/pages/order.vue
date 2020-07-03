@@ -1,0 +1,244 @@
+<template>
+  <!-- 订单 -->
+  <div>
+    <!-- 用户信息 -->
+    <div class="yellobg">
+      <div class="userintro">
+        <img src="../assets/image/logo.png" alt />
+        <div class="username fl_center">
+          <span>陈某某</span>
+          <span>普通用户</span>
+        </div>
+      </div>
+    </div>
+    <main>
+      <nav class="nav">
+        <router-link to="/">首页</router-link>>
+        <router-link to="/">用户中心</router-link>>
+        <router-link to="/order">我的订单</router-link>
+      </nav>
+      <!-- div -->
+      <div class="order">
+        <!-- 用户中心 -->
+        <div class="centerbox">
+          <div class="usercenter">
+            <h6>用户中心</h6>
+            <div>
+              <i class="el-icon-tickets"></i>我的订单
+            </div>
+            <div>
+              <i class="el-icon-view"></i>浏览记录
+            </div>
+            <div>
+              <i class="el-icon-location-outline"></i>收货地址
+            </div>
+            <div>
+              <i class="el-icon-user"></i>个人资料
+            </div>
+          </div>
+          <div class="kfcenter">
+            <h6>客服热线</h6>
+            <div>
+              <p>订购/咨询热线</p>
+              <p>177-0811-0852</p>
+            </div>
+            <div>
+              <p>售后服务热线</p>
+              <p>028-85828273</p>
+            </div>
+          </div>
+          <div class="kferwm">
+            <h6>客服热线</h6>
+            <img src alt />
+          </div>
+        </div>
+
+        <!-- 订单列表 -->
+        <div class="orderlist">
+          <h6>订单列表</h6>
+          <div class="ordernav">
+            <div>
+              <span>编号</span>
+              <div>123</div>
+            </div>
+            <div>
+              <span>商品</span>
+              <div>123</div>
+            </div>
+            <div>
+              <span>价格</span>
+              <div>123</div>
+            </div>
+            <div>
+              <span>地址</span>
+              <div>123</div>
+            </div>
+            <div>
+              <span>时间</span>
+              <div>123</div>
+            </div>
+            <div>
+              <span>状态</span>
+              <div>123</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+export default {
+  data() {
+    return {
+    }
+  }
+}
+</script>
+
+<style scoped>
+.yellobg {
+  height: 184px;
+  background: rgba(255, 201, 47, 1);
+  line-height: 184px;
+}
+.userintro {
+  text-align: left;
+  color: #fff;
+  display: flex;
+  height: 184px;
+}
+.userintro img {
+  width: 138px;
+  height: 138px;
+  background: rgba(238, 238, 238, 1);
+  border-radius: 50%;
+  margin-top: 21px;
+  margin-right: 76px;
+}
+.userintro .username {
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 184px;
+}
+.userintro .username span:nth-of-type(1) {
+  font-size: 36px;
+  font-family: Microsoft YaHei;
+  /* font-weight: bold; */
+  line-height: 1;
+}
+.userintro .username span:nth-of-type(2) {
+  font-size: 18px;
+  font-family: Microsoft YaHei;
+  /* font-weight: bold; */
+  line-height: 1;
+  margin-top: 16px;
+}
+main {
+  background: #eeeeee;
+}
+nav {
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  padding-top: 28px;
+  margin-bottom: 23px;
+  text-align: left;
+  color: #616161;
+}
+.router-link-exact-active {
+  color: #ffc92f;
+}
+.usercenter,
+.kfcenter,
+.kferwm {
+  width: 278px;
+  background: #fff;
+  margin-bottom: 6px;
+}
+.usercenter h6,
+.kfcenter h6,
+.kferwm h6 {
+  width: 278px;
+  line-height: 37px;
+  background: rgba(255, 201, 47, 1);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+.usercenter > div {
+  line-height: 48px;
+  font-size: 16px;
+  color: #424242;
+  border-bottom: 1px solid #dcdcdc;
+  width: 258px;
+  margin: 0 auto;
+  cursor: pointer;
+  text-align: left;
+  text-indent: 10px;
+}
+.usercenter > div > i {
+  margin-right: 23px;
+  font-size: 23px;
+}
+.kfcenter > div > p {
+  font: bold 18px/24px '';
+  color: #717171;
+  text-indent: 20px;
+  text-align: left;
+}
+.kfcenter > div > p:nth-of-type(2) {
+  margin-top: 20px;
+}
+.kfcenter > div {
+  width: 258px;
+  border-bottom: 1px solid #dcdcdc;
+  margin: 0 auto;
+  padding: 21px 0 16px 0;
+}
+
+.kfcenter > div:nth-last-of-type(1),
+.usercenter > div:nth-last-of-type(1) {
+  border: 0;
+}
+.kferwm img {
+  width: 186px;
+  height: 186px;
+  margin: 19px 29px;
+}
+.kferwm {
+  margin: 0;
+}
+.order {
+  display: flex;
+}
+
+.orderlist {
+  width: 906px;
+  height: 49px;
+  line-height: 49px;
+}
+.centerbox {
+  margin-right: 16px;
+}
+.orderlist h6 {
+  font: bold 24px/49px '';
+  color: #434343;
+  background: rgba(197, 196, 196, 1);
+}
+.ordernav {
+  background: #fff;
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+}
+.ordernav > div {
+  padding: 0 40px;
+  border-right: 1px solid #f5f5f5;
+}
+.ordernav > div:nth-of-type(4) {
+  padding: 0 96px;
+}
+</style>
