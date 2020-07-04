@@ -21,7 +21,7 @@
         </nav>
       </div>
     </div>-->
-    <img src="../assets/image/person.png" alt="" class="bannerimg">
+    <img src="../assets/image/person.png" alt class="bannerimg" />
     <main>
       <!-- 私人订制申请 -->
       <div>
@@ -297,9 +297,9 @@ export default {
 </script>
 
 <style scoped>
-.bannerimg{
+.bannerimg {
   width: 100%;
-  height:100%;
+  height: 100%;
 }
 main {
   width: 1200px;
@@ -527,6 +527,6 @@ nav img {
   font-weight: 400;
   color: rgba(1, 1, 1, 1);
   line-height: 40px;
-  margin:auto;
+  margin: auto;
 }
 </style>

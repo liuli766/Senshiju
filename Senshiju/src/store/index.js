@@ -6,15 +6,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    meauid:0, //建房百科菜单
+    meauid:0, //建房百科菜单选中,
+    hedeid:localStorage.idnum,//导航选中
   },
   getters: {
 
   },
   
   mutations: {
-    meauidfn(state,num){
+    meauidfn(state,num){//建房百科菜单选中
       state.meauid=num
+    },
+    headnav(state,num){
+      state.hedeid=num
     }
   }
 })

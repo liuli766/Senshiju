@@ -6,17 +6,16 @@
         <li
           v-for="(item,index) in navList"
           :key="index"
-          @click="changeNav(item)"
-          :class="{'header-active':navActiveCode === item.code}"
+          @click="changeNav(item,index,$event)"
+          :class="[hedeid==index?'header-active':'']"
         >{{item.name}}</li>
-        <li class="li4" @mousemove="handshow" @mouseleave="handnone"> 
-          <router-link to="/BuildingEncyclopedia" class="buildenc">
-            建房百科
-          </router-link>        
-          <div class="dropdown" ref="showli">            
+        <li class="li4" @click="handli4" ref="li4">
+          <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
+          <div class="dropdown">
             <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
           </div>
         </li>
+
         <!-- <el-dropdown @command="handleCommand">
           <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
           <el-dropdown-menu slot="dropdown">
@@ -71,40 +70,58 @@ export default {
         //   code: 'Encyclopedia'
         // }
       ],
-      navActiveCode: 'home',
-      meau:['建房百科','设计百科','装修百科','施工百科','风水百科','建房日志']
+      meau: [
+        '建房百科',
+        '设计百科',
+        '装修百科',
+        '施工百科',
+        '风水百科',
+        '建房日志'
+      ],
+      navid: 0 //当前选中的导航
     }
   },
-  computed:{
-    // ...mapState({
-    //   meauid: state => state.meauid,
-    // })
-  },
+  computed: mapState({
+    hedeid: state => state.hedeid
+  }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log(location.pathname)
+    
+    
+  },
   methods: {
     // 点击导航栏
-    changeNav(nav) {
-      this.navActiveCode = nav.code
+    changeNav(nav, index, e) {
+      // this.navActiveCode = nav.code
+      localStorage.setItem('idnum', index) //保存下标
+      this.$store.commit('headnav', parseInt(localStorage.idnum))
       this.$router.push({ path: nav.url })
     },
     handsearch() {
+      //搜索页面
       this.$router.push({
         path: '/search'
       })
     },
-    handshow(){
-      this.$refs.showli.style.display='block'
-    },
-    handnone(){
-      this.$refs.showli.style.display='none'
-    },
-    handitem(idx){
+    handitem(idx) {
+      //跳转建房百科
       this.$router.push({
         path: '/BuildingEncyclopedia'
       })
-      this.$store.commit('meauidfn',idx)
+      this.$store.commit('meauidfn', idx)
+    },
 
+    handli4() {
+      let li4 = this.$refs.li4
+      
+      let active=document.querySelector('.header-active')
+      console.log(active)
+    if(location.pathname=='/BuildingEncyclopedia'){
+      console.log(1)
+      document.querySelector('.header-active').removeAttribute('header-active')
+    }
+      
     }
   }
 }
@@ -114,26 +131,30 @@ export default {
 .li4 {
   position: relative;
 }
-.li4:hover .dropdown{
+.li4:hover .dropdown {
   display: block;
 }
 .dropdown {
   position: absolute;
-  background: #fff;
+  background: url('../assets/image/jfrz.png');
+  background-size: 100% 100%;
   width: 332px;
-  top: 46px;
+  top: 18px;
   right: -120px;
-  font-size: 50px;
+  font-size: 40px;
+  height: 480px;
   font-family: Microsoft YaHei;
   color: rgba(0, 0, 0, 1);
-  line-height: 57px;
-  border: 1px solid #f5c134;
+  line-height: 40px;
   display: none;
   z-index: 999;
 }
+.dropdown li:nth-of-type(1) {
+  padding-top: 78px;
+}
 .dropdown li {
   cursor: pointer;
-  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid transparent;
   transition: all 0.3s;
   margin: 0 47px 28px 47px;
 }
