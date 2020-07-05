@@ -4,17 +4,23 @@
       <img src="../assets/image/logo.png" alt />
       <ul>
         <li
+
           v-for="(item,index) in navList"
           :key="index"
           @click="changeNav(item,index,$event)"
-          :class="[hedeid==index?'header-active':'']"
-        >{{item.name}}</li>
-        <li class="li4" @click="handli4" ref="li4">
-          <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
+          :class="[{li4:item.name==='建房百科'},[[hedeid==index?'header-active':''],]]"
+        >
+          {{item.name}}
           <div class="dropdown">
             <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
           </div>
         </li>
+        <!-- <li class="li4" @click="handli4" ref="li4">
+          <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
+          <div class="dropdown">
+            <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
+          </div>
+        </li>-->
 
         <!-- <el-dropdown @command="handleCommand">
           <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
@@ -41,8 +47,9 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
+      li4: 'li4',
       navList: [
         {
           name: '首页',
@@ -63,12 +70,12 @@ export default {
           name: '私人订制',
           url: '/PersonalTtailor',
           code: 'Ttailor'
+        },
+        {
+          name: '建房百科',
+          url: '/BuildingEncyclopedia',
+          code: 'Encyclopedia'
         }
-        // {
-        //   name: '建房百科',
-        //   url: '/BuildingEncyclopedia',
-        //   code: 'Encyclopedia'
-        // }
       ],
       meau: [
         '建房百科',
@@ -78,56 +85,61 @@ export default {
         '风水百科',
         '建房日志'
       ],
-      navid: 0 //当前选中的导航
+      navid: 0 // 当前选中的导航
     }
   },
   computed: mapState({
     hedeid: state => state.hedeid
   }),
-  created() {},
-  mounted() {
-    console.log(location.pathname)
-    
-    
+  created () {},
+  mounted () {
+    let li4 = document.querySelector('nav>ul>li:nth-of-type(5)')
+    li4.setAttribute('class', 'li4')
+    console.log(li4)
   },
   methods: {
     // 点击导航栏
-    changeNav(nav, index, e) {
+    changeNav (nav, index) {
       // this.navActiveCode = nav.code
-      localStorage.setItem('idnum', index) //保存下标
+      localStorage.setItem('idnum', index) // 保存下标
       this.$store.commit('headnav', parseInt(localStorage.idnum))
       this.$router.push({ path: nav.url })
     },
-    handsearch() {
-      //搜索页面
+    handsearch () {
+      // 搜索页面
       this.$router.push({
         path: '/search'
       })
     },
-    handitem(idx) {
-      //跳转建房百科
+    handitem (idx) {
+      // 跳转建房百科
       this.$router.push({
         path: '/BuildingEncyclopedia'
       })
       this.$store.commit('meauidfn', idx)
     },
 
-    handli4() {
-      let li4 = this.$refs.li4
-      
-      let active=document.querySelector('.header-active')
+    handli4 () {
+      let active = document.querySelector('.header-active')
       console.log(active)
-    if(location.pathname=='/BuildingEncyclopedia'){
-      console.log(1)
-      document.querySelector('.header-active').removeAttribute('header-active')
-    }
-      
+      if (location.pathname === '/BuildingEncyclopedia') {
+        console.log(1)
+        document
+          .querySelector('.header-active')
+          .removeAttribute('header-active')
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+/* nav li:nth-of-type(5){
+  position: relative;
+}
+nav li:nth-of-type(5){
+  display: block;
+} */
 .li4 {
   position: relative;
 }
@@ -140,7 +152,7 @@ export default {
   background-size: 100% 100%;
   width: 332px;
   top: 18px;
-  right: -120px;
+  right: -70px;
   font-size: 40px;
   height: 480px;
   font-family: Microsoft YaHei;
@@ -180,6 +192,7 @@ nav ul {
   justify-content: space-between;
   margin: 0 0 0 30px;
   font-size: 24px;
+  position: relative;
 }
 nav img {
   margin-top: 14px;
