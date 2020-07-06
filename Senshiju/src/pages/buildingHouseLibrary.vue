@@ -20,57 +20,13 @@
         </div>
         <!--  -->
         <div class="build">
-          <div class="bulid_child">
-            <span class="style">风格</span>
+          <div class="bulid_child" v-for="(v,k) in filterList[0].list" :key='k'>
+            <span class="style">{{v.title}}</span>
             <div class="line_h">
-              <li
-                v-for="(item,index) in arr"
-                :key="index"
-                :class="{'bg_active':item.selected}"
-                @click="handselted(item)"
-              >{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bulid_child">
-            <span class="style">面宽</span>
-            <div class="line_h">
-              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bulid_child">
-            <span class="style">进深</span>
-            <div class="line_h">
-              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bulid_child">
-            <span class="style">占地</span>
-            <div class="line_h">
-              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bulid_child">
-            <span class="style">层数</span>
-            <div class="line_h">
-              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bulid_child">
-            <span class="style">造价</span>
-            <div class="line_h">
-              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bulid_child">
-            <span class="style">风格</span>
-            <div class="line_h">
-              <li v-for="(item,index) in arr" :key="index">{{item.text}}</li>
-            </div>
-          </div>
-          <div class="bild_b">
-            <div class="font20 theme">已选条件</div>
-            <div class="fl_center">
-              <span class="iconfont icon-delete deleta"></span>清空
+              <li :class="{'bg_active': val.active}"
+               @click="tabClick(val,key,k)"
+              v-for="(val, key) in v.childer" :key='key'
+              >{{val.value}}</li>
             </div>
           </div>
         </div>
@@ -142,6 +98,8 @@
 <script>
 import newdesign from '@/components/newdesign.vue'
 import newinfo from '@/components/newinfo.vue'
+import demo2 from '../assets/comm/demo1'
+import demo3 from '../assets/comm/comm'
 export default {
   components: {
     newdesign,
@@ -149,32 +107,15 @@ export default {
   },
   data() {
     return {
-      arr: [
-        {
-          text: '全部',
-          selected: false
-        },
-        {
-          text: '现代',
-          selected: false
-        },
-        {
-          text: '欧式',
-          selected: false
-        },
-        {
-          text: '中式合院',
-          selected: false
-        },
-        {
-          text: '新中式',
-          selected: false
-        },
-        {
-          text: '微派',
-          selected: false
-        }
-      ],
+      isShow: false,
+      viewList: [],
+			viewTime: {
+				time: true,
+				msg: '数据拼命加载中...'
+			},
+			param: {},
+			filterList: [],
+			filterSelData: [], // 过滤选中的数据
       arr1: [
         {
           img: require('../../static/jf.png'),
@@ -191,25 +132,55 @@ export default {
       ]
     }
   },
+  created(){
+    // 请求数据
+
+    this.viewList = [...demo2]
+    this.filterList = [...demo3]
+    console.log( this.filterList[0].list,)
+  },
   methods: {
-    handselted(item) {
-      // 选中当前
-      // eslint-disable-next-line valid-typeof
-      if (typeof item.selected === 'undefind') {
-        this.$set(item, 'selected', true)
-      } else {
-        item.selected = !item.selected
-      }
-    },
-    handdetail() {
+    handdetail() {//跳转产品详情
       this.$router.push({
         path: '/productDetail'
       })
-    }
+    },
+    // 获取筛选组件选中的值
+		getFilterSelData(data) {
+			this.filterSelData = data
+    },
+    // 模拟延时显示数据视图
+		setTime(startTime, endTime, bool) {
+			setTimeout(() => {
+				this.viewTime.time = bool
+				setTimeout(() => {
+					this.viewTime.time = false
+				}, endTime)
+			}, startTime)
+    },
+    // 点击单个val
+    tabClick(data, key, k) {
+   					// 添加 active ==> true 显示 `active样式`
+   					this.filterList[0].list[k].childer.map(item => {
+   						item.active = false
+   					})
+   					this.filterList[0].list[k].childer[key].active = true
+
+   					// 选中的数据
+   					let newArray = []
+   					this.filterList[0].list.map(data => {
+   						data.childer.map(item => {
+   							if (item.active == true) {
+   								newArray.push(item)
+   							}
+   						})
+   					})
+   				}
   },
   mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
+    this.setTime(1000, 0, false)
   }
 }
 </script>
@@ -324,7 +295,7 @@ export default {
   transition: all 0.3s;
 }
 .drawing:hover {
-  box-shadow: 10px 10px 5px #e2e1e1;
+  box-shadow: 10px 10px 5px #e2e1e1,10px -10px 5px #e2e1e1,-10px 10px 5px #e2e1e1,-10px -10px 5px #e2e1e1 ;
 }
 .drawing img {
   width: 284px;

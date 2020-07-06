@@ -69,8 +69,10 @@
                 </div>
               </div>
               <div class="fl_ar technological">
-                <div v-for="(item,index) in design" :key='index' class="technological_design fl_ar">
-                  <div class="borderf fl_center"><img :src="item.img" alt /></div>
+                <div v-for="(item,index) in design" :key="index" class="technological_design fl_ar">
+                  <div class="borderf fl_center">
+                    <img :src="item.img" alt />
+                  </div>
                   <span>{{item.name}}</span>
                 </div>
               </div>
@@ -165,7 +167,24 @@
     </div>
     <!-- 视频实例 -->
     <div class="video">
-      <video src=""></video>
+      <div class="hot bgcolorf6 vdeodiv">
+        <h4 class="font40">
+          一栋别墅
+          <span class="theme">·一处景</span>
+        </h4>
+        <p class="colord2 vdeop">回家建房，就找村墅人家</p>
+      </div>
+      <video
+        src="../assets/xc.mp4"
+        controls
+        poster="../assets/image/vdeo.png"
+        width="1200"
+        height="676"
+        preload="none"
+      ></video>
+      <div class="vedoimg" @click="handplay">
+        <img src="../assets/image/player.png" alt v-if="vdeoimg" />
+      </div>
     </div>
     <!-- 别墅资讯 -->
     <div class="hot bgcolorf6">
@@ -224,8 +243,12 @@
       </transition>
       <!--  -->
       <div class="btn">
-        <button @click="handprve"><span class="iconfont icon-jiantou"></span></button>
-        <button @click="handnext"><span class="iconfont icon-arrow_right"></span></button>
+        <button @click="handprve">
+          <span class="iconfont icon-jiantou"></span>
+        </button>
+        <button @click="handnext">
+          <span class="iconfont icon-arrow_right"></span>
+        </button>
       </div>
     </div>
     <!-- 地图展示 -->
@@ -250,32 +273,32 @@
       <div class="mapshow">
         <div class="txt1">村墅人家覆盖265个大城市，服务全国1030个地区</div>
         <div class="txt2">真实客户案例2000+</div>
-        <img src="../assets/image/map.png" alt="">
+        <img src="../assets/image/map.png" alt />
       </div>
     </div>
     <!-- 首页联系客服 -->
-      <div class="fixed">
-          <div>
-            <img src="../assets/image/fixed/kf.png" alt="">
-            <span>联系客服</span>
-          </div>
-          <div>
-            <img src="../assets/image/fixed/erwm.png" alt="">
-            <span>二维码</span>
-          </div>
-          <div @click="handorder">
-            <img src="../assets/image/fixed/ddan.png" alt="">
-            <span>订单</span>
-          </div>
-          <div>
-            <img src="../assets/image/fixed/gwuc.png" alt="">
-            <span>购物车</span>
-          </div>
-          <div @click="handtop"> 
-            <img src="../assets/image/fixed/fhdb.png" alt="">
-            <span>返回顶部</span>
-          </div>
+    <div class="fixed">
+      <div>
+        <img src="../assets/image/fixed/kf.png" alt />
+        <span>联系客服</span>
       </div>
+      <div>
+        <img src="../assets/image/fixed/erwm.png" alt />
+        <span>二维码</span>
+      </div>
+      <div @click="handorder">
+        <img src="../assets/image/fixed/ddan.png" alt />
+        <span>订单</span>
+      </div>
+      <div>
+        <img src="../assets/image/fixed/gwuc.png" alt />
+        <span>购物车</span>
+      </div>
+      <div @click="handtop">
+        <img src="../assets/image/fixed/fhdb.png" alt />
+        <span>返回顶部</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -284,11 +307,10 @@ import recommendData from '../product.js'
 import hotlist from '@/components/hostList.vue'
 import { mapState } from 'vuex'
 export default {
-  
   components: {
     hotlist
   },
-  data () {
+  data() {
     return {
       swiperOption: {
         pagination: {
@@ -405,75 +427,93 @@ export default {
           img: require('../assets/image/shejishi/sg.png'),
           name: '施工指导'
         }
-      ]
+      ],
+      vdeoimg: true
     }
   },
   watch: {},
   computed: {
     hotlist: {
-      get: function () {
+      get: function() {
         let list = [...this.hotdata]
         list = list.filter(item => item.type === this.type)
         return list
       },
-      set: function () {}
+      set: function() {}
     }
   },
-  created () {
+  created() {
     this.morelist = this.hotdata.slice(0, 3)
     this.list1 = this.list.slice(0, 1)
   },
   methods: {
-    handhotnav (nav) {
+    handhotnav(nav) {
       let list = [...this.hotdata] // 拷贝原数组
       list = list.filter(item => item.type === nav)
       this.type = nav
       this.hotlist = list
     },
-    handInfor (nav) {
+    handInfor(nav) {
       let list = [...this.hotdata] // 拷贝原数组
       list = list.filter(item => item.type === nav)
       this.typeinfor = nav
       this.hotlist = list
     },
-    handmore () {
+    handmore() {
       // 每点击一次增加一条内容
       this.idx++
       let list = [...this.morelist]
       this.morelist = [...list, ...this.hotdata.slice(this.idx++, this.idx + 3)]
     },
-    handprve () {
+    handprve() {
       let first = this.list.shift()
       this.list.push(first)
       this.list1 = this.list.slice(0, 1)
     },
-    handnext () {
+    handnext() {
       console.log(1)
       let last = this.list.pop()
       this.list.unshift(last)
       this.list1 = this.list.slice(0, 1)
     },
     // 设计师了解详情
-    handLearn () {
+    handLearn() {
       this.$router.push({
         path: '/teamDetail'
       })
     },
-    handtop(){ //返回顶部
-       window.scrollTo(0, 0)
+    handtop() {
+      //返回顶部
+      window.scrollTo(0, 0)
     },
-    handprodetail(item){ //跳转产品详情
+    handprodetail(item) {
+      //跳转产品详情
       this.$router.push({
         path: '/productDetail'
       })
     },
-    handorder(){ //跳转订单
+    handorder() {
+      //跳转订单
       this.$router.push({
         path: '/order'
       })
+    },
+    handplay() {
+      //单击播放暂停按钮控制视频的播放和暂停
+      let vdeoimg = document.querySelector('.vedoimg>img')
+      let video = document.querySelector('video')
+      if (video.paused) {
+        video.play()
+        this.vdeoimg = false
+        console.log(1)
+      } else {
+        video.pause()
+        this.vdeoimg = true
+        console.log(2)
+      }
     }
   },
-  mounted () {
+  mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
   }
@@ -481,5 +521,30 @@ export default {
 </script>
 
 <style scoped>
-@import '../assets/index.css'
+@import '../assets/index.css';
+.vdeodiv {
+  padding-bottom: 0;
+}
+.vdeop {
+  margin: 12px auto;
+}
+.video {
+  position: relative;
+}
+.video .vedoimg {
+  height: 676px;
+  position: absolute;
+  top: 134px;
+  left: 0;
+  width: 1200px;
+}
+.video .vedoimg img {
+  width: 92px;
+  height: 92px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -46px;
+  margin-left: -46px;
+}
 </style>

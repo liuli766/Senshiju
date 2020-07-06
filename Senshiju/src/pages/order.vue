@@ -23,17 +23,8 @@
         <div class="centerbox">
           <div class="usercenter">
             <h6>用户中心</h6>
-            <div>
-              <i class="el-icon-tickets"></i>我的订单
-            </div>
-            <div>
-              <i class="el-icon-view"></i>浏览记录
-            </div>
-            <div>
-              <i class="el-icon-location-outline"></i>收货地址
-            </div>
-            <div>
-              <i class="el-icon-user"></i>个人资料
+            <div v-for="(item,index) in chosedlist" :key="index" :class="{active:chosed==index}" @click="hanchosed(index)">
+              <span v-html="item.i"></span>{{item.name}}
             </div>
           </div>
           <div class="kfcenter">
@@ -54,35 +45,26 @@
         </div>
 
         <!-- 订单列表 -->
-        <div class="orderlist">
+        <div class="orderlist" v-show='chosed==0'>
           <h6>订单列表</h6>
           <div class="ordernav">
-            <div>
-              <span>编号</span>
-              <div>123</div>
-            </div>
-            <div>
-              <span>商品</span>
-              <div>123</div>
-            </div>
-            <div>
-              <span>价格</span>
-              <div>123</div>
-            </div>
-            <div>
-              <span>地址</span>
-              <div>123</div>
-            </div>
-            <div>
-              <span>时间</span>
-              <div>123</div>
-            </div>
-            <div>
-              <span>状态</span>
-              <div>123</div>
-            </div>
+            <span v-for="(item,index) in ordernavlist" :key="index">{{item}}</span>
+          </div>
+          <div v-for="(item,i) in ordercotentlist" :key="'1'+i" class="ordercont fl_ar">
+            <span>{{item.bh}}</span>
+            <span>{{item.sp}}</span>
+            <span>{{item.price}}</span>
+            <span>{{item.address}}</span>
+            <span>{{item.time}}</span>
+            <span>{{item.statue}}</span>
           </div>
         </div>
+        <!-- 浏览记录 -->
+        <div></div>
+        <!-- 收获地址 -->
+        <div></div>
+        <!-- 个人资料 -->
+        <div></div>
       </div>
     </main>
   </div>
@@ -93,12 +75,62 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
+      ordernavlist: ['编号', '商品', '价格', '地址', '时间', '状态'],
+      chosed:0,
+      chosedlist:[
+        {
+         i:'<i class="el-icon-tickets"></i>',
+          name:'我的订单'
+        },
+        {
+         i:'<i class="el-icon-view"></i>',
+         name:'浏览记录'
+        },
+        {
+         i: '<i class="el-icon-location-outline"></i>',
+         name:'收货地址'
+        },
+        {
+         i: '<i class="el-icon-user"></i>',
+         name:'个人资料'
+        }
+      ],
+      ordercotentlist: [
+        {
+          bh: 123,
+          sp: '不是举报',
+          price: 23,
+          address: '重庆',
+          time: '18:00',
+          statue: '好'
+        },
+        {
+          bh: 123,
+          sp: '不是举报',
+          price: 23,
+          address: '重庆',
+          time: '18:00',
+          statue: '好'
+        }
+      ]
     }
-  }
+  },
+  methods: {
+    hanchosed(e){
+      this.chosed=e
+    }
+  },
 }
 </script>
 
 <style scoped>
+.usercenter > div.active{
+  color: #ffc92f;
+}
+.usercenter span{
+  margin-right: 22px;
+  font-size: 27px;
+}
 .yellobg {
   height: 184px;
   background: rgba(255, 201, 47, 1);
@@ -220,6 +252,14 @@ nav {
   height: 49px;
   line-height: 49px;
 }
+.ordercont {
+  background: #fff;
+}
+.ordercont>span{
+  display: block;
+  width: 120px;
+  border-right: 1px solid #f5f5f5;
+}
 .centerbox {
   margin-right: 16px;
 }
@@ -232,13 +272,15 @@ nav {
   background: #fff;
   display: flex;
   justify-content: space-around;
-  padding: 16px 0;
+  /* padding: 16px 0; */
 }
-.ordernav > div {
-  padding: 0 40px;
+.ordernav>span{
+  display: block;
+  width: 120px;
   border-right: 1px solid #f5f5f5;
 }
 .ordernav > div:nth-of-type(4) {
   padding: 0 96px;
 }
+
 </style>

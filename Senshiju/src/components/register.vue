@@ -21,19 +21,27 @@
           >{{item}}</span>
         </div>
         <div>
-          <input type="text" class="input" placeholder="请输入手机号" v-model="phone" />
-          <input type="password" class="input" placeholder="请输入密码" v-model="password" />
+          <p id="red" v-if="p1">请输入手机号</p>
+          <p id="red" v-if="p4">请输入正确的手机</p>
+          <input type="text" class="input" placeholder="请输入手机号" v-model="phone" @change="inp1"/>
+           <p id="red" v-if="p2">请输入密码</p>
+          <input type="password" class="input" placeholder="请输入密码" v-model="password" @change="inp2"/>
           <div class="rel">
-            <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" />
-            <div class="pos">
-              <div class="line poniter"></div>获取验证码
+             <p id="red" v-if="p3">请输入验证码</p>
+            <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" @change="inp3" />
+            <div class="pos poniter" @click="time" v-if="tmeValue==60">
+              <div class="line"></div>获取验证码
+            </div>
+            <div class="pos poniter" @click="time" v-else>
+              <div class="line"></div>
+              {{ tmeValue }} s后获取
             </div>
           </div>
           <!-- <el-input class="input" placeholder="请输入手机号" v-model="phone" clearable></el-input>
 
           <el-input class="pass input" placeholder="请输入密码" v-model="password" show-password></el-input>-->
         </div>
-        <button>登录|注册</button>
+        <button @click="handsubmit">注册</button>
         <p>未注册的手机号验证后将自动登录 登录后即表示同意《服务协议》</p>
       </div>
     </div>
@@ -49,7 +57,13 @@ export default {
       password: '',
       code: '',
       navlist: ['短信登录/注册', '密码登录'],
-      navid: 0
+      navid: 0,
+      tmeValue: 60,
+      flag: 0,
+      p1:false,
+      p2:false,
+      p3:false,
+      p4:false
     }
   },
   computed: mapState({
@@ -68,12 +82,80 @@ export default {
           path: '/login'
         })
       }
+    },
+    getCode() {
+      //获取验证码
+    },
+    time() {
+      //倒计时
+      console.log(1)
+      this.tmeValue = this.tmeValue - 1
+      this.flag = 1
+      if (this.tmeValue <= 0) {
+        this.tmeValue = 60
+        this.flag = 0
+        return ''
+      } else {
+        setTimeout(() => {
+          this.time()
+        }, 1000)
+      }
+    },
+    inp1(){ //手机验证
+      console.log(2)
+      if(this.phone==''){
+        this.p1=true
+        return false
+      }else{
+         this.p1=false
+      }
+    },
+    inp2(){ //密码不能为空
+      if(this.password==''){
+        this.p2=true
+        return false
+      }else{
+        this.p2=false
+      }
+    },
+    inp3(){ //验证码不能为空
+      if(this.code==''){
+        this.p3=true
+        return false
+      }else{
+         this.p3=false
+      }
+    },
+    handsubmit(){
+      if(this.phone==''){
+        this.p1=true
+        return false
+      }
+      if(this.password==''){
+        this.p2=true
+        return false
+      }
+      if(this.code==''){
+        this.p3=true
+        return false
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+#red {
+  min-height: 14px;
+  height: auto;
+  _height: 14px;
+  padding: 8px 6px 2px;
+  line-height: 14px;
+  font-size: 12px;
+  color: #fc4343;
+  text-align: left;
+  margin: 0;
+}
 i {
   border: 1px solid #eee;
   padding: 4px;
@@ -88,7 +170,7 @@ i:hover {
   margin: 40px auto;
   box-shadow: 1px 2px 2px #bfbfbf, 1px -1px 2px #bfbfbf, -1px 1px 2px #bfbfbf,
     -1px -1px 2px #bfbfbf;
-    height:680px;
+  height: 680px;
 }
 .register_logo {
   display: flex;
@@ -204,6 +286,7 @@ button {
   border: 0;
   margin-top: 54px;
   cursor: pointer;
+  outline: none;
 }
 .navactive {
   color: #ffae26;

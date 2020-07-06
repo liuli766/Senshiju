@@ -12,7 +12,7 @@
         </nav>
         <!-- 内容 -->
         <div v-show="meauid==0 || meaunum==0">
-          <div class="cont" v-for="(item,index) in countlist" :key="index">
+          <div class="cont poniter" v-for="(item,index) in countlist" :key="index" @click="handarticdetail(item)">
             <img :src="item.img" alt />
             <div>
               <h6>{{item.h6}}</h6>
@@ -160,23 +160,23 @@ export default {
       },
       options: [
         {
-          value: '选项1',
+          value: '1',
           label: '黄金糕'
         },
         {
-          value: '选项2',
+          value: '2',
           label: '双皮奶'
         },
         {
-          value: '选项3',
+          value: '3',
           label: '蚵仔煎'
         },
         {
-          value: '选项4',
+          value: '4',
           label: '龙须面'
         },
         {
-          value: '选项5',
+          value: '5',
           label: '北京烤鸭'
         }
       ],
@@ -308,6 +308,12 @@ export default {
     handchange(label) {
       //层次选择
       console.log(label)
+    },
+    handarticdetail(item){ //跳转文章详情
+      this.$router.push({
+        path: '/articDetail',
+        query:item
+      })
     }
   },
   mounted() {

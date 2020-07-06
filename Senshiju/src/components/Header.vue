@@ -4,7 +4,7 @@
       <img src="../assets/image/logo.png" alt />
       <ul>
         <li
-
+          class="poniter"
           v-for="(item,index) in navList"
           :key="index"
           @click="changeNav(item,index,$event)"
@@ -15,12 +15,6 @@
             <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
           </div>
         </li>
-        <!-- <li class="li4" @click="handli4" ref="li4">
-          <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
-          <div class="dropdown">
-            <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
-          </div>
-        </li>-->
 
         <!-- <el-dropdown @command="handleCommand">
           <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
@@ -39,6 +33,7 @@
       </div>
       <div class="serch">
         <input type="text" placeholder="请输入关键词" @click="handsearch" />
+        <img src="../assets/image/fixed/serch.png" alt class="serchimg" />
       </div>
     </nav>
   </div>
@@ -47,7 +42,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  data () {
+  data() {
     return {
       li4: 'li4',
       navList: [
@@ -91,55 +86,42 @@ export default {
   computed: mapState({
     hedeid: state => state.hedeid
   }),
-  created () {},
-  mounted () {
-    let li4 = document.querySelector('nav>ul>li:nth-of-type(5)')
-    li4.setAttribute('class', 'li4')
-    console.log(li4)
+  watch:{
+  },
+  created() {
+  },
+  mounted() {
+    // let li4 = document.querySelector('nav>ul>li:nth-of-type(5)')
+    // li4.setAttribute('class', 'li4 header-active  poniter') //解决浏览器刷新nav建房百科样式会掉的问题
   },
   methods: {
     // 点击导航栏
-    changeNav (nav, index) {
-      // this.navActiveCode = nav.code
+    changeNav(nav, index) {
       localStorage.setItem('idnum', index) // 保存下标
       this.$store.commit('headnav', parseInt(localStorage.idnum))
       this.$router.push({ path: nav.url })
     },
-    handsearch () {
+    handsearch() {
       // 搜索页面
       this.$router.push({
         path: '/search'
       })
     },
-    handitem (idx) {
+    handitem(idx) {
       // 跳转建房百科
       this.$router.push({
         path: '/BuildingEncyclopedia'
       })
       this.$store.commit('meauidfn', idx)
-    },
-
-    handli4 () {
-      let active = document.querySelector('.header-active')
-      console.log(active)
-      if (location.pathname === '/BuildingEncyclopedia') {
-        console.log(1)
-        document
-          .querySelector('.header-active')
-          .removeAttribute('header-active')
-      }
     }
   }
 }
 </script>
 
 <style scoped>
-/* nav li:nth-of-type(5){
+nav ul li{
   position: relative;
 }
-nav li:nth-of-type(5){
-  display: block;
-} */
 .li4 {
   position: relative;
 }
@@ -151,7 +133,7 @@ nav li:nth-of-type(5){
   background: url('../assets/image/jfrz.png');
   background-size: 100% 100%;
   width: 332px;
-  top: 18px;
+  top: 25px;
   right: -70px;
   font-size: 40px;
   height: 480px;
@@ -199,6 +181,11 @@ nav img {
 }
 .serch {
   position: relative;
+}
+.serchimg {
+  position: absolute;
+  top: -8px;
+  right: 9px;
 }
 .serch input {
   box-sizing: border-box;

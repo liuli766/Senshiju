@@ -12,7 +12,8 @@ const routes = [
     path: '/',
     name: 'home',
     meta: {
-      title: '首页'
+      title: '首页',
+      requireAuth: true,// 判断是否需要登录
     },
     component: (resolve) => require(['@/pages/home'], resolve)
   },
@@ -95,6 +96,14 @@ const routes = [
       title: '订单列表'
     },
     component: (resolve) => require(['@/pages/order'], resolve)
+  },
+  {
+    path: '/articDetail',
+    name: 'articDetail',
+    meta: {
+      title: '文章详情'
+    },
+    component: (resolve) => require(['@/pages/articDetail'], resolve)
   }
 ]
 

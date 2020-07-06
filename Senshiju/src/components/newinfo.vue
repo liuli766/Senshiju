@@ -24,6 +24,7 @@ h6 {
   border-bottom: 2px solid #ffde87;
   margin: auto;
   margin-bottom: 22px;
+  text-align: center;
 }
 .info {
   position: relative;
