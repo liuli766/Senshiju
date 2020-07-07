@@ -13,7 +13,7 @@ const routes = [
     name: 'home',
     meta: {
       title: '首页',
-      requireAuth: true,// 判断是否需要登录
+      // requireAuth: true,// 判断是否需要登录
     },
     component: (resolve) => require(['@/pages/home'], resolve)
   },

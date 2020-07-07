@@ -20,12 +20,14 @@
         </div>
         <!--  -->
         <div class="build">
-          <div class="bulid_child" v-for="(v,k) in filterList[0].list" :key='k'>
+          <div class="bulid_child" v-for="(v,k) in filterList[0].list" :key="k">
             <span class="style">{{v.title}}</span>
             <div class="line_h">
-              <li :class="{'bg_active': val.active}"
-               @click="tabClick(val,key,k)"
-              v-for="(val, key) in v.childer" :key='key'
+              <li
+                :class="{'bg_active': val.active}"
+                @click="tabClick(val,key,k)"
+                v-for="(val, key) in v.childer"
+                :key="key"
               >{{val.value}}</li>
             </div>
           </div>
@@ -33,6 +35,13 @@
       </div>
       <!--  -->
       <div class="build_bg">
+        <div class="fl_be" style="height:50px">
+          <span  v-if="filterSelData===''">
+             已选条件：<span v-for="(item,index) in arr1" :key='index'>全部 </span>
+          </span>
+          
+         <span v-else> 已选条件：{{filterSelData}}</span><span>清空</span>
+        </div>
         <img src="../assets/image/bg.png" alt />
         <div class="build_fiflter">
           <span class="font24">别墅图纸共有套</span>
@@ -55,24 +64,12 @@
       </div>
       <!-- 图纸设计 -->
       <div class="drawing_box">
-        <div class="drawing poniter" v-for="(item,index) in arr1" :key="index" @click="handdetail">
-          <img :src="item.img" alt />
-          <p class="one-wrap">{{item.p}}</p>
-          <div class="bot">
-            <span>
-              占地面积：
-              <i>228m</i>
-            </span>
-            <span>
-              图纸编号：
-              <i>B203</i>
-            </span>
-          </div>
-        </div>
-      </div>
-      <!-- 图纸设计 -->
-      <div class="drawing_box">
-        <div class="drawing poniter" v-for="(item,index) in arr1" :key="index" @click="handdetail">
+        <div
+          class="drawing poniter"
+          v-for="(item,index) in newarr"
+          :key="index"
+          @click="handdetail"
+        >
           <img :src="item.img" alt />
           <p class="one-wrap">{{item.p}}</p>
           <div class="bot">
@@ -107,86 +104,85 @@ export default {
   },
   data() {
     return {
-      isShow: false,
-      viewList: [],
-			viewTime: {
-				time: true,
-				msg: '数据拼命加载中...'
-			},
-			param: {},
-			filterList: [],
-			filterSelData: [], // 过滤选中的数据
+      viewTime: {
+        time: true,
+        msg: '数据拼命加载中...'
+      },
+      filterList: [],
+      filterSelData: '', // 过滤选中的数据
+      newarr: [],
       arr1: [
         {
+          type: '现代',
           img: require('../../static/jf.png'),
           p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
         },
         {
+          type: '欧式',
           img: require('../../static/jf.png'),
           p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
         },
         {
+          type: '中式合院',
           img: require('../../static/jf.png'),
           p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
         }
       ]
     }
   },
-  created(){
+  created() {
     // 请求数据
-
     this.viewList = [...demo2]
     this.filterList = [...demo3]
-    console.log( this.filterList[0].list,)
+    console.log(this.filterList[0].list)
+    this.newarr = this.arr1
   },
   methods: {
-    handdetail() {//跳转产品详情
+    handdetail() {
+      //跳转产品详情
       this.$router.push({
         path: '/productDetail'
       })
     },
-    // 获取筛选组件选中的值
-		getFilterSelData(data) {
-			this.filterSelData = data
-    },
-    // 模拟延时显示数据视图
-		setTime(startTime, endTime, bool) {
-			setTimeout(() => {
-				this.viewTime.time = bool
-				setTimeout(() => {
-					this.viewTime.time = false
-				}, endTime)
-			}, startTime)
-    },
     // 点击单个val
     tabClick(data, key, k) {
-   					// 添加 active ==> true 显示 `active样式`
-   					this.filterList[0].list[k].childer.map(item => {
-   						item.active = false
-   					})
-   					this.filterList[0].list[k].childer[key].active = true
+      // 添加 active ==> true 显示 `active样式`
+      this.filterList[0].list[k].childer.map(item => {
+        item.active = false
+      })
+      this.filterList[0].list[k].childer[key].active = true
 
-   					// 选中的数据
-   					let newArray = []
-   					this.filterList[0].list.map(data => {
-   						data.childer.map(item => {
-   							if (item.active == true) {
-   								newArray.push(item)
-   							}
-   						})
-   					})
-   				}
+      // 选中的数据
+      let newArray = []
+      this.filterList[0].list.map(data => {
+        data.childer.map(item => {
+          if (item.active == true) {
+            newArray.push(item.value)
+          }
+        })
+      })
+      this.filterSelData = newArray
+
+      let list = [...this.arr1] // 拷贝原数组
+      list = list.filter(item => {
+        if (item.type) {
+          item.type === data
+          console.log(newArray, data)
+          this.newarr = list
+          return list
+        }
+      })
+    }
   },
   mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
-    this.setTime(1000, 0, false)
   }
 }
 </script>
 
 <style scoped>
-.buildhost{
+.buildhost {
   display: flex;
 }
 .content {
@@ -257,6 +253,7 @@ export default {
   padding: 6px 8px;
   margin-right: 22px;
   border-radius: 7px;
+  margin-bottom: 8px;
 }
 .build {
   margin: 0 auto;
@@ -283,9 +280,6 @@ export default {
   height: 60px;
   border-bottom: 1px solid #d2d2d2;
 }
-.build_bg img {
-  margin-top: 36px;
-}
 .theme.font18 span + span {
   margin-left: 50px;
 }
@@ -295,7 +289,8 @@ export default {
   transition: all 0.3s;
 }
 .drawing:hover {
-  box-shadow: 10px 10px 5px #e2e1e1,10px -10px 5px #e2e1e1,-10px 10px 5px #e2e1e1,-10px -10px 5px #e2e1e1 ;
+  box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
+    -10px 10px 5px #e2e1e1, -10px -10px 5px #e2e1e1;
 }
 .drawing img {
   width: 284px;
