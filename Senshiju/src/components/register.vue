@@ -23,9 +23,9 @@
         <div>
           <p id="red" v-if="p1">请输入手机号</p>
           <p id="red" v-if="p4">请输入正确的手机</p>
-          <input type="text" class="input" placeholder="请输入手机号" v-model="phone" @change="inp1"/>
+          <input type="text" class="input" placeholder="请输入手机号" v-model="userinfo.phone" @change="inp1"/>
            <p id="red" v-if="p2">请输入密码</p>
-          <input type="password" class="input" placeholder="请输入密码" v-model="password" @change="inp2"/>
+          <input type="password" class="input" placeholder="请输入密码" v-model="userinfo.password" @change="inp2"/>
           <div class="rel">
              <p id="red" v-if="p3">请输入验证码</p>
             <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" @change="inp3" />
@@ -53,8 +53,10 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      phone: '',
-      password: '',
+      userinfo: {
+        phone: '',
+        password: ''
+      }, 
       code: '',
       navlist: ['短信登录/注册', '密码登录'],
       navid: 0,
@@ -66,12 +68,32 @@ export default {
       p4:false
     }
   },
-  computed: mapState({
-    // 箭头函数可使代码更简练
-    // Login: state => state.Login,
-    // Register: state => state.Register
-  }),
+  computed: {
+    ...mapState({
+      token: state => state.home.token,
+      islogin: state => state.home.islogin
+    })
+  },
+  created() {
+    
+  },
   methods: {
+    onlogin() {
+      let params = this.userinfo
+      homeApi.loginUserNo(params).then((res) => {
+        let {data} = res
+        if (data.code === 200) {
+          let token = JSON.parse(localStorage.getItem('userinfo'))
+          if (token.username === params.username && token.password === params.password) {
+            this.$store.commit('getUser', params.username)
+            localStorage.setItem('islogin', 'login')
+            this.$toast('登录成功')
+            window.location.href = '/home'
+          }
+        }
+      }).catch(() => {
+      })
+    },
     handswich(idx) {
       if (idx == 0) {
         this.$router.push({

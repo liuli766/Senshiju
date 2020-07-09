@@ -122,11 +122,11 @@
         <h5>营业执照</h5>
         <p>您的安心，我们的放心</p>
         <div>
-          <div class>
-            <img src alt />
-            <img src alt />
+          <div class="permit">
+            <img src="../assets/image/4.png" alt style="margin-right:77px"/>
+            <img src="../assets/image/5.png" alt />
           </div>
-          <img src alt />
+          <img src="../assets/image/3.png" alt />
         </div>
       </div>
       <!-- 定制图纸展示 -->
@@ -153,10 +153,10 @@
         <h5>我们的口碑您来决定</h5>
         <p>为您与客户真实的聊天记录</p>
         <div>
-          <div class>
-            <img src alt />
-            <img src alt />
-            <img src alt />
+          <div class="mouth fl_be">
+            <img src="../assets/image/1.png" alt />
+            <img src="../assets/image/1.png" alt />
+            <img src="../assets/image/1.png" alt />
           </div>
         </div>
         <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
@@ -169,38 +169,6 @@
 export default {
   data() {
     return {
-      navList: [
-        {
-          name: '首页',
-          url: '/',
-          code: 'home'
-        },
-        {
-          name: '建房图库',
-          url: '/buildingHouseLibrary',
-          code: 'Library'
-        },
-        {
-          name: '设计团队',
-          url: '/DesignTteam',
-          code: 'Tteam'
-        },
-        {
-          name: '私人订制',
-          url: '/PersonalTtailor',
-          code: 'Ttailor'
-        },
-        {
-          name: '建房日志',
-          url: '/BuildingLog',
-          code: 'Log'
-        },
-        {
-          name: '建房百科',
-          url: '/BuildingEncyclopedia',
-          code: 'Encyclopedia'
-        }
-      ],
       navActiveCode: 'home',
       ruleForm: {
         area: '',
@@ -454,7 +422,7 @@ nav img {
 .show {
   background: #fff;
   padding: 40px 0;
-  /* margin-bottom: 49.2px; */
+  margin-bottom: 49.2px;
 }
 .teamsupport h5,
 .license h5,
@@ -528,5 +496,16 @@ nav img {
   color: rgba(1, 1, 1, 1);
   line-height: 40px;
   margin: auto;
+}
+.mouth {
+  margin-bottom: 40px;
+}
+.mouth img {
+  width: 364px;
+  height: 755px;
+}
+.permit img {
+  width: 464px;
+  height: 696px;
 }
 </style>

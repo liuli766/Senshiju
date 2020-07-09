@@ -14,7 +14,7 @@
     <main>
       <nav class="nav">
         <router-link to="/">首页</router-link>>
-        <router-link to="/">用户中心</router-link>>
+       <span>用户中心</span>>
         <router-link to="/order">我的订单</router-link>
       </nav>
       <!-- div -->

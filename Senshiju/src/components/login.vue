@@ -23,13 +23,13 @@
         <div>
           <p id="red" v-if="p1">请输入手机号</p>
           <p id="red" v-if="p4">请输入正确的手机</p>
-          <input type="text" class="input" placeholder="请输入手机号" v-model="phone" @change="inp1" />
+          <input type="text" class="input" placeholder="请输入手机号" v-model="userinfo.phone" @change="inp1" />
           <p id="red" v-if="p2">请输入密码</p>
           <input
             type="password"
             class="input"
             placeholder="请输入密码"
-            v-model="password"
+            v-model="userinfo.password"
             @change="inp2"
           />
           <!-- <el-input class="input" placeholder="请输入手机号" v-model="phone" clearable></el-input>
@@ -48,8 +48,10 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      phone: '',
-      password: '',
+      userinfo: {
+        phone: '',
+        password: ''
+      },
       navlist: ['短信登录/注册', '密码登录'],
       navid: 1,
       p1:false,
@@ -57,11 +59,17 @@ export default {
       p4:false
     }
   },
-  computed: mapState({
-    // // 箭头函数可使代码更简练
-    // Login: state => state.Login,
-    // Register: state => state.Register,
-  }),
+ computed: {
+    ...mapState({
+      token: state => state.home.token,
+      islogin: state => state.home.islogin
+    })
+  },
+  created() {
+    if (this.$route.params.islogin === 'loginout') {
+      this.$store.commit('getislogin', false)
+    }
+  },
   methods: {
     handswich(idx) {
       if (idx == 0) {

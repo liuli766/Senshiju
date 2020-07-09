@@ -1,5 +1,4 @@
 import axios from './http'
-import qs from 'qs';
 import base from './base'
 
 // /**

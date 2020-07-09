@@ -5,14 +5,32 @@ axios.defaults.timeout=5000;
 axios.defaults.headers.post['Content-Type']='application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.baseURL='http://locahost:8080';
 
+let loading //定义加载动画
+
+function startLoading() {
+    loading = Loading.service({
+        lock: true,
+        text: '加载中....',
+        background: 'rgba(0, 0, 0, 0.7)'
+    })
+}
+function endLoading() {
+    loading.close()
+}
+
 // 拦截器
 axios.interceptors.request.use(function (config) {
+    startLoading()
    if(config.method==='get'){
        config.data=JSON.stringify(config.data)
    }
    if(config.method==='post'){
        config.data=qs.stringify(config.data)
    }
+   //设置请求头
+   if (localStorage.eToken) {
+    confing.headers.Authorization = localStorage.eToken
+}
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -24,8 +42,10 @@ axios.interceptors.response.use(function (res) {
         Message.error(res.data.message)
         return Promise.reject(res)
     }
+    endLoading()
     return res;
 }, function (error) {
+    endLoading()
     const { status } = error.response
     if (status === 401) {
         Message.error('请重新登录')
