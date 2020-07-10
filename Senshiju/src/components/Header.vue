@@ -97,8 +97,11 @@ export default {
   methods: {
     // 点击导航栏
     changeNav(nav, index) {
-      localStorage.setItem('idnum', index) // 保存下标
-      this.$store.commit('headnav', parseInt(localStorage.idnum))
+      // localStorage.setItem('idnum', index) // 保存下标
+      document.cookie=index
+      console.log( document.cookie,localStorage.getItem('idnum'))
+      // this.$store.commit('headnav', parseInt(localStorage.idnum))
+      this.$store.commit('headnav', parseInt(document.cookie))
       this.$router.push({ path: nav.url })
     },
     handsearch() {

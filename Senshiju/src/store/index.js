@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     meauid: 0, //建房百科菜单选中,
-    hedeid: localStorage.idnum,//导航选中
+    hedeid:document.cookie,//导航选中
     link:'',
     token: '',
     isLogin: localStorage.getItem('islogin'), //登录状态
