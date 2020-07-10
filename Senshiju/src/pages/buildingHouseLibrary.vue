@@ -36,11 +36,13 @@
       <!--  -->
       <div class="build_bg">
         <div class="fl_be" style="height:50px">
-          <span  v-if="filterSelData===''">
-             已选条件：<span v-for="(item,index) in arr1" :key='index'>全部 </span>
+          <span v-if="filterSelData===''">
+            已选条件：
+            <span v-for="(item,index) in arr1" :key="index">全部</span>
           </span>
-          
-         <span v-else> 已选条件：{{filterSelData}}</span><span>清空</span>
+
+          <span v-else>已选条件：{{filterSelData}}</span>
+          <span>清空</span>
         </div>
         <img src="../assets/image/bg.png" alt />
         <div class="build_fiflter">
@@ -146,6 +148,7 @@ export default {
     },
     // 点击单个val
     tabClick(data, key, k) {
+      console.log(data, key, k)
       // 添加 active ==> true 显示 `active样式`
       this.filterList[0].list[k].childer.map(item => {
         item.active = false
@@ -164,14 +167,11 @@ export default {
       this.filterSelData = newArray
 
       let list = [...this.arr1] // 拷贝原数组
-      list = list.filter(item => {
-        if (item.type) {
-          item.type === data
-          console.log(newArray, data)
-          this.newarr = list
-          return list
-        }
-      })
+      
+      list = list.filter(item => item.type === data.value)
+      this.newarr = list
+      return list
+     
     }
   },
   mounted() {

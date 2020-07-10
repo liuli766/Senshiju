@@ -57,7 +57,8 @@ h6{
   margin-bottom: 20px;
 }
 .drawing:hover {
-  box-shadow: 10px 10px 5px #e2e1e1;
+  box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
+    -10px 10px 5px #e2e1e1, -10px -10px 5px #e2e1e1;
 }
 .drawing img {
   width:269px;
