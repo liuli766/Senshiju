@@ -104,6 +104,22 @@ const routes = [
       title: '文章详情'
     },
     component: (resolve) => require(['@/pages/articDetail'], resolve)
+  },
+  {
+    path: '/quikOrder',
+    name: 'quikOrder',
+    meta: {
+      title: '快速订购'
+    },
+    component: (resolve) => require(['@/pages/quikOrder'], resolve)
+  },
+  {
+    path: '/pay',
+    name: 'pay',
+    meta: {
+      title: '支付页面'
+    },
+    component: (resolve) => require(['@/pages/pay'], resolve)
   }
 ]
 

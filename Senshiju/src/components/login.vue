@@ -84,8 +84,7 @@ export default {
     },
     inp1() {
       //手机验证
-      console.log(2)
-      if (this.phone == '') {
+      if (this.userinfo.phone == '') {
         this.p1 = true
         return false
       } else {
@@ -94,7 +93,8 @@ export default {
     },
     inp2() {
       //密码不能为空
-      if (this.password == '') {
+      console.log(2)
+      if (this.userinfo.password == '') {
         this.p2 = true
         return false
       } else {
@@ -102,11 +102,11 @@ export default {
       }
     },
     handsubmit() {
-      if (this.phone == '') {
+      if (this.userinfo.phone == '') {
         this.p1 = true
         return false
       }
-      if (this.password == '') {
+      if (this.userinfo.password == '') {        
         this.p2 = true
         return false
       }

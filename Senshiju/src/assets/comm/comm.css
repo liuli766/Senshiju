@@ -18,7 +18,7 @@
 .video,
 .userintro,
 .nav,
-.order {
+.order,.quikorder {
   width: 1200px;
   margin: 0 auto;
 }
@@ -125,7 +125,9 @@
   display: flex;
   align-items: center;
 }
-
+.flx{
+  display: flex;
+}
 input::-webkit-input-placeholder {
   color: #fff;
 }

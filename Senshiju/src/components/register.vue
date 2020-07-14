@@ -26,8 +26,8 @@
           <input type="text" class="input" placeholder="请输入手机号" v-model="userinfo.phone" @change="inp1"/>
            <p id="red" v-if="p2">请输入密码</p>
           <input type="password" class="input" placeholder="请输入密码" v-model="userinfo.password" @change="inp2"/>
-          <div class="rel">
-             <p id="red" v-if="p3">请输入验证码</p>
+          <p id="red" v-if="p3">请输入验证码</p>
+          <div class="rel">   
             <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" @change="inp3" />
             <div class="pos poniter" @click="time" v-if="tmeValue==60">
               <div class="line"></div>获取验证码
@@ -125,7 +125,7 @@ export default {
     },
     inp1(){ //手机验证
       console.log(2)
-      if(this.phone==''){
+      if(this.userinfo.phone==''){
         this.p1=true
         return false
       }else{
@@ -133,7 +133,7 @@ export default {
       }
     },
     inp2(){ //密码不能为空
-      if(this.password==''){
+      if(this.userinfo.password==''){
         this.p2=true
         return false
       }else{
@@ -149,11 +149,11 @@ export default {
       }
     },
     handsubmit(){
-      if(this.phone==''){
+      if(this.userinfo.phone==''){
         this.p1=true
         return false
       }
-      if(this.password==''){
+      if(this.userinfo.password==''){
         this.p2=true
         return false
       }
