@@ -14,7 +14,7 @@
     <main>
       <nav class="nav">
         <router-link to="/">首页</router-link>>
-       <span>用户中心</span>>
+        <span>用户中心</span>>
         <router-link to="/order">我的订单</router-link>
       </nav>
       <!-- div -->
@@ -23,8 +23,14 @@
         <div class="centerbox">
           <div class="usercenter">
             <h6>用户中心</h6>
-            <div v-for="(item,index) in chosedlist" :key="index" :class="{active:chosed==index}" @click="hanchosed(index)">
-              <span v-html="item.i"></span>{{item.name}}
+            <div
+              v-for="(item,index) in chosedlist"
+              :key="index"
+              :class="{active:chosed==index}"
+              @click="hanchosed(index)"
+            >
+              <span v-html="item.i"></span>
+              {{item.name}}
             </div>
           </div>
           <div class="kfcenter">
@@ -45,7 +51,7 @@
         </div>
 
         <!-- 订单列表 -->
-        <div class="orderlist" v-show='chosed==0'>
+        <div class="orderlist" v-show="chosed==0">
           <h6>订单列表</h6>
           <div class="ordernav">
             <span v-for="(item,index) in ordernavlist" :key="index">{{item}}</span>
@@ -59,12 +65,114 @@
             <span>{{item.statue}}</span>
           </div>
         </div>
-        <!-- 浏览记录 -->
-        <div></div>
-        <!-- 收获地址 -->
-        <div></div>
         <!-- 个人资料 -->
-        <div></div>
+        <div v-show="chosed==1" class="orderlist">
+          <h6>个人信息</h6>
+          <div class="personinfo">
+            <div class="fl_be">
+              <span>头像</span>
+              <div>
+                <!-- <img src="../assets/image/1.png" alt /> -->
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+            <div class="fl_be">
+              <span>昵称</span>
+              <div>
+                <span>某某某</span>
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+            <div class="fl_be">
+              <span>修改手机号</span>
+              <div>
+                <span>已绑定：151****7474</span>
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+            <button>退出登录</button>
+          </div>
+        </div>
+        <!-- 收获地址 -->
+        <div v-show="chosed==2" class="orderlist">
+          <h6>收货地址</h6>
+          <div class="address">
+            <el-form status-icon ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+              <el-form-item label="地区选择：">
+                <div class="fl_be">
+                  <select v-model="prov">
+                    <option
+                      :value="item.text ||''"
+                      v-for="(item,pro) in provunce"
+                      :key="pro"
+                    >{{item.text||''}}</option>
+                  </select>
+                  <select v-model="city">
+                    <option
+                      :value="item.text||''"
+                      v-for="(item,cid) in cityArr"
+                      :key="cid"
+                    >{{item.text|| ''}}</option>
+                  </select>
+                  <select>
+                    <option
+                      :value="item.text||''"
+                      v-for="(item,pro) in districtArr"
+                      :key="pro"
+                    >{{item.text||""}}</option>
+                  </select>
+                </div>
+              </el-form-item>
+              <el-form-item label="详细地址：">
+                <el-input type="textarea"></el-input>
+              </el-form-item>
+              <el-form-item label="收货人姓名：">
+                <el-input type="text"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号码：">
+                <el-input type="text"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button class="btn" @click="submitForm('ruleForm2')">提交</el-button>
+              </el-form-item>
+            </el-form>
+            <div>
+              <div class="ordernav addr">
+                <span>收货人</span>
+                <span>省市区</span>
+                <span>详细地址</span>
+                <span>手机/电话</span>
+                <span>操作</span>
+              </div>
+              <div class="ordercont fl_ar">
+                <span>李某某</span>
+                <span>成都市高新西区</span>
+                <span>西源大道1号合作街道52号</span>
+                <span>17784845585</span>
+                <span>
+                  <span>修改</span>|
+                  <span>删除</span>
+                </span>
+                <span class="defut">默认地址</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 图纸收藏 -->
+        <div class="orderlist" v-show="chosed==3">
+          <h6>收藏的图纸</h6>
+          <div class="coll flx">
+            <img src="../assets/image/3.png" alt />
+            <div class="center">
+              <p>C335三层欧式新农村别墅自建房图纸设计</p>
+              <div class="fl_be">
+                <span>￥368</span>
+                <span>2020-05-26</span>
+              </div>
+            </div>
+            <div class="ycoll">已收藏</div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -72,27 +180,32 @@
 
 <script>
 import { mapState } from 'vuex'
+import citydata from '../assets/comm/city'
 export default {
   data() {
     return {
       ordernavlist: ['编号', '商品', '价格', '地址', '时间', '状态'],
-      chosed:0,
-      chosedlist:[
+      chosed: 0,
+      chosedlist: [
         {
-         i:'<i class="el-icon-tickets"></i>',
-          name:'我的订单'
+          i: '<i class="el-icon-tickets"></i>',
+          name: '我的订单'
         },
         {
-         i:'<i class="el-icon-view"></i>',
-         name:'浏览记录'
+          i: '<i class="el-icon-user"></i>',
+          name: '个人资料'
         },
         {
-         i: '<i class="el-icon-location-outline"></i>',
-         name:'收货地址'
+          i: '<i class="el-icon-location-outline"></i>',
+          name: '收货地址'
         },
         {
-         i: '<i class="el-icon-user"></i>',
-         name:'个人资料'
+          i: '<i class="el-icon-location-outline"></i>',
+          name: '图纸收藏'
+        },
+        {
+          i: '<i class="el-icon-location-outline"></i>',
+          name: '文章收藏'
         }
       ],
       ordercotentlist: [
@@ -112,22 +225,74 @@ export default {
           time: '18:00',
           statue: '好'
         }
-      ]
+      ],
+      provunce: citydata,
+      prov: '北京市', //第一级
+      city: '市辖区', //第二级
+      district: '东城区', //第三级
+      cityArr: [], //选择市
+      districtArr: [] //选择县
     }
   },
+  watch: {
+    prov: function() {
+      this.updateCity()
+      this.updateDistrict()
+    },
+    city: function() {
+      this.updateDistrict()
+    }
+  },
+  created() {},
   methods: {
-    hanchosed(e){
-      this.chosed=e
+    hanchosed(e) {
+      this.chosed = e
+    },
+    updateCity() {
+      for (var i in this.provunce) {
+        var obj = this.provunce[i]
+        if (obj.text == this.prov) {
+          this.cityArr = obj.children
+          break
+        }
+      }
+      if (this.cityArr[0]) {
+        this.city = this.cityArr[0].text || ''
+      }
+    },
+    updateDistrict() {
+      for (var i in this.cityArr) {
+        var obj = this.cityArr[i]
+        if (obj.text == this.city) {
+          this.districtArr = obj.children
+          break
+        }
+      }
+      if (
+        this.districtArr &&
+        this.districtArr.length > 0 &&
+        this.districtArr[0].text
+      ) {
+        if (this.districtArr[1]) {
+          this.district = this.districtArr[1].text || ''
+        }
+      } else {
+        this.district = ''
+      }
     }
   },
+  beforeMount() {
+    this.updateCity()
+    this.updateDistrict()
+  }
 }
 </script>
 
 <style scoped>
-.usercenter > div.active{
+.usercenter > div.active {
   color: #ffc92f;
 }
-.usercenter span{
+.usercenter span {
   margin-right: 22px;
   font-size: 27px;
 }
@@ -255,7 +420,7 @@ nav {
 .ordercont {
   background: #fff;
 }
-.ordercont>span{
+.ordercont > span {
   display: block;
   width: 120px;
   border-right: 1px solid #f5f5f5;
@@ -274,7 +439,7 @@ nav {
   justify-content: space-around;
   /* padding: 16px 0; */
 }
-.ordernav>span{
+.ordernav > span {
   display: block;
   width: 120px;
   border-right: 1px solid #f5f5f5;
@@ -282,5 +447,94 @@ nav {
 .ordernav > div:nth-of-type(4) {
   padding: 0 96px;
 }
-
+.personinfo {
+  background: #fff;
+  padding: 0 24px;
+  font-size: 18px;
+  font-family: SimHei;
+  line-height: 33px;
+  color: #1a1a1a;
+  padding-bottom: 228px;
+}
+.personinfo > div {
+  height: 87px;
+  border-bottom: 1px dashed #a0a0a0;
+}
+.personinfo button {
+  margin-top: 243px;
+  width: 207px;
+  height: 60px;
+  background: rgba(255, 201, 47, 1);
+  border-radius: 30px;
+  border: 0;
+  outline: none;
+  font-size: 24px;
+  font-family: SimHei;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
+  line-height: 33px;
+}
+.address {
+  background: #fff;
+  padding-top: 42px;
+}
+form {
+  margin-left: 59px;
+  margin-right: 204px;
+}
+form .btn {
+  width: 152px;
+  height: 42px;
+  background: rgba(255, 201, 47, 1);
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: Microsoft YaHei;
+  color: rgba(255, 255, 255, 1);
+  line-height: 23px;
+}
+.address select {
+  width: 154px;
+  height: 34px;
+  border: 1px solid rgba(229, 229, 229, 1);
+  font-size: 16px;
+  color: rgba(67, 67, 67, 1);
+  line-height: 23px;
+  outline: none;
+}
+.address select option {
+  outline: none !important;
+  border: 0 !important;
+}
+.defut {
+  width: 96px;
+  height: 43px;
+  background: rgba(255, 214, 204, 1);
+  border-radius: 5px;
+  font-size: 18px;
+  color: rgba(255, 15, 15, 1);
+}
+.coll {
+  background: #fff;
+  align-items: center;
+  padding: 0 40px;
+}
+.coll img {
+  width: 156px;
+  height: 111px;
+}
+.coll .center {
+  margin-right: 174px;
+  margin-left: 40px;
+}
+.ycoll {
+  width: 121px;
+  height: 34px;
+  background: rgba(255, 201, 47, 1);
+  border-radius: 15px;
+  font-size: 22px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 1);
+  line-height: 34px;
+}
 </style>
