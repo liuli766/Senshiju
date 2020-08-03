@@ -36,7 +36,7 @@
 
           <el-input class="pass input" placeholder="请输入密码" v-model="password" show-password></el-input>-->
         </div>
-        <button @click="handsubmit">注册</button>
+        <button @click="handsubmit">登录</button>
         <p>未注册的手机号验证后将自动登录 登录后即表示同意《服务协议》</p>
       </div>
     </div>
@@ -44,7 +44,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import request from '@/request.js' 
 export default {
   data() {
     return {
@@ -102,13 +103,21 @@ export default {
       }
     },
     handsubmit() {
-      if (this.userinfo.phone == '') {
+      if (this.userinfo.phone == '' && this.userinfo.password == '' ) {
         this.p1 = true
-        return false
-      }
-      if (this.userinfo.password == '') {        
         this.p2 = true
         return false
+      }else{
+          let phone=this.userinfo.phone
+       request.getRegister({
+        type:2,
+        phone,
+        psd:'',
+        smscode:''
+      }).then((res)=>{
+        console.log(res,'登录')
+      }).catch((e) => {})
+      .finally(() => {})
       }
     }
   }

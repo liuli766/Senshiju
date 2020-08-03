@@ -99,6 +99,7 @@ import newdesign from '@/components/newdesign.vue'
 import newinfo from '@/components/newinfo.vue'
 import demo2 from '../assets/comm/demo1'
 import demo3 from '../assets/comm/comm'
+import request from '@/request.js' 
 export default {
   components: {
     newdesign,

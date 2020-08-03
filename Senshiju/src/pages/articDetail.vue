@@ -54,6 +54,7 @@
 
 <script>
 import newinfo from '@/components/newinfo.vue'
+import request from '@/request.js' 
 export default {
   components: {
     newinfo

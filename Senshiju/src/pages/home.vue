@@ -48,7 +48,7 @@
     </div>
     <!-- 设计师 -->
     <swiper :options="swiperOption">
-      <swiper-slide>
+      <swiper-slide  v-for="(item,k) in getLunboList" :key="k">
         <div class="designer">
           <div class="designer_box">
             <div class="designer_main">
@@ -78,10 +78,10 @@
               </div>
             </div>
             <div class="picbox fl_be_al">
-              <img src="../../static/team.png" alt />
+              <img :src="item.pic_path" alt />
               <div class="fl_be_al img_pic">
-                <img src="../../static/team.png" alt />
-                <img src="../../static/team.png" alt />
+                <img :src="item.pic_path" alt />
+                <img :src="item.pic_path" alt />
               </div>
             </div>
           </div>
@@ -290,10 +290,10 @@
         <img src="../assets/image/fixed/ddan.png" alt />
         <span>订单</span>
       </div>
-      <div>
+      <!-- <div>
         <img src="../assets/image/fixed/gwuc.png" alt />
         <span>购物车</span>
-      </div>
+      </div>-->
       <div @click="handtop">
         <img src="../assets/image/fixed/fhdb.png" alt />
         <span>返回顶部</span>
@@ -306,65 +306,68 @@
 import recommendData from '../product.js'
 import hotlist from '@/components/hostList.vue'
 import { mapState } from 'vuex'
+import request from '@/request.js' 
+import axios from 'axios'
 export default {
   components: {
-    hotlist
+    hotlist,
   },
   data() {
     return {
       swiperOption: {
         pagination: {
           el: '.swiper-pagination',
-          clickable: true // 允许点击小圆点跳转
+          clickable: true, // 允许点击小圆点跳转
         },
         autoplay: {
           delay: 3000,
-          disableOnInteraction: false // 手动切换之后继续自动轮播
+          disableOnInteraction: false, // 手动切换之后继续自动轮播
         },
         loop: true,
         navigation: {
           nextEl: '.swiper-button-next', // 左边按钮
-          prevEl: '.swiper-button-prev' // 右边按钮
-        }
+          prevEl: '.swiper-button-prev', // 右边按钮
+        },
       },
       hotdata: recommendData,
       hotnavList: ['新中式', '四合院', '欧式', '现代'],
+      getLunboList:[],//设计师轮播数据
       serviceList: [
         {
           img: require('../assets/image/liucheng/kf.png'),
           name: '联系客服',
           name1: '联系客服',
           name2: '选定产品',
-          name3: '提供材料'
+          name3: '提供材料',
         },
         {
           img: require('../assets/image/liucheng/dj.png'),
           name: '支付定金',
           name1: '支付定金',
           name2: '沟通需求',
-          name3: '签订合同'
+          name3: '签订合同',
         },
         {
           img: require('../assets/image/liucheng/sjs.png'),
           name: '设计师对接',
           name1: '对接设计',
           name2: '确定方案',
-          name3: '持续服务'
+          name3: '持续服务',
         },
         {
           img: require('../assets/image/liucheng/ht.png'),
           name: '合同执行',
           name1: '方案定稿',
           name2: '支付完结',
-          name3: '签订合同'
+          name3: '签订合同',
         },
         {
           img: require('../assets/image/liucheng/ys.png'),
           name: '验收完成',
           name1: '结构设计',
           name2: '水电设计',
-          name3: '验收发货'
-        }
+          name3: '验收发货',
+        },
       ],
       type: '新中式',
       morelist: [], // 查看更多
@@ -375,87 +378,117 @@ export default {
         '设计百科',
         '装修百科',
         '施工百科',
-        '风水百科'
+        '风水百科',
       ],
       typeinfor: '建房资讯',
       inList: [
         {
           infotxt:
             '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11'
+          time: '19 - 12 - 11',
         },
         {
           infotxt:
             '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11'
+          time: '19 - 12 - 11',
         },
         {
           infotxt:
             '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11'
+          time: '19 - 12 - 11',
         },
         {
           infotxt:
             '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11'
-        }
+          time: '19 - 12 - 11',
+        },
       ],
       list: [1, 2, 3],
       list1: [],
       design: [
         {
           img: require('../assets/image/shejishi/jiaoliu.png'),
-          name: '初步探讨'
+          name: '初步探讨',
         },
         {
           img: require('../assets/image/shejishi/vip.png'),
-          name: '图纸设计'
+          name: '图纸设计',
         },
         {
           img: require('../assets/image/shejishi/xgtu.png'),
-          name: '出效果图'
+          name: '出效果图',
         },
         {
           img: require('../assets/image/shejishi/sgtu.png'),
-          name: '出施工图'
+          name: '出施工图',
         },
         {
           img: require('../assets/image/shejishi/sdfahuo.png'),
-          name: '审单发货'
+          name: '审单发货',
         },
         {
           img: require('../assets/image/shejishi/sg.png'),
-          name: '施工指导'
-        }
+          name: '施工指导',
+        },
       ],
-      vdeoimg: true
+      vdeoimg: true,
     }
   },
   watch: {},
   computed: {
     hotlist: {
-      get: function() {
+      get: function () {
         let list = [...this.hotdata]
-        list = list.filter(item => item.type === this.type)
+        list = list.filter((item) => item.type === this.type)
         return list
       },
-      set: function() {}
-    }
+      set: function () {},
+    },
   },
   created() {
     this.morelist = this.hotdata.slice(0, 3)
     this.list1 = this.list.slice(0, 1)
+    request.getLunbo(
+      {type:1}
+    ).then(res => {
+      this.getLunboList=res.data.list
+
+    }).catch(e => {
+
+    }).finally((
+
+    ) => {});
+    //图纸预售
+    request.getPresell({
+      page:1
+    }).then(res=>{
+        console.log(res,'图纸预售')
+    }).catch(e => {
+
+    }).finally((
+
+    ) => {});
+    //资讯
+    request.getHomebaike({
+      page:1
+    }).then(res=>{
+        console.log(res,'图纸预售')
+    }).catch(e => {
+
+    }).finally((
+
+    ) => {});
   },
   methods: {
     handhotnav(nav) {
       let list = [...this.hotdata] // 拷贝原数组
-      list = list.filter(item => item.type === nav)
+      list = list.filter((item) => item.type === nav)
       this.type = nav
       this.hotlist = list
     },
     handInfor(nav) {
       let list = [...this.hotdata] // 拷贝原数组
-      list = list.filter(item => item.type === nav)
+      list = list.filter((item) => item.type === nav)
       this.typeinfor = nav
       this.hotlist = list
     },
@@ -479,7 +512,7 @@ export default {
     // 设计师了解详情
     handLearn() {
       this.$router.push({
-        path: '/teamDetail'
+        path: '/teamDetail',
       })
     },
     handtop() {
@@ -489,13 +522,13 @@ export default {
     handprodetail(item) {
       //跳转产品详情
       this.$router.push({
-        path: '/productDetail'
+        path: '/productDetail',
       })
     },
     handorder() {
       //跳转订单
       this.$router.push({
-        path: '/order'
+        path: '/order',
       })
     },
     handplay() {
@@ -511,12 +544,12 @@ export default {
         this.vdeoimg = true
         console.log(2)
       }
-    }
+    },
   },
   mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
-  }
+  },
 }
 </script>
 

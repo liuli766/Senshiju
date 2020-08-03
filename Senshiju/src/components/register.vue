@@ -23,11 +23,15 @@
         <div>
           <p id="red" v-if="p1">请输入手机号</p>
           <p id="red" v-if="p4">请输入正确的手机</p>
-          <input type="text" class="input" placeholder="请输入手机号" v-model="userinfo.phone" @change="inp1"/>
-           <p id="red" v-if="p2">请输入密码</p>
-          <input type="password" class="input" placeholder="请输入密码" v-model="userinfo.password" @change="inp2"/>
-          <p id="red" v-if="p3">请输入验证码</p>
-          <div class="rel">   
+          <input
+            type="text"
+            class="input"
+            placeholder="请输入手机号"
+            v-model="userinfo.phone"
+            @change="inp1"
+          />
+          <p id="red" v-if="p2">请输入密码</p>
+          <div class="rel">
             <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" @change="inp3" />
             <div class="pos poniter" @click="time" v-if="tmeValue==60">
               <div class="line"></div>获取验证码
@@ -37,9 +41,6 @@
               {{ tmeValue }} s后获取
             </div>
           </div>
-          <!-- <el-input class="input" placeholder="请输入手机号" v-model="phone" clearable></el-input>
-
-          <el-input class="pass input" placeholder="请输入密码" v-model="password" show-password></el-input>-->
         </div>
         <button @click="handsubmit">注册</button>
         <p>未注册的手机号验证后将自动登录 登录后即表示同意《服务协议》</p>
@@ -50,119 +51,171 @@
 
 <script>
 import { mapState } from 'vuex'
+import request from '@/request.js'
 export default {
   data() {
     return {
       userinfo: {
         phone: '',
-        password: ''
-      }, 
+        password: '',
+      },
       code: '',
       navlist: ['短信登录/注册', '密码登录'],
       navid: 0,
       tmeValue: 60,
       flag: 0,
-      p1:false,
-      p2:false,
-      p3:false,
-      p4:false
+      p1: false,
+      p2: false,
+      p3: false,
+      p4: false,
     }
   },
   computed: {
     ...mapState({
-      token: state => state.home.token,
-      islogin: state => state.home.islogin
-    })
+      token: (state) => state.home.token,
+      islogin: (state) => state.home.islogin,
+    }),
   },
   created() {
-    
+    request
+      .getQrcode()
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
     onlogin() {
       let params = this.userinfo
-      homeApi.loginUserNo(params).then((res) => {
-        let {data} = res
-        if (data.code === 200) {
-          let token = JSON.parse(localStorage.getItem('userinfo'))
-          if (token.username === params.username && token.password === params.password) {
-            this.$store.commit('getUser', params.username)
-            localStorage.setItem('islogin', 'login')
-            this.$toast('登录成功')
-            window.location.href = '/home'
+      homeApi
+        .loginUserNo(params)
+        .then((res) => {
+          let { data } = res
+          if (data.code === 200) {
+            let token = JSON.parse(localStorage.getItem('userinfo'))
+            if (
+              token.username === params.username &&
+              token.password === params.password
+            ) {
+              this.$store.commit('getUser', params.username)
+              localStorage.setItem('islogin', 'login')
+              this.$toast('登录成功')
+              window.location.href = '/home'
+            }
           }
-        }
-      }).catch(() => {
-      })
+        })
+        .catch(() => {})
     },
     handswich(idx) {
       if (idx == 0) {
         this.$router.push({
-          path: '/register'
+          path: '/register',
         })
       } else {
         this.$router.push({
-          path: '/login'
+          path: '/login',
         })
       }
     },
-    getCode() {
-      //获取验证码
-    },
+    // 获取验证码
     time() {
-      //倒计时
-      console.log(1)
-      this.tmeValue = this.tmeValue - 1
-      this.flag = 1
-      if (this.tmeValue <= 0) {
-        this.tmeValue = 60
-        this.flag = 0
-        return ''
+      if (this.userinfo.phone !== '') {
+        let ph = /^1[3|5|7|8|][0-9]{9}$/
+        if (!ph.test(this.userinfo.phone)) {
+          this.$message({
+            showClose: true,
+            message: '手机号格式不正确',
+            type: 'warning',
+          })
+        } else {
+          let phone_num = this.userinfo.phone
+          request
+            .getCode({ phone_num })
+            .then((res) => {
+              console.log(res)
+            })
+            .catch((e) => {})
+            .finally(() => {})
+          //倒计时
+          console.log(1)
+          this.tmeValue = this.tmeValue - 1
+          this.flag = 1
+          if (this.tmeValue <= 0) {
+            this.tmeValue = 60
+            this.flag = 0
+            return ''
+          } else {
+            setTimeout(() => {
+              this.time()
+            }, 1000)
+          }
+        }
       } else {
-        setTimeout(() => {
-          this.time()
-        }, 1000)
+        this.$message({
+          showClose: true,
+          message: '手机号不能为空',
+          type: 'warning',
+        })
       }
     },
-    inp1(){ //手机验证
+    inp1() {
+      //手机验证
       console.log(2)
-      if(this.userinfo.phone==''){
-        this.p1=true
+      if (this.userinfo.phone == '') {
+        this.p1 = true
         return false
-      }else{
-         this.p1=false
+      } else {
+        this.p1 = false
       }
     },
-    inp2(){ //密码不能为空
-      if(this.userinfo.password==''){
-        this.p2=true
+    inp2() {
+      //密码不能为空
+      if (this.userinfo.password == '') {
+        this.p2 = true
         return false
-      }else{
-        this.p2=false
+      } else {
+        this.p2 = false
       }
     },
-    inp3(){ //验证码不能为空
-      if(this.code==''){
-        this.p3=true
+    inp3() {
+      //验证码不能为空
+      if (this.code == '') {
+        this.p3 = true
         return false
-      }else{
-         this.p3=false
+      } else {
+        this.p3 = false
       }
     },
-    handsubmit(){
-      if(this.userinfo.phone==''){
-        this.p1=true
+    //注册
+    handsubmit() {
+      if (
+        this.userinfo.phone == '' &&
+        this.userinfo.password == '' &&
+        this.code == ''
+      ) {
+        this.p1 = true
+        this.p2 = true
+        this.p3 = true
         return false
+      } else {
+        let phone = this.userinfo.phone
+        let smscode = this.code
+        request
+          .getRegister({
+            type: 1,
+            phone,
+            psd: '',
+            smscode,
+          })
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((e) => {})
+          .finally(() => {})
       }
-      if(this.userinfo.password==''){
-        this.p2=true
-        return false
-      }
-      if(this.code==''){
-        this.p3=true
-        return false
-      }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -190,7 +243,7 @@ i:hover {
   padding: 34px 63px 102px 39px;
   width: 976px;
   margin: 40px auto;
-  box-shadow: 1px 2px 2px #bfbfbf, 1px -1px 2px #bfbfbf, -1px 1px 2px #bfbfbf,
+  box-shadow: 3px 2px 2px #bfbfbf, 1px -1px 2px #bfbfbf, -1px 1px 2px #bfbfbf,
     -1px -1px 2px #bfbfbf;
   height: 680px;
 }

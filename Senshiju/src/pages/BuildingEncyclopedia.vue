@@ -118,6 +118,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import request from '@/request.js' 
 export default {
   data() {
     return {

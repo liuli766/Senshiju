@@ -123,7 +123,7 @@
         <p>您的安心，我们的放心</p>
         <div>
           <div class="permit">
-            <img src="../assets/image/4.png" alt style="margin-right:77px"/>
+            <img src="../assets/image/4.png" alt style="margin-right:77px" />
             <img src="../assets/image/5.png" alt />
           </div>
           <img src="../assets/image/3.png" alt />
@@ -166,6 +166,7 @@
 </template>
 
 <script>
+import request from '@/request.js'
 export default {
   data() {
     return {
@@ -174,45 +175,45 @@ export default {
         area: '',
         buildType: '',
         tel: '',
-        desc: ''
+        desc: '',
       },
       rules: {
         area: [
-          { required: true, message: '建房面积不能为空', trigger: 'blur' }
+          { required: true, message: '建房面积不能为空', trigger: 'blur' },
         ],
         buildType: [
-          { required: true, message: '建房类型不能为空', trigger: 'blur' }
+          { required: true, message: '建房类型不能为空', trigger: 'blur' },
         ],
         tel: [
           { required: true, message: '电话号码不能为空', trigger: 'blur' },
           {
             pattern: /^1[3456789]\d{9}$/,
             message: '手机号不符合规则',
-            trigger: 'blur'
-          }
-        ]
+            trigger: 'blur',
+          },
+        ],
       },
       teamSupport: [
         {
           name: '蔡壮保',
           occupation: '设计总监',
-          img: require('../../static/srdz.png')
+          img: require('../../static/srdz.png'),
         },
         {
           name: '汤丞昱',
           occupation: '设计总监',
-          img: require('../../static/srdz.png')
+          img: require('../../static/srdz.png'),
         },
         {
           name: '蔡壮保',
           occupation: '设计总监',
-          img: require('../../static/srdz.png')
+          img: require('../../static/srdz.png'),
         },
         {
           name: '白若霖',
           occupation: '设计总监',
-          img: require('../../static/srdz.png')
-        }
+          img: require('../../static/srdz.png'),
+        },
       ],
       // 订制图片展示
       picList: [
@@ -220,10 +221,10 @@ export default {
         require('../../static/jf.png'),
         require('../../static/team.png'),
         require('../../static/pic.png'),
-        require('../../static/team.png')
+        require('../../static/team.png'),
       ],
       moreList: [], // 查看更多
-      idx: 3
+      idx: 3,
     }
   },
   mounted() {
@@ -245,9 +246,21 @@ export default {
     },
     // 提交申请
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          request
+            .getSubapply({
+              name: '',
+              phone: this.ruleForm.tel,
+              type: this.ruleForm.buildType,
+              area: this.ruleForm.area,
+              need: this.ruleForm.desc,
+            })
+            .then((res) => {
+              console.log(res, '定制需求')
+            })
+            .catch((e) => {})
+            .finally(() => {})
         } else {
           console.log('error submit!!')
           return false
@@ -259,8 +272,8 @@ export default {
       this.idx++
       let list = [...this.moreList]
       this.moreList = [...list, ...this.picList.slice(this.idx++, this.idx + 1)]
-    }
-  }
+    },
+  },
 }
 </script>
 

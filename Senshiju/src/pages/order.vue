@@ -181,6 +181,7 @@
 <script>
 import { mapState } from 'vuex'
 import citydata from '../assets/comm/city'
+import request from '@/request.js' 
 export default {
   data() {
     return {

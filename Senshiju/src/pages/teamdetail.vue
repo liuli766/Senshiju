@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import request from '@/request.js' 
 export default {
   data () {
     return {

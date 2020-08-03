@@ -18,7 +18,9 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper /* { default options with global component } */)
 import axios from 'axios'
-Vue.prototype.$axios=axios
+Vue.prototype.$axios=axios;
+import qs from 'qs'; //用来解决vue中post请求（详情）
+Vue.prototype.qs = qs;
 // Vue.prototype.api = api;
 
 // router.beforeEach((to, from, next) => {

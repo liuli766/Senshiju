@@ -67,6 +67,7 @@
 
 <script>
 import Swiper from 'swiper'
+import request from '@/request.js' 
 export default {
   data () {
     return {
@@ -87,9 +88,17 @@ export default {
   created () {
     this.listdata = this.pic.slice(0, 2)
     // setInterval(this.handprve, 1000);
+    request.getBlueDetail({
+      id:'0'
+    }).then(res=>{
+        console.log(res,'图纸详情')
+    }).catch(e => {
+
+    }).finally((
+
+    ) => {});
   },
   mounted () {
-    // eslint-disable-next-line no-unused-vars
     const mySwiper = new Swiper('.swiper-container', {
       observer: true,
       slidesPerView: 3,
@@ -108,6 +117,19 @@ export default {
     })
   },
   methods: {
+
+
+
+
+
+
+
+
+
+
+
+
+
     handprve () {
       let first = this.pic.shift()
       this.pic.push(first)
