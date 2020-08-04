@@ -20,15 +20,15 @@
         </div>
         <!--  -->
         <div class="build">
-          <div class="bulid_child" v-for="(v,k) in filterList[0].list" :key="k">
-            <span class="style">{{v.title}}</span>
+          <div class="bulid_child" v-for="(v,k) in filterList" :key="k">
+            <span class="style">{{v.cate_name}}</span>
             <div class="line_h">
               <li
                 :class="{'bg_active': val.active}"
                 @click="tabClick(val,key,k)"
-                v-for="(val, key) in v.childer"
+                v-for="(val, key) in v.child"
                 :key="key"
-              >{{val.value}}</li>
+              >{{val.cate_name}}</li>
             </div>
           </div>
         </div>
@@ -97,8 +97,8 @@
 <script>
 import newdesign from '@/components/newdesign.vue'
 import newinfo from '@/components/newinfo.vue'
-import demo2 from '../assets/comm/demo1'
-import demo3 from '../assets/comm/comm'
+// import demo2 from '../assets/comm/demo1'
+// import demo3 from '../assets/comm/comm'
 import request from '@/request.js' 
 export default {
   components: {
@@ -135,9 +135,16 @@ export default {
   },
   created() {
     // 请求数据
-    this.viewList = [...demo2]
-    this.filterList = [...demo3]
-    console.log(this.filterList[0].list)
+    // this.viewList = [...demo2]
+    // this.filterList = [...demo3]
+    request.getCates({
+          cate_id:''
+        }).then((res) => {
+          this.filterList=[...res.data.list]
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    
     this.newarr = this.arr1
   },
   methods: {
@@ -151,15 +158,15 @@ export default {
     tabClick(data, key, k) {
       console.log(data, key, k)
       // 添加 active ==> true 显示 `active样式`
-      this.filterList[0].list[k].childer.map(item => {
+      this.filterList[k].child.map(item => {
         item.active = false
       })
-      this.filterList[0].list[k].childer[key].active = true
+      this.filterList[k].child[key].active = true
 
       // 选中的数据
       let newArray = []
-      this.filterList[0].list.map(data => {
-        data.childer.map(item => {
+      this.filterList.map(data => {
+        data.child.map(item => {
           if (item.active == true) {
             newArray.push(item.value)
           }

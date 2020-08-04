@@ -48,7 +48,7 @@
     </div>
     <!-- 设计师 -->
     <swiper :options="swiperOption">
-      <swiper-slide  v-for="(item,k) in getLunboList" :key="k">
+      <swiper-slide v-for="(item,k) in getLunboList" :key="k">
         <div class="designer">
           <div class="designer_box">
             <div class="designer_main">
@@ -306,7 +306,7 @@
 import recommendData from '../product.js'
 import hotlist from '@/components/hostList.vue'
 import { mapState } from 'vuex'
-import request from '@/request.js' 
+import request from '@/request.js'
 import axios from 'axios'
 export default {
   components: {
@@ -331,7 +331,7 @@ export default {
       },
       hotdata: recommendData,
       hotnavList: ['新中式', '四合院', '欧式', '现代'],
-      getLunboList:[],//设计师轮播数据
+      getLunboList: [], //设计师轮播数据
       serviceList: [
         {
           img: require('../assets/image/liucheng/kf.png'),
@@ -448,38 +448,62 @@ export default {
   created() {
     this.morelist = this.hotdata.slice(0, 3)
     this.list1 = this.list.slice(0, 1)
-    request.getLunbo(
-      {type:1}
-    ).then(res => {
-      this.getLunboList=res.data.list
-
-    }).catch(e => {
-
-    }).finally((
-
-    ) => {});
-    //图纸预售
-    request.getPresell({
-      page:1
-    }).then(res=>{
-        console.log(res,'图纸预售')
-    }).catch(e => {
-
-    }).finally((
-
-    ) => {});
-    //资讯
-    request.getHomebaike({
-      page:1
-    }).then(res=>{
-        console.log(res,'图纸预售')
-    }).catch(e => {
-
-    }).finally((
-
-    ) => {});
+    this.gethots()
+    this.getzixun()
+    this.getprell()
+    this.getlunbo()
   },
   methods: {
+    gethots() {
+      //热销推荐
+      request
+        .getHots({
+          page: 1,
+          style: this.type,
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+
+    getzixun() {
+      //资讯
+      request
+        .getHomebaike({
+          page: 1,
+        })
+        .then((res) => {
+          console.log(res, '图纸预售')
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+
+    getprell() {
+      //图纸预售
+      request
+        .getPresell({
+          page: 1,
+        })
+        .then((res) => {
+          console.log(res, '图纸预售')
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+
+    getlunbo() {
+      //轮播
+      request
+        .getLunbo({ type: 1 })
+        .then((res) => {
+          this.getLunboList = res.data.list
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
     handhotnav(nav) {
       let list = [...this.hotdata] // 拷贝原数组
       list = list.filter((item) => item.type === nav)

@@ -135,10 +135,10 @@ export default {
             .then((res) => {
               console.log(res)
             })
-            .catch((e) => {})
+            .catch((e) => {
+            })
             .finally(() => {})
           //倒计时
-          console.log(1)
           this.tmeValue = this.tmeValue - 1
           this.flag = 1
           if (this.tmeValue <= 0) {
