@@ -2,17 +2,17 @@
   <!-- 最新设计案例 -->
   <div>
     <h6>最新设计定制案例</h6>
-    <div class="drawing poniter" v-for="(item,index) in arr1" :key="index">
-      <img :src="item.img" alt />
-      <p class="one-wrap">{{item.p}}</p>
+    <div class="drawing poniter" v-for="(item,index) in designlist" :key="index">
+      <img :src="item.imgs" alt />
+      <p class="one-wrap">{{item.intro}}</p>
       <div class="bot">
         <span>
           占地面积：
-          <i>228m</i>
+          <i>{{item.area}}</i>
         </span>
         <span>
           图纸编号：
-          <i>B203</i>
+          <i>{{item.number}}</i>
         </span>
       </div>
     </div>
@@ -20,25 +20,26 @@
 </template>
 
 <script>
+import request from '@/request.js'
 export default {
   data() {
     return {
-      arr1: [
-        {
-          img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
-        },
-        {
-          img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
-        },
-        {
-          img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
-        }
-      ]
+      designlist:[]
     }
-  }
+  },
+  created() {
+    // 墅图纸共有套
+    request
+      .getHots({
+        page: 1,
+        style: 1,
+      })
+      .then((res) => {
+        this.designlist = res.data
+      })
+      .catch((e) => {})
+      .finally(() => {})
+  },
 }
 </script>
 

@@ -1,14 +1,8 @@
 <template>
   <div style="background:#f6f6f6">
     <swiper :options="swiperOption">
-      <swiper-slide>
-        <img class="sw" src="../assets/image/banner1.png" alt />
-      </swiper-slide>
-      <swiper-slide>
-        <img class="sw" src="../assets/image/banner2.png" alt />
-      </swiper-slide>
-      <swiper-slide>
-        <img class="sw" src="../assets/image/banner3.png" alt />
+      <swiper-slide v-for="(item,k) in getLunboList" :key="k">
+        <img class="sw" :src="item.pic_path" alt />
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
       <img class="swiper-button-prev" src="../assets/image/back.png" slot="button-prev" alt />
@@ -112,15 +106,15 @@
           class="img"
           v-for="(item,index) in morelist"
           :key="index"
-          :src="item.image"
-          :alt="item.id"
+          :src="item.imgs"
+          alt=""
           @click="handprodetail(item)"
         />
       </div>
     </div>
     <div class="presell_bottom">
       <div class="more poniter" @click="handmore" v-if="morelist.length<hotdata.length">查看更多</div>
-      <div class="more poniter" v-else>收起</div>
+      <div class="more poniter" v-else>没有更多了</div>
     </div>
 
     <!-- 服务流程 -->
@@ -175,14 +169,14 @@
         <p class="colord2 vdeop">回家建房，就找村墅人家</p>
       </div>
       <video
-        src="../assets/xc.mp4"
+        :src="homeList.home_video"
         controls
         poster="../assets/image/vdeo.png"
         width="1200"
         height="676"
         preload="none"
       ></video>
-      <div class="vedoimg" @click="handplay">
+      <div class="vedoimg" @click.stop="handplay">
         <img src="../assets/image/player.png" alt v-if="vdeoimg" />
       </div>
     </div>
@@ -278,7 +272,7 @@
     </div>
     <!-- 首页联系客服 -->
     <div class="fixed">
-      <div>
+      <div @click="goqq">
         <img src="../assets/image/fixed/kf.png" alt />
         <span>联系客服</span>
       </div>
@@ -303,7 +297,6 @@
 </template>
 
 <script>
-import recommendData from '../product.js'
 import hotlist from '@/components/hostList.vue'
 import { mapState } from 'vuex'
 import request from '@/request.js'
@@ -329,9 +322,9 @@ export default {
           prevEl: '.swiper-button-prev', // 右边按钮
         },
       },
-      hotdata: recommendData,
+      hotdata: [],
       hotnavList: ['新中式', '四合院', '欧式', '现代'],
-      getLunboList: [], //设计师轮播数据
+      getLunboList: [], //轮播数据
       serviceList: [
         {
           img: require('../assets/image/liucheng/kf.png'),
@@ -432,6 +425,7 @@ export default {
         },
       ],
       vdeoimg: true,
+      homeList:[]
     }
   },
   watch: {},
@@ -439,16 +433,36 @@ export default {
     hotlist: {
       get: function () {
         let list = [...this.hotdata]
-        list = list.filter((item) => item.type === this.type)
+        list = list.filter((item) => item.style === this.type)
         return list
       },
       set: function () {},
     },
   },
   created() {
-    this.morelist = this.hotdata.slice(0, 3)
     this.list1 = this.list.slice(0, 1)
-    this.gethots()
+    //热销推荐
+    request
+      .getHots({
+        page: 1,
+        style: this.type,
+      })
+      .then((res) => {
+        this.hotdata = res.data
+        this.morelist = [...this.hotdata.slice(0, 3)]
+      })
+      .catch((e) => {})
+      .finally(() => {})
+
+      // pc网站首页
+    request.getHomeindex({
+    }).then(res=>{
+      this.homeList=res.data
+      console.log(res,'pc端首页')
+    }) .catch((e) => {})
+      .finally(() => {})
+
+
     this.getzixun()
     this.getprell()
     this.getlunbo()
@@ -462,12 +476,11 @@ export default {
           style: this.type,
         })
         .then((res) => {
-          console.log(res)
+          this.hotdata = res.data
         })
         .catch((e) => {})
         .finally(() => {})
     },
-
     getzixun() {
       //资讯
       request
@@ -504,18 +517,25 @@ export default {
         .catch((e) => {})
         .finally(() => {})
     },
+
+    // 切换新中式
     handhotnav(nav) {
       let list = [...this.hotdata] // 拷贝原数组
-      list = list.filter((item) => item.type === nav)
+      list = list.filter((item) => item.style === nav)
       this.type = nav
+      this.gethots()
       this.hotlist = list
     },
+
+    // 别墅资讯
     handInfor(nav) {
       let list = [...this.hotdata] // 拷贝原数组
       list = list.filter((item) => item.type === nav)
       this.typeinfor = nav
       this.hotlist = list
     },
+
+    // 查看更多
     handmore() {
       // 每点击一次增加一条内容
       this.idx++
@@ -545,8 +565,12 @@ export default {
     },
     handprodetail(item) {
       //跳转产品详情
+      let idname=(item.id)
       this.$router.push({
         path: '/productDetail',
+        query:{
+          id:idname
+        }
       })
     },
     handorder() {
@@ -562,13 +586,17 @@ export default {
       if (video.paused) {
         video.play()
         this.vdeoimg = false
-        console.log(1)
       } else {
         video.pause()
         this.vdeoimg = true
-        console.log(2)
       }
     },
+
+    // 联系客服
+
+    goqq(){
+
+    }
   },
   mounted() {
     let nav = document.querySelector('.nav')
@@ -589,7 +617,7 @@ export default {
   position: relative;
 }
 .video .vedoimg {
-  height: 676px;
+  height: 594px;
   position: absolute;
   top: 134px;
   left: 0;

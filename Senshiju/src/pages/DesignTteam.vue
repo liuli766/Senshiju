@@ -1,19 +1,5 @@
 <template>
 <div>
-  <!-- <div class="team">
-    <div class="nav1">
-      <div class="serchbox">
-        <div class="serch"><input type="text" placeholder="请输入关键词" ></div>
-      </div>
-    <nav class="header">
-      <img src="../assets/image/logo (1).png" alt="">
-      <ul>
-        <li v-for="(item,index) in navList" :key='index'
-        @click="changeNav(item)" :class="{'hea-active':navActiveCode === item.code}">{{item.name}}</li>
-      </ul>
-    </nav>
-  </div>
-  </div> -->
   <img src="../assets/image/banner.png" class="bannerimg" alt="">
   <!-- 村野人家设计团队 -->
   <h5>村野人家设计团队</h5>
@@ -56,38 +42,6 @@ import request from '@/request.js'
 export default {
   data () {
     return {
-      navList: [
-        {
-          name: '首页',
-          url: '/',
-          code: 'home'
-        },
-        {
-          name: '建房图库',
-          url: '/buildingHouseLibrary',
-          code: 'Library'
-        },
-        {
-          name: '设计团队',
-          url: '/DesignTteam',
-          code: 'Tteam'
-        },
-        {
-          name: '私人订制',
-          url: '/PersonalTtailor',
-          code: 'Ttailor'
-        },
-        {
-          name: '建房日志',
-          url: '/BuildingLog',
-          code: 'Log'
-        },
-        {
-          name: '建房百科',
-          url: '/BuildingEncyclopedia',
-          code: 'Encyclopedia'
-        }
-      ],
       navActiveCode: 'home',
       teamList: [
         {

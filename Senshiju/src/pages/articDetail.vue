@@ -75,6 +75,15 @@ export default {
   },
   created() {
     console.log(this.$route.query)
+    request
+      .getInfo({
+        id:0
+      })
+      .then((res) => {
+        console.log(res,'百科详情')
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
     handhotnav(e) {

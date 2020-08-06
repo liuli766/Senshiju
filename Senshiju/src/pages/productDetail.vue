@@ -7,18 +7,24 @@
     </div>
     <!--  -->
     <div class="build_img fl_be">
-      <img src="../../static/bulid.png" alt />
+      <img :src="detaillist.imgs" alt />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
-          <h5>三层欧式别墅外观效果图大全农村自建房图纸</h5>
+          <h5>{{detaillist.intro}}</h5>
           <span class="font20 poniter">收藏</span>
         </div>
         <p>
           图纸编号：
-          <span>C337</span>
+          <span>{{detaillist.number}}</span>
         </p>
         <div class="layer fl_be">
-          <span v-for="(item,index) in arr" :key="index">{{item}}</span>
+          <span>别墅层数:{{detaillist.plies}}</span>
+          <span>结构形式:{{detaillist.structure}}</span>
+          <span>占地面积:{{detaillist.face_width}}</span>
+          <span>建筑开间:{{detaillist.plies}}</span>
+          <span>建筑进深:{{detaillist.depth}}</span>
+          <span>销售面积:{{detaillist.face_width}}</span>
+          <span>主体参考造价:{{detaillist.plies}}</span>
         </div>
         <div class="tel">: 176-8324-2994</div>
         <div class="button fl_be">
@@ -29,82 +35,78 @@
     </div>
     <!-- 轮播 -->
     <div class="swiper-container">
-    <div class="swiper-wrapper">
+      <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <img src="../assets/image/banner1.png" alt="">
+          <img src="../assets/image/banner1.png" alt />
         </div>
         <div class="swiper-slide">
-          <img src="../assets/image/banner2.png" alt="">
+          <img src="../assets/image/banner2.png" alt />
         </div>
         <div class="swiper-slide">
-          <img src="../assets/image/banner3.png" alt="">
+          <img src="../assets/image/banner3.png" alt />
         </div>
         <div class="swiper-slide">
-          <img src="../assets/image/banner2.png" alt="">
+          <img src="../assets/image/banner2.png" alt />
         </div>
         <div class="swiper-slide">
-          <img src="../assets/image/banner3.png" alt="">
+          <img src="../assets/image/banner3.png" alt />
         </div>
+      </div>
+      <!-- 如果需要导航按钮 -->
+      <span class="swiper-button-prev"></span>
+      <span class="swiper-button-next"></span>
     </div>
-    <!-- 如果需要导航按钮 -->
-    <span class="swiper-button-prev"></span>
-    <span class="swiper-button-next"></span>
-</div>
     <!-- <div class="swiper">
       <div class="swiper_slide">
         <img :src="item" alt v-for="(item,index) in listdata" :key="index" />
       </div>
       <span class="iconfont icon-jiantou" @click="handprve"></span>
       <span class="iconfont icon-jiantou" @click="handnext"></span>
-    </div> -->
+    </div>-->
     <!--  -->
     <div class="explain">购图前重要说明：</div>
     <p
       class="p"
     >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
+  
+    
+  
   </div>
 </template>
 
 <script>
 import Swiper from 'swiper'
-import request from '@/request.js' 
+import request from '@/request.js'
 export default {
-  data () {
+  data() {
     return {
-      arr: [
-        '主体参考造价：25~30万左右',
-        '主体参考造价：25~30万左右',
-        '主体参考造价：25~30万左右',
-        '主体参考造价：25~30万左右',
-        '主体参考造价：25~30万左右'
-      ],
-      pic: [
-        require('../../static/h.png'),
-        require('../../static/pic.png')
-      ],
-      listdata: []
+      pic: [require('../../static/h.png'), require('../../static/pic.png')],
+      listdata: [],
+      detaillist: [],
     }
   },
-  created () {
+  created() {
     this.listdata = this.pic.slice(0, 2)
     // setInterval(this.handprve, 1000);
-    request.getBlueDetail({
-      id:'0'
-    }).then(res=>{
-        console.log(res,'图纸详情')
-    }).catch(e => {
-
-    }).finally((
-
-    ) => {});
+    let idname = this.$route.query.id
+    request
+      .getBlueDetail({
+        id: idname,
+      })
+      .then((res) => {
+        this.detaillist = res.data
+        console.log(res, '图纸详情')
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
-  mounted () {
+  mounted() {
     const mySwiper = new Swiper('.swiper-container', {
       observer: true,
       slidesPerView: 3,
       autoplay: {
         delay: 3000,
-        disableOnInteraction: false // 手动切换之后继续自动轮播
+        disableOnInteraction: false, // 手动切换之后继续自动轮播
       },
       // 如果需要分页器
       // pagination: {
@@ -112,40 +114,28 @@ export default {
       // },
       navigation: {
         nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      }
+        prevEl: '.swiper-button-prev',
+      },
     })
   },
   methods: {
-
-
-
-
-
-
-
-
-
-
-
-
-
-    handprve () {
+    handprve() {
       let first = this.pic.shift()
       this.pic.push(first)
       this.listdata = this.pic.slice(0, 2)
     },
-    handnext () {
+    handnext() {
       let last = this.pic.pop()
       this.pic.unshift(last)
       this.listdata = this.pic.slice(0, 2)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
-.swiper,.swiper-container {
+.swiper,
+.swiper-container {
   width: 681px;
   overflow: hidden;
   margin: 10px 0 43px 0;
@@ -155,18 +145,18 @@ export default {
   box-sizing: border-box;
   height: 136px;
 }
-.swiper-wrapper{
+.swiper-wrapper {
   z-index: -1;
-  width:201px;
+  width: 201px;
 }
-.swiper-button-prev:after{
-      color: #FFBF22;
+.swiper-button-prev:after {
+  color: #ffbf22;
 }
-.swiper-button-next:after{
-  color: #FFBF22;
+.swiper-button-next:after {
+  color: #ffbf22;
 }
 .swiper-button-prev.swiper-button-disabled,
-.swiper-button-next.swiper-button-disabled{
+.swiper-button-next.swiper-button-disabled {
   opacity: 1;
 }
 /* .swiper > span {
@@ -184,9 +174,9 @@ export default {
 .swiper > span:nth-of-type(2) {
   left: 0;
 } */
-.swiper-slide{
-    margin-left: 14px;
-    width: 202px !important;
+.swiper-slide {
+  margin-left: 14px;
+  width: 202px !important;
 }
 .swiper-slide img {
   width: 202px;
@@ -219,16 +209,17 @@ export default {
 .build_img h5 {
   font: 400 26px/36px 'Adobe Heiti Std';
   color: #313131;
+  width: 393px;
 }
 .build_img .build_img_t span {
   display: block;
   width: 72px;
   height: 31px;
   line-height: 31px;
-  background: rgba(255, 255, 255, 1);
+  background: #ffbf22;
   opacity: 0.98;
   border-radius: 16px;
-  color: #585858;
+  color: #fff;
   margin-left: 18px;
   text-align: center;
 }

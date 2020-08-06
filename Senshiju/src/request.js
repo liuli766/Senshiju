@@ -37,13 +37,13 @@ function getHomeindex(data){
     let params = {
         ...data
       }
-    return http.fetchPost('/Home/index',params)
+    return http.fetchPost('/index/Home/index',params)
 }
 function getHomebaike(data){
     let params = {
         ...data
       }
-    return http.fetchPost('/Home/infomartion',params)
+    return http.fetchPost('/index/Home/infomartion',params)
 }
 function getHots(data){
     let params = {
@@ -64,6 +64,55 @@ function getCates(data){
     return http.fetchPost('api/Common/cates',params)
 }
 
+function getDrawings(){
+  return http.fetchPost('/index/Team/private_imgs')
+}
+
+function getDesign(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/index/Team/design_detail',params)
+}
+
+function getInfo(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/index/Home/info_detail',params)
+}
+
+function getCollect(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/api/Common/collect',params)
+}
+
+function getHomrdesign(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/index/Home/design',params)
+}
+function getPrivate(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/index/Home/private_imgs',params)
+}
+function getLabels(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/index/Home/labels',params)
+}
+function getOrders(data){
+  let params = {
+      ...data
+    }
+  return http.fetchPost('/index/User/my_orders',params)
+}
 export default {
     getLunbo,  // 首页轮播数据
     getCode, //发送短信获取验证码
@@ -76,4 +125,12 @@ export default {
     getHots, //首页热门图纸 
     getPresell, //pc网站首页-图纸预售
     getCates, //分类
+    getDrawings, //定制图纸
+    getDesign, //设计师详情
+    getInfo, //百科详情
+    getCollect,//收藏
+    getHomrdesign, //首页设计师
+    getPrivate, //私人定制图片 营业执照、口碑
+    getLabels,// 热门标签
+    getOrders, //订单
   }

@@ -15,22 +15,15 @@
             <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
           </div>
         </li>
-
-        <!-- <el-dropdown @command="handleCommand">
-          <router-link to="/BuildingEncyclopedia" class="buildenc">建房百科</router-link>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a">设计百科</el-dropdown-item>
-            <el-dropdown-item command="b">装修百科</el-dropdown-item>
-            <el-dropdown-item command="c">施工百科</el-dropdown-item>
-            <el-dropdown-item command="d">风水百科</el-dropdown-item>
-            <el-dropdown-item command="e">建房日志</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>-->
       </ul>
-      <div class="regieandlogin poniter">
+      <div class="regieandlogin poniter" v-if="!token">
         <router-link to="/register">注册</router-link>|
         <router-link to="/login">登录</router-link>
       </div>
+        <div v-else class="head">
+          <img :src="userInfor.photo" alt="">
+        </div>
+        
       <div class="serch">
         <input type="text" placeholder="请输入关键词" @click="handsearch" />
         <img src="../assets/image/fixed/serch.png" alt class="serchimg" />
@@ -84,11 +77,15 @@ export default {
     }
   },
   computed: mapState({
-    hedeid: state => state.hedeid
+    hedeid: state => state.hedeid,
+    token:state => state.token,
+    userInfor: state => state.userInfor,
+    isLogin: state => state.isLogin
   }),
   watch:{
   },
   created() {
+    console.log(this.isLogin)
   },
   mounted() {
     // let li4 = document.querySelector('nav>ul>li:nth-of-type(5)')
@@ -122,6 +119,11 @@ export default {
 </script>
 
 <style scoped>
+.head img{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
 nav ul li{
   position: relative;
 }

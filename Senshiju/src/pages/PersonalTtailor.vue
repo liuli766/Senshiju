@@ -122,11 +122,11 @@
         <h5>营业执照</h5>
         <p>您的安心，我们的放心</p>
         <div>
-          <div class="permit">
-            <img src="../assets/image/4.png" alt style="margin-right:77px" />
-            <img src="../assets/image/5.png" alt />
+          <div class="permit" style="margin-right:77px" >
+            <img :src="link+drawingslist1"   alt />
+            <img :src="link+drawingslist2"   alt />
           </div>
-          <img src="../assets/image/3.png" alt />
+          <img :src="link+drawingslist3" alt />
         </div>
       </div>
       <!-- 定制图纸展示 -->
@@ -134,8 +134,8 @@
         <h5>定制图纸展示</h5>
         <p>私人定制能带来更贴心的享受</p>
         <div class="showpic fl_be">
-          <img src="../../static/jf.png" alt />
-          <img src="../../static/jf.png" alt />
+          <!-- <img :src="drawingslist.cover" alt /> -->
+          <!-- <img :src="drawingslist.cover" alt /> -->
         </div>
         <div class="fl_be show_img">
           <el-image
@@ -154,9 +154,7 @@
         <p>为您与客户真实的聊天记录</p>
         <div>
           <div class="mouth fl_be">
-            <img src="../assets/image/1.png" alt />
-            <img src="../assets/image/1.png" alt />
-            <img src="../assets/image/1.png" alt />
+            <img v-for="(item,k) in praiselist" :key="k" :src="item.cover" alt />
           </div>
         </div>
         <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
@@ -225,11 +223,14 @@ export default {
       ],
       moreList: [], // 查看更多
       idx: 3,
+      drawingslist1:'', //营业执照
+      drawingslist2:'', //营业执照
+      drawingslist3:'', //营业执照
+      praiselist:[], //口碑
+      link:'http://villa.jisapp.cn'
     }
   },
   mounted() {
-    // let nav = document.querySelector('.nav')
-    // nav.style.display = 'none'
   },
   created() {
     if (this.picList < 4) {
@@ -237,6 +238,20 @@ export default {
     } else {
       this.moreList = this.picList.slice(0, 4)
     }
+    // 图纸定制
+    request
+            .getDrawings()
+            .then((res) => {
+              console.log(res, '定制需求')
+              this.drawingslist1=res.data.license[0].cover
+              this.drawingslist2=res.data.license[1].cover
+              this.drawingslist3=res.data.license[2].cover
+              this.praiselist=res.data.praise
+
+              console.log(this.drawingslist1)
+            })
+            .catch((e) => {})
+            .finally(() => {})
   },
   methods: {
     // 点击导航栏

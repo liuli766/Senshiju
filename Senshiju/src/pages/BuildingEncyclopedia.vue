@@ -12,7 +12,12 @@
         </nav>
         <!-- 内容 -->
         <div v-show="meauid==0 || meaunum==0">
-          <div class="cont poniter" v-for="(item,index) in countlist" :key="index" @click="handarticdetail(item)">
+          <div
+            class="cont poniter"
+            v-for="(item,index) in countlist"
+            :key="index"
+            @click="handarticdetail(item)"
+          >
             <img :src="item.img" alt />
             <div>
               <h6>{{item.h6}}</h6>
@@ -98,7 +103,7 @@
           <h6>热门标签</h6>
           <div class="line"></div>
           <div class="tag_item">
-            <span v-for="(item,index) in tag" :key="index">{{item}}</span>
+            <span v-for="(item,index) in tag" :key="index">{{item.label_name}}</span>
           </div>
         </div>
         <!-- 热销推荐 -->
@@ -118,7 +123,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import request from '@/request.js' 
+import request from '@/request.js'
 export default {
   data() {
     return {
@@ -128,24 +133,17 @@ export default {
         '装修百科',
         '施工百科',
         '风水百科',
-        '建房日志'
+        '建房日志',
       ],
       meaunum: 0, //当前选中的item
       pageSize: 5, //当前显示的条数
       currentPage: 1, //当前页数
       countlist: [], //当前分页渲染的内容
-      tag: [
-        '别墅花园设计',
-        '隔音',
-        '农村简单三层小别墅设计图',
-        '哪家好',
-        '门饰',
-        '隔热'
-      ],
+      tag: [],
       ruleForm: {
         name: '',
         tel: '',
-        area: ''
+        area: '',
       },
       rules: {
         name: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
@@ -154,32 +152,34 @@ export default {
           {
             pattern: /^1[3456789]\d{9}$/,
             message: '手机号不符合规则',
-            trigger: 'blur'
-          }
+            trigger: 'blur',
+          },
         ],
-        area: [{ required: true, message: '占地面积不能为空', trigger: 'blur' }]
+        area: [
+          { required: true, message: '占地面积不能为空', trigger: 'blur' },
+        ],
       },
       options: [
         {
           value: '1',
-          label: '黄金糕'
+          label: '黄金糕',
         },
         {
           value: '2',
-          label: '双皮奶'
+          label: '双皮奶',
         },
         {
           value: '3',
-          label: '蚵仔煎'
+          label: '蚵仔煎',
         },
         {
           value: '4',
-          label: '龙须面'
+          label: '龙须面',
         },
         {
           value: '5',
-          label: '北京烤鸭'
-        }
+          label: '北京烤鸭',
+        },
       ],
       value: '',
       contlist: [
@@ -188,76 +188,76 @@ export default {
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-261'
+          time: '2020-05-261',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-262'
+          time: '2020-05-262',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-263'
+          time: '2020-05-263',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-264'
+          time: '2020-05-264',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-265'
+          time: '2020-05-265',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-266'
+          time: '2020-05-266',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-267'
+          time: '2020-05-267',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-268'
+          time: '2020-05-268',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-269'
+          time: '2020-05-269',
         },
         {
           img: require('../assets/image/person.png'),
           h6: '农村小庭院怎么设计好看，两层庭院好看只要40万',
           p:
             '有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等 大事，有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人 住一个大院子，农村小庭院怎么设计好看?下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜 欢，可以咨询客服定制设计哦',
-          time: '2020-05-260'
-        }
-      ]
+          time: '2020-05-260',
+        },
+      ],
     }
   },
-  computed:mapState({
-    meauid: (state) => state.meauid, 
+  computed: mapState({
+    meauid: (state) => state.meauid,
   }),
   created() {
     this.meaunum = this.$store.state.meauid
@@ -265,6 +265,14 @@ export default {
       (this.currentPage - 1) * this.pageSize,
       this.currentPage * this.pageSize
     )
+    request
+      .getLabels()
+      .then((res) => {
+        console.log(res,'标签')
+        this.tag=res.data
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
     meauitem(idx) {
@@ -297,9 +305,21 @@ export default {
     },
     // 提交申请
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          request
+            .getSubapply({
+              name: this.ruleForm.name,
+              phone: this.ruleForm.tel,
+              type: this.options.value,
+              area: this.ruleForm.area,
+              need: '',
+            })
+            .then((res) => {
+              console.log(res, '定制需求')
+            })
+            .catch((e) => {})
+            .finally(() => {})
         } else {
           console.log('error submit!!')
           return false
@@ -310,17 +330,18 @@ export default {
       //层次选择
       console.log(label)
     },
-    handarticdetail(item){ //跳转文章详情
+    handarticdetail(item) {
+      //跳转文章详情
       this.$router.push({
         path: '/articDetail',
-        query:item
+        query: item,
       })
-    }
+    },
   },
   mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
-  }
+  },
 }
 </script>
 

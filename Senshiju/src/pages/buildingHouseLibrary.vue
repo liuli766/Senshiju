@@ -36,13 +36,25 @@
       <!--  -->
       <div class="build_bg">
         <div class="fl_be" style="height:50px">
-          <span v-if="filterSelData===''">
+          <span v-if="filterSelData===''" style="color:#FFD02D">
             已选条件：
-            <span v-for="(item,index) in arr1" :key="index">全部</span>
+            <span
+              v-for="(item,index) in filterList"
+              :key="index"
+              style="margin-right:15px;color:#FFD02D"
+            ></span>
           </span>
-
-          <span v-else>已选条件：{{filterSelData}}</span>
-          <span>清空</span>
+          <div v-else style="color:#FFD02D">
+            已选条件：
+            <span
+              v-for="(val,k) in filterSelData"
+              :key="k"
+              style="margin-right:15px;color:#FFD02D"
+            >{{val}}</span>
+          </div>
+          <span class="fl_center poniter" @click="handdel">
+            <img src="../assets/image/del.png" alt style="margin-right:15px;" /> 清空
+          </span>
         </div>
         <img src="../assets/image/bg.png" alt />
         <div class="build_fiflter">
@@ -72,16 +84,16 @@
           :key="index"
           @click="handdetail"
         >
-          <img :src="item.img" alt />
-          <p class="one-wrap">{{item.p}}</p>
+          <img :src="item.imgs" alt />
+          <p class="one-wrap">{{item.intro}}</p>
           <div class="bot">
             <span>
               占地面积：
-              <i>228m</i>
+              <i>{{item.area}}</i>
             </span>
             <span>
               图纸编号：
-              <i>B203</i>
+              <i>{{item.number.toUpperCase()}}</i>
             </span>
           </div>
         </div>
@@ -97,95 +109,125 @@
 <script>
 import newdesign from '@/components/newdesign.vue'
 import newinfo from '@/components/newinfo.vue'
-// import demo2 from '../assets/comm/demo1'
-// import demo3 from '../assets/comm/comm'
-import request from '@/request.js' 
+import request from '@/request.js'
 export default {
   components: {
     newdesign,
-    newinfo
+    newinfo,
   },
   data() {
     return {
       viewTime: {
         time: true,
-        msg: '数据拼命加载中...'
+        msg: '数据拼命加载中...',
       },
       filterList: [],
       filterSelData: '', // 过滤选中的数据
-      newarr: [],
+      newarr: [], //筛选
       arr1: [
         {
           type: '现代',
           img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
+          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计',
         },
         {
           type: '欧式',
           img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
+          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计',
         },
         {
           type: '中式合院',
           img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计'
-        }
-      ]
+          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计',
+        },
+      ],
     }
   },
   created() {
-    // 请求数据
-    // this.viewList = [...demo2]
-    // this.filterList = [...demo3]
-    request.getCates({
-          cate_id:''
-        }).then((res) => {
-          this.filterList=[...res.data.list]
+    // 请求数据 分类
+    request
+      .getCates({
+        cate_id: '',
+      })
+      .then((res) => {
+        this.filterList = [...res.data.list]
+        this.filterList.map((item, k) => {
+          item.child.map((val, key) => {
+            val.active = false
+            if (val.cate_name == '全部') {
+              val.active = true
+            }
+          })
         })
-        .catch((e) => {})
-        .finally(() => {})
-    
-    this.newarr = this.arr1
+      })
+      .catch((e) => {})
+      .finally(() => {})
+
+    // 墅图纸共有套
+    request
+      .getHots({
+        page: 1,
+        style: '新中式',
+      })
+      .then((res) => {
+        this.newarr = res.data
+        console.log(res, '图纸')
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
     handdetail() {
       //跳转产品详情
       this.$router.push({
-        path: '/productDetail'
+        path: '/productDetail',val
       })
     },
+
     // 点击单个val
     tabClick(data, key, k) {
-      console.log(data, key, k)
       // 添加 active ==> true 显示 `active样式`
-      this.filterList[k].child.map(item => {
+      this.filterList[k].child.map((item) => {
         item.active = false
+
+        let list = [...this.newarr] // 拷贝原数组
+        list = list.filter((val) => val.style === data.cate_name)
+        this.newarr = list
       })
       this.filterList[k].child[key].active = true
 
       // 选中的数据
       let newArray = []
-      this.filterList.map(data => {
-        data.child.map(item => {
+      this.filterList.map((data) => {
+        data.child.map((item) => {
           if (item.active == true) {
-            newArray.push(item.value)
+            newArray.push(item.cate_name)
           }
         })
       })
       this.filterSelData = newArray
+      console.log(this.filterSelData)
+    },
 
-      let list = [...this.arr1] // 拷贝原数组
-      
-      list = list.filter(item => item.type === data.value)
-      this.newarr = list
-      return list
-     
-    }
+    // 清空
+    handdel() {
+      let list = [...this.filterList]
+      this.filterSelData = ''
+      this.filterList.map((item, k) => {
+        item.child.map((val, key) => {
+          if (val.cate_name == '全部') {
+            val.active = true
+          } else {
+            val.active = false
+          }
+        })
+      })
+    },
   },
   mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
-  }
+  },
 }
 </script>
 
@@ -259,7 +301,7 @@ export default {
 }
 .line_h li {
   padding: 6px 8px;
-  margin-right: 22px;
+  margin-right: 14px;
   border-radius: 7px;
   margin-bottom: 8px;
 }

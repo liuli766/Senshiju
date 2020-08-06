@@ -1,16 +1,17 @@
 <template>
-  <div class="hotlist" @click="handdetail(info)">
+  <div class="hotlist" @click="godetail(info)">
     <div class="hotlist_info">
-      <img :src="info.image" alt="">
-      <h5 class="bold">{{info.name}}</h5>
-      <div class="font14 color98">{{info.type}} | {{info.mianj}} | {{info.jaime}}</div>
-      <div class="font14 color98 quotations">{{info.yulu}}</div>
-      <div class="font20 theme price">￥{{info.shejiprice}}</div>
+      <img :src="info.imgs" alt="">
+      <h5 class="bold">{{info.title}}</h5>
+      <div class="font14 color98">{{info.style}} | {{info.area}} | {{info.cost}}</div>
+      <div class="font14 color98 quotations">{{info.intro}}</div>
+      <div class="font20 theme price">￥{{info.price}}</div>
     </div>
   </div>
 </template>
 
 <script>
+import request from '@/request.js'
 export default {
   props: {
     info: {
@@ -20,9 +21,15 @@ export default {
   created () {
   },
   methods: {
-    handdetail(item){
+
+    // 跳转产品详情
+    godetail(item){
+      let idname=(item.id)
       this.$router.push({
-        path: '/productDetail'
+        path: '/productDetail',
+        query:{
+          id:idname
+        }
       })
     }
   },

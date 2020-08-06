@@ -63,7 +63,8 @@ export default {
  computed: {
     ...mapState({
       token: state => state.home.token,
-      islogin: state => state.home.islogin
+      islogin: state => state.home.islogin,
+      userInfor: state => state.userInfor,
     })
   },
   created() {
@@ -112,11 +113,32 @@ export default {
        request.getRegister({
         type:2,
         phone,
-        psd:'',
+        psd:123456,
         smscode:''
       }).then((res)=>{
-        console.log(res,'登录')
-      }).catch((e) => {})
+        
+        let status=true
+        localStorage.setItem('islogin',status)
+        this.$store.commit('settoken', res.data)
+        this.$store.commit('getislogin',status)
+        localStorage.setItem('istoken',res.data.token)
+        this.$message({
+          showClose: true,
+          message: '登录成功',
+          type: 'success',
+        })
+        this.$router.push({
+          path:'/'
+        })
+      }).catch((e) => {
+        let status=false;
+        this.$store.commit('getislogin',status)
+        this.$message({
+          showClose: true,
+          message: e.message,
+          type: 'error',
+        })
+      })
       .finally(() => {})
       }
     }
