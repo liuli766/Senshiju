@@ -62,8 +62,8 @@ export default {
   },
  computed: {
     ...mapState({
-      token: state => state.home.token,
-      islogin: state => state.home.islogin,
+      token: state => state.token,
+      islogin: state => state.islogin,
       userInfor: state => state.userInfor,
     })
   },
@@ -109,19 +109,20 @@ export default {
         this.p2 = true
         return false
       }else{
-          let phone=this.userinfo.phone
+      let phone=this.userinfo.phone
        request.getRegister({
         type:2,
         phone,
         psd:123456,
         smscode:''
       }).then((res)=>{
-        
+        console.log(res)
         let status=true
         localStorage.setItem('islogin',status)
         this.$store.commit('settoken', res.data)
         this.$store.commit('getislogin',status)
         localStorage.setItem('istoken',res.data.token)
+
         this.$message({
           showClose: true,
           message: '登录成功',

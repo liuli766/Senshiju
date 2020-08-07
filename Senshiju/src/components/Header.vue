@@ -85,12 +85,9 @@ export default {
   watch:{
   },
   created() {
-    console.log(this.isLogin)
+    console.log(this.token)
   },
-  mounted() {
-    // let li4 = document.querySelector('nav>ul>li:nth-of-type(5)')
-    // li4.setAttribute('class', 'li4 header-active  poniter') //解决浏览器刷新nav建房百科样式会掉的问题
-  },
+  mounted() {},
   methods: {
     // 点击导航栏
     changeNav(nav, index) {

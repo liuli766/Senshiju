@@ -4,9 +4,9 @@
     <!-- 用户信息 -->
     <div class="yellobg">
       <div class="userintro">
-        <img src="../assets/image/logo.png" alt />
+        <img :src="userInfor.photo" alt />
         <div class="username fl_center">
-          <span>陈某某</span>
+          <span>{{userInfor.nickname}}</span>
           <span>普通用户</span>
         </div>
       </div>
@@ -71,8 +71,8 @@
           <div class="personinfo">
             <div class="fl_be">
               <span>头像</span>
-              <div>
-                <!-- <img src="../assets/image/1.png" alt /> -->
+              <div class="fl_center">
+                <img :src="userInfor.photo" alt class="photo"/>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
@@ -90,18 +90,33 @@
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
-            <button>退出登录</button>
+            <div class="fl_be">
+              <span>修改密码</span>
+              <div>
+                <span>********</span>
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+            <button @click="preser">保存</button>
+            <button @click="outlogin">退出登录</button>
           </div>
         </div>
         <!-- 收获地址 -->
         <div v-show="chosed==2" class="orderlist">
           <h6>收货地址</h6>
           <div class="address">
-            <el-form status-icon ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+            <el-form
+              status-icon
+              ref="ruleForm2"
+              label-width="100px"
+              class="demo-ruleForm"
+              :model="ruleForm2"
+              :rules="rules"
+            >
               <el-form-item label="地区选择：">
                 <div class="fl_be">
                   <select v-model="prov">
-                    <option
+                    <option 
                       :value="item.text ||''"
                       v-for="(item,pro) in provunce"
                       :key="pro"
@@ -114,7 +129,7 @@
                       :key="cid"
                     >{{item.text|| ''}}</option>
                   </select>
-                  <select>
+                  <select v-model="district">
                     <option
                       :value="item.text||''"
                       v-for="(item,pro) in districtArr"
@@ -123,19 +138,26 @@
                   </select>
                 </div>
               </el-form-item>
-              <el-form-item label="详细地址：">
-                <el-input type="textarea"></el-input>
+              <el-form-item label="详细地址：" prop="addr">
+                <el-input type="textarea" v-model="ruleForm2.addr"></el-input>
               </el-form-item>
-              <el-form-item label="收货人姓名：">
-                <el-input type="text"></el-input>
+              <el-form-item label="收货人姓名：" prop="name">
+                <el-input type="text" v-model="ruleForm2.name"></el-input>
               </el-form-item>
-              <el-form-item label="手机号码：">
-                <el-input type="text"></el-input>
+              <el-form-item label="手机号码：" prop="phone">
+                <el-input type="text" v-model="ruleForm2.phone"></el-input>
               </el-form-item>
+              <div class="dui" @click="defut()">
+                <span>
+                  <img src="../assets/image/dui.png" alt v-show="ishook" />
+                </span>
+                设置为默认收货地址
+              </div>
               <el-form-item>
                 <el-button class="btn" @click="submitForm('ruleForm2')">提交</el-button>
               </el-form-item>
             </el-form>
+
             <div>
               <div class="ordernav addr">
                 <span>收货人</span>
@@ -144,16 +166,18 @@
                 <span>手机/电话</span>
                 <span>操作</span>
               </div>
-              <div class="ordercont fl_ar">
-                <span>李某某</span>
-                <span>成都市高新西区</span>
-                <span>西源大道1号合作街道52号</span>
-                <span>17784845585</span>
-                <span>
-                  <span>修改</span>|
-                  <span>删除</span>
-                </span>
-                <span class="defut">默认地址</span>
+              <div style="height: 118px;overflow: auto;">
+                <div class="ordercont fl_ar" v-for="(val,k) in addrlist" :key="k">
+                  <span>{{val.name}}</span>
+                  <span>{{val.prov }}{{ val.city}} {{val.district}}</span>
+                  <span>{{val.addr}}</span>
+                  <span>{{val.phone}}</span>
+                  <span>
+                    <span class="poi" @click="upd(val.id)">修改</span>|
+                    <span @click="del(val.id)" class="poi">删除</span>
+                  </span>
+                  <span class="defut" v-show="val.ishook">默认地址</span>
+                </div>
               </div>
             </div>
           </div>
@@ -171,6 +195,7 @@
               </div>
             </div>
             <div class="ycoll">已收藏</div>
+            <div class="Cancelled" @click="qxcollect">取消收藏</div>
           </div>
         </div>
       </div>
@@ -181,33 +206,50 @@
 <script>
 import { mapState } from 'vuex'
 import citydata from '../assets/comm/city'
-import request from '@/request.js' 
+import request from '@/request.js'
 export default {
   data() {
     return {
       ordernavlist: ['编号', '商品', '价格', '地址', '时间', '状态'],
       chosed: 0,
+      ruleForm2: {
+        addr: '',
+        name: '',
+        phone: '',
+      },
+      rules: {
+        addr: [
+          { required: true, message: '详细地址不能为空', trigger: 'blur' },
+        ],
+        name: [
+          { required: true, message: '收货人姓名不能为空', trigger: 'blur' },
+        ],
+        phone: [
+          { required: true, message: '手机号码不能为空', trigger: 'blur' },
+        ],
+      },
       chosedlist: [
+        //侧边菜单栏
         {
           i: '<i class="el-icon-tickets"></i>',
-          name: '我的订单'
+          name: '我的订单',
         },
         {
           i: '<i class="el-icon-user"></i>',
-          name: '个人资料'
+          name: '个人资料',
         },
         {
           i: '<i class="el-icon-location-outline"></i>',
-          name: '收货地址'
+          name: '收货地址',
         },
         {
           i: '<i class="el-icon-location-outline"></i>',
-          name: '图纸收藏'
+          name: '图纸收藏',
         },
         {
           i: '<i class="el-icon-location-outline"></i>',
-          name: '文章收藏'
-        }
+          name: '文章收藏',
+        },
       ],
       ordercotentlist: [
         {
@@ -216,7 +258,7 @@ export default {
           price: 23,
           address: '重庆',
           time: '18:00',
-          statue: '好'
+          statue: '好',
         },
         {
           bh: 123,
@@ -224,31 +266,232 @@ export default {
           price: 23,
           address: '重庆',
           time: '18:00',
-          statue: '好'
-        }
+          statue: '好',
+        },
       ],
       provunce: citydata,
       prov: '北京市', //第一级
       city: '市辖区', //第二级
       district: '东城区', //第三级
       cityArr: [], //选择市
-      districtArr: [] //选择县
+      districtArr: [], //选择县
+      ishook: false, //勾勾是否选中
+      addrlist: [], //收货地址
+      updlist: [], //修改地址
+      add_id:null
     }
   },
+  computed: {
+    ...mapState({
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
+      userInfor: (state) => state.userInfor,
+    }),
+
+  },
   watch: {
-    prov: function() {
+    prov: function () {
       this.updateCity()
       this.updateDistrict()
     },
-    city: function() {
+    city: function () {
       this.updateDistrict()
+    },
+    addrlist(){
+      this.addshop()
     }
   },
-  created() {},
+  created() {
+    console.log(this.userInfor, this.token)
+    console.log(this.addrlist)
+    this.addshop()
+  },
   methods: {
+
+    // 收货地址查询
+    addshop(){
+      request.getaddress({
+        uid: this.userInfor.member_id,
+    }).then(res=>{
+        this.addrlist=res.data
+        this.addrlist.map((item,k)=>{
+          this.add_id=k
+        })
+    }).catch((e) => {})
+      .finally(() => {})
+    },
+  
+    //修改个人资料
+    preser() {
+      request.getupInfo({
+         uid: this.userInfor.member_id,
+         nickname:this.userInfor.nickname,
+         phone_num:this.userInfor.phone_num,
+         password:'',
+         file:''
+      }).then(res=>{
+        console.log(res,'修改个人资料')
+      }).catch((e) => {})
+        .finally(() => {})
+    },
+
+    // 修改收货地址
+    upd(num) {
+      request
+        .getupRes({
+          id: num,
+          uid: this.userInfor.member_id,
+          address: this.ruleForm2.addr,
+          name: this.ruleForm2.name,
+          phone: this.ruleForm2.phone,
+          province: this.prov,
+          city: this.city,
+          district: this.district,
+        })
+        .then((res) => {
+          this.updlist = this.addrlist.filter((item, k) => k == num)
+          this.ruleForm2.addr = this.updlist[0].addr
+          this.ruleForm2.name = this.updlist[0].name
+          this.ruleForm2.phone = this.updlist[0].phone
+          this.prov = this.updlist[0].prov
+          this.city = this.updlist[0].city
+          this.district = this.updlist[0].district
+
+          console.log(res, '修改')
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+    //  添加收货地址
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let newaddr = []
+
+          request
+            .getAddRes({
+              uid: this.userInfor.member_id,
+              address: this.ruleForm2.addr,
+              name: this.ruleForm2.name,
+              phone: this.ruleForm2.phone,
+              province: this.prov,
+              city: this.city,
+              district: this.district,
+            })
+            .then((res) => {
+              // newaddr.push({
+              //   addr: this.ruleForm2.addr,
+              //   name: this.ruleForm2.name,
+              //   phone: this.ruleForm2.phone,
+              //   prov: this.prov,
+              //   city: this.city,
+              //   district: this.district,
+              // })
+              // this.addrlist = newaddr.concat(this.addrlist)
+              // localStorage.setItem('list', JSON.stringify(this.addrlist))
+
+              console.log(this.addrlist,111)
+              this.$message({
+                showClose: true,
+                message: '添加成功',
+                type: 'success',
+              })
+            })
+            .catch((e) => {
+              this.$message({
+                showClose: true,
+                message: '添加失败',
+                type: 'error',
+              })
+            })
+            .finally(() => {})
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    // 删除当前选中的收货地址
+    del(num) {
+      request
+        .getDelRes({
+          id: num,
+        })
+        .then((res) => {
+          console, log(res)
+          this.$message({
+            showClose: true,
+            message: '删除成功',
+            type: 'success',
+          })
+        })
+        .catch((e) => {
+          this.$message({
+            showClose: true,
+            message: '删除失败',
+            type: 'error',
+          })
+        })
+        .finally(() => {})
+    },
+    // 设为默认地址
+    defut() {
+      this.ishook = !this.ishook
+      request
+        .getSetRes({
+          id: 0,
+        })
+        .then((res) => {
+          console, log(res)
+          this.ishook = true
+          this.$message({
+            showClose: true,
+            message: '默认地址设置成功',
+            type: 'success',
+          })
+        })
+        .catch((e) => {
+          this.$message({
+            showClose: true,
+            message: '默认地址设置失败',
+            type: 'error',
+          })
+        })
+        .finally(() => {})
+    },
+
+    //取消收藏
+    qxcollect() {
+      request
+        .getCancelcollect({
+          uid: this.userInfor.member_id,
+          c_id: '1',
+        })
+        .then((res) => {
+          console.log(res, '取消收藏')
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+
+    // 退出登录
+    outlogin() {
+      this.$store.commit('cleartoken')
+      this.$message({
+        showClose: true,
+        message: '退出成功',
+        type: 'success',
+      })
+      this.$router.push({
+        path: '/login',
+      })
+    },
+    //侧边导航切换
     hanchosed(e) {
       this.chosed = e
     },
+
+    //  三级联动
     updateCity() {
       for (var i in this.provunce) {
         var obj = this.provunce[i]
@@ -280,16 +523,48 @@ export default {
       } else {
         this.district = ''
       }
-    }
+    },
   },
   beforeMount() {
     this.updateCity()
     this.updateDistrict()
-  }
+  },
 }
 </script>
 
 <style scoped>
+.photo{
+  width:56px;
+  height:56px;
+  border-radius: 50%;
+}
+.dui {
+  display: flex;
+  align-items: center;
+  margin-left: 162px;
+}
+.dui span {
+  display: inline-flex;
+  width: 27px;
+  height: 27px;
+  border-radius: 5px;
+  background-color: #eeeeee;
+  border: 1px solid #b7beb6;
+  margin-right: 36px;
+}
+.poi {
+  cursor: pointer;
+}
+.Cancelled {
+  width: 121px;
+  height: 34px;
+  background: rgba(125, 125, 125, 1);
+  border-radius: 15px;
+  color: #aeaeae;
+  font-size: 22px;
+  line-height: 34px;
+  cursor: pointer;
+}
 .usercenter > div.active {
   color: #ffc92f;
 }
@@ -336,6 +611,7 @@ export default {
 }
 main {
   background: #eeeeee;
+  height: 100%;
 }
 nav {
   font-size: 14px;
@@ -411,6 +687,7 @@ nav {
 }
 .order {
   display: flex;
+  padding-bottom: 40px;
 }
 
 .orderlist {
@@ -423,7 +700,7 @@ nav {
 }
 .ordercont > span {
   display: block;
-  width: 120px;
+  width: 145px;
   border-right: 1px solid #f5f5f5;
 }
 .centerbox {
@@ -455,14 +732,15 @@ nav {
   font-family: SimHei;
   line-height: 33px;
   color: #1a1a1a;
-  padding-bottom: 228px;
+  padding-bottom: 46px;
 }
 .personinfo > div {
   height: 87px;
   border-bottom: 1px dashed #a0a0a0;
+  cursor: pointer;
 }
 .personinfo button {
-  margin-top: 243px;
+  margin-top: 130px;
   width: 207px;
   height: 60px;
   background: rgba(255, 201, 47, 1);
@@ -513,6 +791,7 @@ form .btn {
   border-radius: 5px;
   font-size: 18px;
   color: rgba(255, 15, 15, 1);
+  cursor: pointer;
 }
 .coll {
   background: #fff;
@@ -537,5 +816,6 @@ form .btn {
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
   line-height: 34px;
+  cursor: pointer;
 }
 </style>

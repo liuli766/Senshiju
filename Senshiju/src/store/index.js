@@ -8,17 +8,10 @@ export default new Vuex.Store({
   state: {
     meauid: 0, //建房百科菜单选中,
     hedeid:document.cookie,//导航选中 
-    token: "localStorage.getItem('istoken')",
-    userInfor:{
-      token: '',
-      nickname:'刘利',
-      photo:'http://villa.jisapp.cn/head_pic.jpeg',
-      sex:null,
-      openid:''
-    },
+    token: localStorage.getItem('istoken'),
+    userInfor:JSON.parse(localStorage.getItem('loginData')), //当前账号信息
     isLogin: localStorage.getItem('islogin'), //登录状态
     
-    username:localStorage.getItem('username'), //当前用户账号
   },
   getters: {
     loginData (state) {
@@ -43,7 +36,9 @@ export default new Vuex.Store({
 
   mutations: {
     settoken(state, data) { //vuex存放toke
-      state.token = data.token
+      let token = localStorage.getItem('istoken')
+
+      state.token = token
       state.userInfor=data
       localStorage.setItem("loginData", JSON.stringify(data))
       console.log(state.token)
@@ -53,9 +48,10 @@ export default new Vuex.Store({
       state.token = ""
       state.userInfor={}
       localStorage.removeItem('loginData');
+      localStorage.removeItem('istoken');
     },
-    getUser(state, username) { //获取用户信息
-      state.username = username
+    getUser(state, userInfor) { //获取用户信息
+      state.userInfor = userInfor
     },
     getislogin(state, status) { // 获取登录状态
       state.islogin = status
@@ -64,7 +60,7 @@ export default new Vuex.Store({
     meauidfn(state, num) {//建房百科菜单选中
       state.meauid = num
     },
-    headnav(state, num) {
+    headnav(state, num) { //导航状态
       state.hedeid = num
     }
   }

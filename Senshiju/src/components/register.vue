@@ -72,8 +72,8 @@ export default {
   },
   computed: {
     ...mapState({
-      token: (state) => state.home.token,
-      islogin: (state) => state.home.islogin,
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
     }),
   },
   created() {
