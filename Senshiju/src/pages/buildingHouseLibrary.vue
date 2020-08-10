@@ -82,7 +82,7 @@
           class="drawing poniter"
           v-for="(item,index) in newarr"
           :key="index"
-          @click="handdetail"
+          @click="handdetail(item.id)"
         >
           <img :src="item.imgs" alt />
           <p class="one-wrap">{{item.intro}}</p>
@@ -177,10 +177,13 @@ export default {
       .finally(() => {})
   },
   methods: {
-    handdetail() {
+    handdetail(num) {
       //跳转产品详情
       this.$router.push({
-        path: '/productDetail',val
+        path: '/productDetail',
+        query:{
+          id:num
+        }
       })
     },
 

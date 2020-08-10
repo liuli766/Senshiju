@@ -94,7 +94,7 @@
           <p>More intimate service</p>
         </div>
         <div class="life_r">
-          <img src="../../static/private.png" alt />
+          <img src="../assets/image/srdz.png" alt />
           <p>村墅人家是四川别墅之家建筑科技有限公司旗下品牌，创建于2015年08月。专注于新农村自建房 设计、别墅设计和别墅室内装修设计、园林景观设计及施工一站式服务，集合行业顶尖设计资源 致力于打造全国优秀别墅设计公司和私宅设计，服务于中国新农村的建设和城镇化的进程</p>
           <p>公司总部位于四川成都，公司拥有专业的设计团队，秉承以人为本，回归自然绿色创新的设计 理念，为您提供方便快捷低成本的别墅设计方案，采取传统的公司经营和现代互联网相结合的方 式，以专业创新的设计理念结合客户的需求为出发点，帮您打造一个理想的家园。</p>
         </div>
@@ -122,9 +122,9 @@
         <h5>营业执照</h5>
         <p>您的安心，我们的放心</p>
         <div>
-          <div class="permit" style="margin-right:77px" >
-            <img :src="link+drawingslist1"   alt />
-            <img :src="link+drawingslist2"   alt />
+          <div class="permit" style="margin-right:77px">
+            <img :src="link+drawingslist1" alt />
+            <img :src="link+drawingslist2" alt />
           </div>
           <img :src="link+drawingslist3" alt />
         </div>
@@ -134,27 +134,30 @@
         <h5>定制图纸展示</h5>
         <p>私人定制能带来更贴心的享受</p>
         <div class="showpic fl_be">
-          <!-- <img :src="drawingslist.cover" alt /> -->
-          <!-- <img :src="drawingslist.cover" alt /> -->
+          <img src="../assets/image/srdz1.png" alt />
+          <img src="../assets/image/srdz2.png" alt />
         </div>
         <div class="fl_be show_img">
           <el-image
             class="el_image"
             style="width: 100px; height: 100px"
-            :src="item"
+            :src="item.cover"
             v-for="(item,index) in moreList"
             :key="index"
             :preview-src-list="picList"
           ></el-image>
         </div>
-        <div class="more poniter" @click="handmore">查看更多</div>
+
+        <div class="more" v-if="moreList.length<=picList.length">没有更多了</div>
+        <div class="more poniter" @click="handmore" v-else>查看更多</div>
+        
       </div>
       <div class="license">
         <h5>我们的口碑您来决定</h5>
         <p>为您与客户真实的聊天记录</p>
         <div>
           <div class="mouth fl_be">
-            <img v-for="(item,k) in praiselist" :key="k" :src="item.cover" alt />
+            <img v-for="(item,k) in praiselist" :key="k" :src="link+item.cover" alt />
           </div>
         </div>
         <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
@@ -214,44 +217,47 @@ export default {
         },
       ],
       // 订制图片展示
-      picList: [
-        require('../../static/pic.png'),
-        require('../../static/jf.png'),
-        require('../../static/team.png'),
-        require('../../static/pic.png'),
-        require('../../static/team.png'),
-      ],
+      picList: [],
       moreList: [], // 查看更多
       idx: 3,
-      drawingslist1:'', //营业执照
-      drawingslist2:'', //营业执照
-      drawingslist3:'', //营业执照
-      praiselist:[], //口碑
-      link:'http://villa.jisapp.cn'
+      drawingslist1: '', //营业执照
+      drawingslist2: '', //营业执照
+      drawingslist3: '', //营业执照
+      praiselist: [], //口碑
+      link: 'http://villa.jisapp.cn',
     }
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
-    if (this.picList < 4) {
-      this.moreList = this.picList
-    } else {
-      this.moreList = this.picList.slice(0, 4)
-    }
-    // 图纸定制
+    // 私人定制图片 营业执照、口碑
     request
-            .getDrawings()
-            .then((res) => {
-              console.log(res, '定制需求')
-              this.drawingslist1=res.data.license[0].cover
-              this.drawingslist2=res.data.license[1].cover
-              this.drawingslist3=res.data.license[2].cover
-              this.praiselist=res.data.praise
+      .getDrawings()
+      .then((res) => {
+        console.log(res, '定制需求')
+        this.drawingslist1 = res.data.license[0].cover
+        this.drawingslist2 = res.data.license[1].cover
+        this.drawingslist3 = res.data.license[2].cover
+        this.praiselist = res.data.praise
+      })
+      .catch((e) => {})
+      .finally(() => {})
 
-              console.log(this.drawingslist1)
-            })
-            .catch((e) => {})
-            .finally(() => {})
+    // 定制图纸
+    request
+      .teamDrawings({
+        page: 1,
+      })
+      .then((res) => {
+        console.log(res, '定制图纸')
+        this.picList = res.data
+        if (this.picList < 4) {
+          this.moreList = this.picList
+        } else {
+          this.moreList = this.picList.slice(0, 4)
+        }
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
     // 点击导航栏
@@ -273,8 +279,19 @@ export default {
             })
             .then((res) => {
               console.log(res, '定制需求')
+              this.$message({
+                showClose: true,
+                message: '提交成功',
+                type: 'success',
+              })
             })
-            .catch((e) => {})
+            .catch((e) => {
+              this.$message({
+                showClose: true,
+                message: '提交失败',
+                type: 'error',
+              })
+            })
             .finally(() => {})
         } else {
           console.log('error submit!!')

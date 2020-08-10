@@ -339,7 +339,6 @@ i:hover {
 .rel {
   position: relative;
   height: 60px !important;
-  /* margin-bottom: 30px; */
 }
 .pos {
   position: absolute;

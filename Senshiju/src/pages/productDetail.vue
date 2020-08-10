@@ -3,19 +3,20 @@
     <!-- 建房图库详情 -->
     <div class="current">
       当前位置：
-      <router-link to="/">首页</router-link>>图纸列表>三层欧式别墅外观效果图大全农村自建房图纸
+      <router-link to="/">首页</router-link>
+      >图纸列表>{{detaillist.title}}
     </div>
     <!--  -->
     <div class="build_img fl_be">
       <img :src="detaillist.imgs" alt />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
-          <h5>{{detaillist.intro}}</h5>
+          <h5>{{detaillist.title}}</h5>
           <span class="font20 poniter">收藏</span>
         </div>
         <p>
           图纸编号：
-          <span>{{detaillist.number}}</span>
+          <span>{{bianhao}}</span>
         </p>
         <div class="layer fl_be">
           <span>别墅层数:{{detaillist.plies}}</span>
@@ -28,11 +29,40 @@
         </div>
         <div class="tel">: 176-8324-2994</div>
         <div class="button fl_be">
-          <button class="poniter">立即购买此套图纸</button>
-          <button class="poniter">申请按此套图纸施工</button>
+          <button class="poniter" @click="orderPay">立即购买此套图纸</button>
+          <button class="poniter" @click="dialogFormVisible = true">申请按此套图纸施工</button>
         </div>
       </div>
     </div>
+    <div class="dia">
+      <el-dialog title="申请此套图纸" :visible.sync="dialogFormVisible">
+        <el-form
+          :model="ruleForm"
+          status-icon
+          :rules="rules"
+          ref="ruleForm"
+          label-width="780px"
+          class="personform"
+        >
+          <div class="border">您选的图纸编号为 {{bianhao}}</div>
+          <el-form-item prop="name">
+            <el-input type="text" v-model="ruleForm.name" autocomplete="off" placeholder="*您的姓名"></el-input>
+          </el-form-item>
+          <div class="tel fl_be">
+            <el-form-item prop="tel">
+              <el-input type="text" v-model="ruleForm.tel" autocomplete="off" placeholder="*您的电话号码"></el-input>
+            </el-form-item>
+            <el-form-item prop="yzm">
+              <el-input type="text" v-model="ruleForm.yzm" autocomplete="off" placeholder="*请输入验证码"></el-input>
+              <span class="span poniter" @click="time" v-if="tmeValue==60">发送验证码</span>
+              <span class="span poniter" v-else>{{ tmeValue }} s后获取</span>
+            </el-form-item>
+          </div>
+          <el-button class="ybtn" @click="submitForm('ruleForm')">点击申请</el-button>
+        </el-form>
+      </el-dialog>
+    </div>
+
     <!-- 轮播 -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
@@ -68,22 +98,47 @@
     <p
       class="p"
     >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
-  
-    
-  
   </div>
 </template>
 
 <script>
 import Swiper from 'swiper'
 import request from '@/request.js'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       pic: [require('../../static/h.png'), require('../../static/pic.png')],
       listdata: [],
       detaillist: [],
+      dialogFormVisible: false, //弹出层
+      ruleForm: {
+        name: '',
+        tel: '',
+        yzm: '',
+      },
+      rules: {
+        name: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
+        tel: [
+          { required: true, message: '电话话吗不能为空', trigger: 'blur' },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: '手机号不符合规则',
+            trigger: 'blur',
+          },
+        ],
+        yzm: [{ required: true, message: '验证码不能为空', trigger: 'blur' }],
+      },
+      bianhao: '',
+      tmeValue: 60, //倒计时总数
+      flag: 0, //1记时 0停止
     }
+  },
+  computed: {
+    ...mapState({
+      token: (state) => state.token,
+      userInfor: (state) => state.userInfor,
+    }),
   },
   created() {
     this.listdata = this.pic.slice(0, 2)
@@ -95,6 +150,7 @@ export default {
       })
       .then((res) => {
         this.detaillist = res.data
+        this.bianhao = this.detaillist.number.toUpperCase()
         console.log(res, '图纸详情')
       })
       .catch((e) => {})
@@ -119,6 +175,81 @@ export default {
     })
   },
   methods: {
+    //获取验证码
+    time() {
+      let ph = /^1[3|5|7|8|][0-9]{9}$/
+        if (!ph.test(this.ruleForm.tel)) {
+          this.$message({
+            showClose: true,
+            message: '手机号格式不正确',
+            type: 'error',
+          })
+        } else {
+          let phone_num = this.ruleForm.tel
+          request
+            .getCode({ phone_num })
+            .then((res) => {
+              console.log(res)
+            })
+            .catch((e) => {
+            })
+            .finally(() => {})
+          //倒计时
+          this.tmeValue = this.tmeValue - 1
+          this.flag = 1
+          if (this.tmeValue <= 0) {
+            this.tmeValue = 60
+            this.flag = 0
+            return ''
+          } else {
+            setTimeout(() => {
+              this.time()
+            }, 1000)
+          }
+        }
+    },
+    //立即申请
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          request
+            .blueApply({
+              uid: this.userInfor.member_id,
+              bid: this.detaillist.id,
+              name: this.ruleForm.name,
+              phone: this.ruleForm.tel,
+              code: this.ruleForm.yzm,
+            })
+            .then((res) => {
+              console.log(res, '图纸申请')
+              this.$message({
+                showClose: true,
+                message: '申请成功',
+                type: 'success',
+              })
+            })
+            .catch((e) => {
+              this.$message({
+                showClose: true,
+                message: '申请失败',
+                type: 'error',
+              })
+            })
+            .finally(() => {})
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+
+    // 跳转订单页
+    orderPay(){
+      this.$router.push({
+        path:'/orderpay',
+        
+      })
+    },
     handprve() {
       let first = this.pic.shift()
       this.pic.push(first)
@@ -159,21 +290,6 @@ export default {
 .swiper-button-next.swiper-button-disabled {
   opacity: 1;
 }
-/* .swiper > span {
-  font-size: 74px;
-  position: absolute;
-  top: 50%;
-  margin-top: -37px;
-  transition: all 0.5s;
-  color:#FFBF22;
-}
-.swiper > span:nth-of-type(1) {
-  right: 0;
-  transform: rotate(180deg);
-}
-.swiper > span:nth-of-type(2) {
-  left: 0;
-} */
 .swiper-slide {
   margin-left: 14px;
   width: 202px !important;
@@ -281,5 +397,63 @@ export default {
   font: 20px/40px '';
   color: #4e4e4e;
   text-align: left;
+}
+.border {
+  width: 780px;
+  height: 93px;
+  border: 1px solid rgba(183, 190, 182, 1);
+  font-size: 38px;
+  line-height: 93px;
+  text-align: left;
+  padding-left: 13px;
+  color: #ababb2;
+  margin-bottom: 32px;
+}
+.ybtn {
+  width: 780px;
+  height: 93px;
+  background: #ffbf22;
+  color: #fff;
+  border-radius: 10px;
+  font: 400 40px/1 '';
+}
+.span {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-size: 18px;
+}
+</style>
+<style >
+.dia .el-dialog__header {
+  box-sizing: border-box;
+  height: 98px;
+  background: #eee;
+  border: 1px solid rgba(183, 190, 182, 1);
+  color: #0e0e0e;
+  font-size: 40px;
+  text-align: left;
+  font-weight: bold;
+}
+.dia .el-form-item__content {
+  margin-left: 0 !important;
+  text-align: left;
+}
+.dia .el-input__inner {
+  width: 780px;
+  height: 93px;
+  border: 1px solid rgba(183, 190, 182, 1);
+  font-size: 30px;
+}
+.dia .tel .el-input__inner {
+  width: 384px;
+}
+.dia .tel {
+  width: 780px;
+  position: relative;
+}
+.dia input::placeholder {
+  color: #ff151b;
+  font-size: 38px;
 }
 </style>

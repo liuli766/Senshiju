@@ -4,14 +4,14 @@
     <div class="teamdetail">
       <div class="borderdier">
         <div class="bordersan fl_be">
-          <img src="../../static/team.png" alt />
+          <img :src="designList.cover" alt />
           <div class="bordersan_r">
             <div>
-              <h5>{{this.$route.query.name}}</h5>
-              <div class="color98">设计总监</div>
+              <h5>{{designList.name}}</h5>
+              <div class="color98">{{designList.position}}</div>
               <article>
-                <p>毕业院校：成都大学</p>
-                <p>用生活来塑造实用的奢华， 用色彩来渲染立体的律动， 用真诚来换取满意的期待用生活来塑造实用的奢华， 用色彩来渲染立体的律动， 用真诚来换取满意的期待用生活来塑造实用的奢华， 用色彩来渲染立体的律动， 用真诚来换取满意的期待用生活来塑造实用的奢华， 用色彩来渲染立体的律动， 用真诚来换取满意的期待用生活来塑造实用的奢华， 用色彩来渲染立体的律动， 用真诚来换取满意的期待</p>
+                <p>毕业院校:{{designList.school}}</p>
+                <p>{{designList.intro}}</p>
               </article>
             </div>
             <div class="fl_be_al starrating">
@@ -19,7 +19,7 @@
                 评价星级：
                 <el-rate v-model="value" disabled show-score text-color="#ff9900"></el-rate>
               </div>
-              <div>从业年限：6年以上</div>
+              <div>从业年限：{{designList.job_year}}</div>
             </div>
           </div>
         </div>
@@ -34,17 +34,18 @@ export default {
   data() {
     return {
       value: 5,
+      designList:[]
     }
   },
   created() {
-    window.document.title = this.$route.meta.title = this.$route.query.name
     console.log(this.$route)
     request
       .getDesign({
-        id:0
+        id:this.$route.query.id
       })
       .then((res) => {
         console.log(res,'设计师详情')
+        this.designList=res.data
       })
       .catch((e) => {})
       .finally(() => {})
@@ -52,6 +53,7 @@ export default {
   mounted() {
     let nav = document.querySelector('.nav')
     nav.style.display = 'block'
+    window.document.title = this.$route.meta.title = this.$route.query.name
   },
 }
 </script>

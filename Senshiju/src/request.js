@@ -166,6 +166,24 @@ function getaddress(data) {
   }
   return http.fetchPost('/index/User/address', params)
 }
+function teamDrawings(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Team/pri_drawings', params)
+}
+function teamIndex(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Team/index', params)
+}
+function blueApply(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/User/blue_apply', params)
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -175,7 +193,7 @@ export default {
   getSubapply, //私人定制申请     
   getHomeindex, // pc网站首页 
   getHomebaike, //首页百科   
-  getHots, //首页热门图纸 
+  getHots, //首页热门图纸  可以购买
   getPresell, //pc网站首页-图纸预售
   getCates, //分类
   getDrawings, //定制图纸
@@ -194,4 +212,7 @@ export default {
   getupRes, //修改收货地址
   getupInfo, //修改个人资料
   getaddress, //收货地址
+  teamDrawings, //定制图纸
+  teamIndex, //设计师团队
+  blueApply, //图纸申请
 }

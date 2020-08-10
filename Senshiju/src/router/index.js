@@ -120,6 +120,14 @@ const routes = [
       title: '支付页面'
     },
     component: (resolve) => require(['@/pages/pay'], resolve)
+  },
+  {
+    path: '/orderpay',
+    name: 'orderpay',
+    meta: {
+      title: '在线快速订购'
+    },
+    component: (resolve) => require(['@/pages/orderpay'], resolve)
   }
 ]
 

@@ -27,7 +27,7 @@
               v-for="(item,index) in chosedlist"
               :key="index"
               :class="{active:chosed==index}"
-              @click="hanchosed(index)"
+              @click="hanchosed(index, typeid)"
             >
               <span v-html="item.i"></span>
               {{item.name}}
@@ -56,13 +56,14 @@
           <div class="ordernav">
             <span v-for="(item,index) in ordernavlist" :key="index">{{item}}</span>
           </div>
-          <div v-for="(item,i) in ordercotentlist" :key="'1'+i" class="ordercont fl_ar">
-            <span>{{item.bh}}</span>
-            <span>{{item.sp}}</span>
+          <div v-if="ordercotentlist.length==0">没有订单</div>
+          <div v-for="(item,i) in ordercotentlist" :key="'1'+i" class="ordercont fl_ar" v-else>
+            <span>{{item.order_num}}</span>
+            <span>{{item.title}}</span>
             <span>{{item.price}}</span>
             <span>{{item.address}}</span>
-            <span>{{item.time}}</span>
-            <span>{{item.statue}}</span>
+            <span>{{item.pay_time}}</span>
+            <span>{{item.status}}</span>
           </div>
         </div>
         <!-- 个人资料 -->
@@ -71,36 +72,75 @@
           <div class="personinfo">
             <div class="fl_be">
               <span>头像</span>
-              <div class="fl_center">
-                <img :src="userInfor.photo" alt class="photo"/>
+              <div class="fl_center adatar">
+                <img :src="adatar?adatar:userInfor.photo" alt class="photo" />
+                <input
+                  type="file"
+                  name
+                  accept="image/gif, image/jpeg, image/jpg, image/png"
+                  @change="fileChange"
+                />
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
             <div class="fl_be">
               <span>昵称</span>
               <div>
-                <span>某某某</span>
+                <span>
+                  <input type="text" v-model="userInfor.nickname" />
+                </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
             <div class="fl_be">
               <span>修改手机号</span>
               <div>
-                <span>已绑定：151****7474</span>
+                <span>
+                  已绑定：
+                  <input type="text" v-model="userInfor.phone_num" />
+                </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
             <div class="fl_be">
               <span>修改密码</span>
               <div>
-                <span>********</span>
+                <span>
+                  <input type="password" v-model="password" />
+                </span>
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </div>
+            <div class="fl_be" @click="setpwd">
+              <span>设置密码</span>
+              <div>
                 <i class="el-icon-arrow-right"></i>
               </div>
             </div>
             <button @click="preser">保存</button>
             <button @click="outlogin">退出登录</button>
           </div>
+          <div class="setpwd" v-if="setpedflag">
+            <h5>
+              <span>设置密码</span>
+            </h5>
+            <input type="text" :value="userInfor.phone_num" class="ip" />
+            <div class="rel">
+              <input type="text" class="ip" placeholder="请输入4位验证码" />
+              <div class="pos poniter" v-if="tmeValue==60" @click="time">
+                <div class="line"></div>获取验证码
+              </div>
+              <div class="pos poniter" v-else>
+                <div class="line"></div>
+                {{ tmeValue }} s 后获取
+              </div>
+            </div>
+            <input type="text" placeholder="请输入新密码（8+20位，数字/字母/符号" class="ip" />
+            <input type="text" placeholder="再次确认新密码" class="ip" />
+            <div class="btn" @click="sure">确定</div>
+          </div>
         </div>
+
         <!-- 收获地址 -->
         <div v-show="chosed==2" class="orderlist">
           <h6>收货地址</h6>
@@ -116,7 +156,7 @@
               <el-form-item label="地区选择：">
                 <div class="fl_be">
                   <select v-model="prov">
-                    <option 
+                    <option
                       :value="item.text ||''"
                       v-for="(item,pro) in provunce"
                       :key="pro"
@@ -147,7 +187,7 @@
               <el-form-item label="手机号码：" prop="phone">
                 <el-input type="text" v-model="ruleForm2.phone"></el-input>
               </el-form-item>
-              <div class="dui" @click="defut()">
+              <div class="dui" @click="gg">
                 <span>
                   <img src="../assets/image/dui.png" alt v-show="ishook" />
                 </span>
@@ -174,9 +214,10 @@
                   <span>{{val.phone}}</span>
                   <span>
                     <span class="poi" @click="upd(val.id)">修改</span>|
-                    <span @click="del(val.id)" class="poi">删除</span>
+                    <span @click="handdel(val.id)" class="poi">删除</span>
                   </span>
-                  <span class="defut" v-show="val.ishook">默认地址</span>
+                  <span v-if="val.is_default==0"></span>
+                  <span class="defut"  @click="defut(val.id)" v-else>默认地址</span>
                 </div>
               </div>
             </div>
@@ -251,24 +292,7 @@ export default {
           name: '文章收藏',
         },
       ],
-      ordercotentlist: [
-        {
-          bh: 123,
-          sp: '不是举报',
-          price: 23,
-          address: '重庆',
-          time: '18:00',
-          statue: '好',
-        },
-        {
-          bh: 123,
-          sp: '不是举报',
-          price: 23,
-          address: '重庆',
-          time: '18:00',
-          statue: '好',
-        },
-      ],
+      ordercotentlist: [],
       provunce: citydata,
       prov: '北京市', //第一级
       city: '市辖区', //第二级
@@ -278,7 +302,14 @@ export default {
       ishook: false, //勾勾是否选中
       addrlist: [], //收货地址
       updlist: [], //修改地址
-      add_id:null
+      add_id: null,
+      adatar: '', //头像
+      password: '',
+      dialogFormVisible: false, //弹框
+      setpedflag: false,
+      tmeValue: 60, //获取验证码时间
+      flag: 0,
+      typeid:1 //图纸，文章
     }
   },
   computed: {
@@ -287,7 +318,6 @@ export default {
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
     }),
-
   },
   watch: {
     prov: function () {
@@ -297,41 +327,76 @@ export default {
     city: function () {
       this.updateDistrict()
     },
-    addrlist(){
-      this.addshop()
-    }
   },
   created() {
     console.log(this.userInfor, this.token)
-    console.log(this.addrlist)
-    this.addshop()
+    console.log(this.add_id)
+    this.getshop()
+
+    // 我的订单
+    request
+      .getOrders({
+        uid: this.userInfor.member_id,
+      })
+      .then((res) => {
+        console.log(res, '我的订单')
+        this.ordercotentlist = res.data
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
-
-    // 收货地址查询
-    addshop(){
-      request.getaddress({
-        uid: this.userInfor.member_id,
-    }).then(res=>{
-        this.addrlist=res.data
-        this.addrlist.map((item,k)=>{
-          this.add_id=k
+    getshop() {
+      // 收货地址
+      request
+        .getaddress({
+          uid: this.userInfor.member_id,
         })
-    }).catch((e) => {})
-      .finally(() => {})
+        .then((res) => {
+          this.addrlist = res.data
+          this.addrlist = this.addrlist.reverse()
+          this.addrlist.map((item, k) => {
+            this.add_id = k
+          })
+        })
+        .catch((e) => {})
+        .finally(() => {})
     },
-  
+    setpwd() {
+      this.setpedflag = true
+    },
+    sure() {
+      this.setpedflag = false
+    },
+    time() {
+      //倒计时
+      this.tmeValue = this.tmeValue - 1
+      this.flag = 1
+      if (this.tmeValue <= 0) {
+        this.tmeValue = 60
+        this.flag = 0
+        return ''
+      } else {
+        setTimeout(() => {
+          this.time()
+        }, 1000)
+      }
+    },
+
     //修改个人资料
     preser() {
-      request.getupInfo({
-         uid: this.userInfor.member_id,
-         nickname:this.userInfor.nickname,
-         phone_num:this.userInfor.phone_num,
-         password:'',
-         file:''
-      }).then(res=>{
-        console.log(res,'修改个人资料')
-      }).catch((e) => {})
+      request
+        .getupInfo({
+          uid: this.userInfor.member_id,
+          nickname: this.userInfor.nickname,
+          phone_num: this.userInfor.phone_num,
+          password: '',
+          file: this.adatar,
+        })
+        .then((res) => {
+          console.log(res, '修改个人资料')
+        })
+        .catch((e) => {})
         .finally(() => {})
     },
 
@@ -367,7 +432,6 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let newaddr = []
-
           request
             .getAddRes({
               uid: this.userInfor.member_id,
@@ -377,20 +441,10 @@ export default {
               province: this.prov,
               city: this.city,
               district: this.district,
+              is_default:this.ishook
             })
             .then((res) => {
-              // newaddr.push({
-              //   addr: this.ruleForm2.addr,
-              //   name: this.ruleForm2.name,
-              //   phone: this.ruleForm2.phone,
-              //   prov: this.prov,
-              //   city: this.city,
-              //   district: this.district,
-              // })
-              // this.addrlist = newaddr.concat(this.addrlist)
-              // localStorage.setItem('list', JSON.stringify(this.addrlist))
-
-              console.log(this.addrlist,111)
+              this.getshop()
               this.$message({
                 showClose: true,
                 message: '添加成功',
@@ -411,21 +465,24 @@ export default {
         }
       })
     },
-    // 删除当前选中的收货地址
-    del(num) {
+    // 删除收货地址
+    handdel(num) {
+      console.log(num + '')
       request
         .getDelRes({
-          id: num,
+          id: num + '',
         })
         .then((res) => {
-          console, log(res)
+          console.log(res)
           this.$message({
             showClose: true,
             message: '删除成功',
             type: 'success',
           })
+          this.getshop()
         })
         .catch((e) => {
+          console.log(e)
           this.$message({
             showClose: true,
             message: '删除失败',
@@ -435,15 +492,14 @@ export default {
         .finally(() => {})
     },
     // 设为默认地址
-    defut() {
-      this.ishook = !this.ishook
+    defut(num) {
       request
         .getSetRes({
-          id: 0,
+          id: num,
         })
         .then((res) => {
           console, log(res)
-          this.ishook = true
+          // this.ishook = true
           this.$message({
             showClose: true,
             message: '默认地址设置成功',
@@ -459,7 +515,23 @@ export default {
         })
         .finally(() => {})
     },
-
+    gg(){
+      this.ishook = !this.ishook
+    },
+    
+    // 图纸收藏
+    collect(num) {
+      request
+        .fachcollect({
+          uid: this.userInfor.member_id,
+          type:num
+        })
+        .then((res) => {
+            console.log(res,'图纸收藏')
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
     //取消收藏
     qxcollect() {
       request
@@ -486,9 +558,28 @@ export default {
         path: '/login',
       })
     },
+    //头像选择
+    fileChange(e) {
+      var that = this
+      var file = e.target.files[0]
+      this.adatar = e.target.files[0]
+
+      var reader = new FileReader()
+      reader.onload = function (e) {
+        that.adatar = e.target.result
+      }
+      reader.readAsDataURL(file)
+    },
     //侧边导航切换
-    hanchosed(e) {
+    hanchosed(e,typeid) {
       this.chosed = e
+      if(e==3){
+        typeid=1 //图纸
+        this.collect(typeid)
+      }else if(e==4){
+        typeid=2 //文章
+        this.collect(typeid)
+      }
     },
 
     //  三级联动
@@ -533,9 +624,68 @@ export default {
 </script>
 
 <style scoped>
-.photo{
-  width:56px;
-  height:56px;
+.rel {
+  position: relative;
+  height: 79px;
+  margin-bottom: 45px;
+}
+.rel .line {
+  width: 1px;
+  height: 35px;
+  font-family: Microsoft YaHei;
+  font-weight: bold;
+  background: rgba(120, 120, 120, 1);
+  display: inline-block;
+  margin-right: 18px;
+}
+.pos {
+  position: absolute;
+  top: 15px;
+  right: 172px;
+  color: #ffae26;
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+}
+.ip {
+  width: 619px;
+  height: 79px;
+  background: #f5f5f5;
+}
+
+.adatar {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+.adatar img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.adatar input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+input:focus {
+  box-shadow: none;
+}
+input {
+  text-align: right;
+  width: 116px;
+}
+.photo {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
 }
 .dui {
@@ -612,6 +762,7 @@ export default {
 main {
   background: #eeeeee;
   height: 100%;
+  padding-bottom: 150px;
 }
 nav {
   font-size: 14px;
@@ -694,6 +845,50 @@ nav {
   width: 906px;
   height: 49px;
   line-height: 49px;
+  position: relative;
+}
+.setpwd {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  padding-bottom: 60px;
+}
+.setpwd input {
+  text-align: left;
+  padding: 0 27px;
+  box-sizing: border-box;
+  font-size: 22px;
+  color: #9a9a9a;
+  margin-bottom: 47px;
+  border: 1px solid rgba(191, 191, 191, 1);
+}
+.setpwd h5 {
+  height: 44px;
+  font: bold 24px/1 '';
+  color: #434343;
+  text-align: left;
+  margin-left: 29px;
+  margin-top: 40px;
+  border-bottom: 1px solid #bfbfbf;
+  margin-bottom: 45px;
+}
+.setpwd h5 span {
+  padding-bottom: 16px;
+  border-bottom: 2px solid #ffc92f;
+}
+.setpwd input::placeholder {
+  color: #9a9a9a;
+}
+.setpwd .btn {
+  width: 619px;
+  height: 79px;
+  background: rgba(255, 201, 47, 1);
+  color: #fff;
+  font-size: 32px;
+  margin: auto;
+  line-height: 79px;
+  cursor: pointer;
 }
 .ordercont {
   background: #fff;
