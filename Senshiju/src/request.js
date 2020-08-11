@@ -184,6 +184,15 @@ function blueApply(data) {
   }
   return http.fetchPost('/index/User/blue_apply', params)
 }
+function buyBlue(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/User/buy_blue', params)
+}
+function getPlies() {
+  return http.fetchPost('/index/Home/plies')
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -215,4 +224,6 @@ export default {
   teamDrawings, //定制图纸
   teamIndex, //设计师团队
   blueApply, //图纸申请
+  buyBlue, //购买图纸
+  getPlies, //私人订制层次
 }

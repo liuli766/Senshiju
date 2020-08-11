@@ -12,7 +12,8 @@
       <div class="build_img_r">
         <div class="fl_be build_img_t">
           <h5>{{detaillist.title}}</h5>
-          <span class="font20 poniter">收藏</span>
+          <span class="font20 poniter" @click="Collect(detaillist.id)" v-if="detaillist.is_collect">收藏</span>
+          <span class="font20 poniter yi" v-else >已收藏</span>
         </div>
         <p>
           图纸编号：
@@ -120,7 +121,7 @@ export default {
       rules: {
         name: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
         tel: [
-          { required: true, message: '电话话吗不能为空', trigger: 'blur' },
+          { required: true, message: '电话号码不能为空', trigger: 'blur' },
           {
             pattern: /^1[3456789]\d{9}$/,
             message: '手机号不符合规则',
@@ -143,18 +144,18 @@ export default {
   created() {
     this.listdata = this.pic.slice(0, 2)
     // setInterval(this.handprve, 1000);
-    let idname = this.$route.query.id
-    request
-      .getBlueDetail({
-        id: idname,
-      })
-      .then((res) => {
-        this.detaillist = res.data
-        this.bianhao = this.detaillist.number.toUpperCase()
-        console.log(res, '图纸详情')
-      })
-      .catch((e) => {})
-      .finally(() => {})
+    // request
+    //   .getBlueDetail({
+    //     id: this.$route.query.id,
+    //   })
+    //   .then((res) => {
+    //     console.log(res)
+    //     this.detaillist = res.data
+    //     this.bianhao = this.detaillist.number.toUpperCase()
+    //   })
+    //   .catch((e) => {})
+    //   .finally(() => {})
+    this.handdetail()
   },
   mounted() {
     const mySwiper = new Swiper('.swiper-container', {
@@ -175,38 +176,53 @@ export default {
     })
   },
   methods: {
+
+    // 图纸详情
+    handdetail(){
+        request
+      .getBlueDetail({
+        id: this.$route.query.id,
+      })
+      .then((res) => {
+        this.detaillist = res.data
+        this.bianhao = this.detaillist.number.toUpperCase()
+        console.log(res, '图纸详情')
+      })
+      .catch((e) => {})
+      .finally(() => {})
+    },
+
     //获取验证码
     time() {
       let ph = /^1[3|5|7|8|][0-9]{9}$/
-        if (!ph.test(this.ruleForm.tel)) {
-          this.$message({
-            showClose: true,
-            message: '手机号格式不正确',
-            type: 'error',
+      if (!ph.test(this.ruleForm.tel)) {
+        this.$message({
+          showClose: true,
+          message: '手机号格式不正确',
+          type: 'error',
+        })
+      } else {
+        let phone_num = this.ruleForm.tel
+        request
+          .getCode({ phone_num })
+          .then((res) => {
+            console.log(res)
           })
+          .catch((e) => {})
+          .finally(() => {})
+        //倒计时
+        this.tmeValue = this.tmeValue - 1
+        this.flag = 1
+        if (this.tmeValue <= 0) {
+          this.tmeValue = 60
+          this.flag = 0
+          return ''
         } else {
-          let phone_num = this.ruleForm.tel
-          request
-            .getCode({ phone_num })
-            .then((res) => {
-              console.log(res)
-            })
-            .catch((e) => {
-            })
-            .finally(() => {})
-          //倒计时
-          this.tmeValue = this.tmeValue - 1
-          this.flag = 1
-          if (this.tmeValue <= 0) {
-            this.tmeValue = 60
-            this.flag = 0
-            return ''
-          } else {
-            setTimeout(() => {
-              this.time()
-            }, 1000)
-          }
+          setTimeout(() => {
+            this.time()
+          }, 1000)
         }
+      }
     },
     //立即申请
     submitForm(formName) {
@@ -244,11 +260,64 @@ export default {
     },
 
     // 跳转订单页
-    orderPay(){
+    orderPay() {this.handdetail()
       this.$router.push({
-        path:'/orderpay',
-        
+        path: '/orderpay',
+        query:{
+          id:this.detaillist.id,
+          price:this.detaillist.price
+        }
       })
+    },
+
+    // 收藏
+    Collect(num) {
+      request
+        .getCollect({
+          uid: this.userInfor.member_id,
+          type: 1,
+          object: num,
+        })
+        .then((res) => {
+          this.handdetail();
+          this.$message({
+            showClose: true,
+            message: '收藏成功',
+            type: 'success',
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+          this.$message({
+            showClose: true,
+            message: '收藏失败',
+            type: 'error',
+          })
+        })
+        .finally(() => {})
+    },
+    //取消收藏
+    qxcollect(idx) {
+      request
+        .getCancelcollect({
+          uid: this.userInfor.member_id,
+          c_id: idx,
+        })
+        .then((res) => {
+          this.$message({
+                showClose: true,
+                message: '取消成功',
+                type: 'success',
+              })
+        })
+        .catch((e) => {
+          this.$message({
+                showClose: true,
+                message: '取消失败',
+                type: 'error',
+              })
+        })
+        .finally(() => {})
     },
     handprve() {
       let first = this.pic.shift()
@@ -422,6 +491,14 @@ export default {
   top: 22px;
   right: 22px;
   font-size: 18px;
+}
+.build_img .build_img_t span.yi {
+  width: 121px;
+  height: 34px;
+  background: rgba(125, 125, 125, 1);
+  border-radius: 15px;
+  color: #aeaeae;
+  font-size: 22px;
 }
 </style>
 <style >

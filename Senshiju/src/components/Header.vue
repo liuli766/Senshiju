@@ -20,8 +20,8 @@
         <router-link to="/register">注册</router-link>|
         <router-link to="/login">登录</router-link>
       </div>
-        <div v-else class="head">
-          <img :src="userInfor.photo" alt="">
+        <div v-else class="head poniter">
+          <img :src="userInfor.photo" alt="" @click="goperson">
         </div>
         
       <div class="serch">
@@ -110,6 +110,11 @@ export default {
         path: '/BuildingEncyclopedia'
       })
       this.$store.commit('meauidfn', idx)
+    },
+    goperson(){
+       this.$router.push({
+        path: '/order'
+      })
     }
   }
 }

@@ -15,7 +15,12 @@
       <nav class="nav">
         <router-link to="/">首页</router-link>>
         <span>用户中心</span>>
-        <router-link to="/order">我的订单</router-link>
+        <span v-show="chosed==0" class="active">我的订单</span>
+        <span v-show="chosed==1" class="active">个人资料</span>
+        <span v-show="chosed==2" class="active">收货地址</span>
+        <span v-show="chosed==3" class="active">图纸收藏</span>
+        <span v-show="chosed==4" class="active">文章收藏</span>
+
       </nav>
       <!-- div -->
       <div class="order">
@@ -157,21 +162,21 @@
                 <div class="fl_be">
                   <select v-model="prov">
                     <option
-                      :value="item.text ||''"
+                      :value="item.text ||'prov'"
                       v-for="(item,pro) in provunce"
                       :key="pro"
                     >{{item.text||''}}</option>
                   </select>
                   <select v-model="city">
                     <option
-                      :value="item.text||''"
+                      :value="item.text||'city'"
                       v-for="(item,cid) in cityArr"
                       :key="cid"
                     >{{item.text|| ''}}</option>
                   </select>
                   <select v-model="district">
                     <option
-                      :value="item.text||''"
+                      :value="item.text||'district'"
                       v-for="(item,pro) in districtArr"
                       :key="pro"
                     >{{item.text||""}}</option>
@@ -226,17 +231,37 @@
         <!-- 图纸收藏 -->
         <div class="orderlist" v-show="chosed==3">
           <h6>收藏的图纸</h6>
-          <div class="coll flx">
-            <img src="../assets/image/3.png" alt />
+          <div v-if="CollnectList.length==0">
+              没有收藏的图纸
+          </div>
+          <div class="coll flx" v-for='(item,k) in CollnectList' :key='k'>
+            <img :src="item.cover" alt />
             <div class="center">
-              <p>C335三层欧式新农村别墅自建房图纸设计</p>
+              <p>{{item.title}}</p>
               <div class="fl_be">
-                <span>￥368</span>
-                <span>2020-05-26</span>
+                <span>￥{{item.cost}}</span>
+                <span>{{item.add_time}}</span>
               </div>
             </div>
-            <div class="ycoll">已收藏</div>
-            <div class="Cancelled" @click="qxcollect">取消收藏</div>
+            <div class="ycoll" v-if="item.is_collect==1" @click="qxcollect(item.collect_id)">已收藏</div>
+          </div>
+        </div>
+        <!-- 文章收藏 -->
+        <div class="orderlist" v-show="chosed==4">
+          <h6>收藏的文章</h6>
+          <div v-if="CollnectList.length==0">
+              没有收藏的文章
+          </div>
+          <div class="coll flx" v-for='(item,k) in CollnectList' :key='k'>
+            <img :src="item.cover" alt />
+            <div class="center">
+              <p>{{item.title}}</p>
+              <div class="fl_be">
+                <span>￥{{item.cost}}</span>
+                <span>{{item.add_time}}</span>
+              </div>
+            </div>
+            <div class="ycoll" v-if="item.is_collect==1" @click="qxcollect(item.collect_id)">已收藏</div>
           </div>
         </div>
       </div>
@@ -309,7 +334,8 @@ export default {
       setpedflag: false,
       tmeValue: 60, //获取验证码时间
       flag: 0,
-      typeid:1 //图纸，文章
+      typeid:1, //图纸，文章
+      CollnectList:[], //图纸收藏
     }
   },
   computed: {
@@ -326,13 +352,13 @@ export default {
     },
     city: function () {
       this.updateDistrict()
-    },
+    }
   },
   created() {
     console.log(this.userInfor, this.token)
     console.log(this.add_id)
     this.getshop()
-
+    
     // 我的订单
     request
       .getOrders({
@@ -528,21 +554,33 @@ export default {
         })
         .then((res) => {
             console.log(res,'图纸收藏')
+            this.CollnectList = res.data
         })
         .catch((e) => {})
         .finally(() => {})
     },
     //取消收藏
-    qxcollect() {
+    qxcollect(idx) {
       request
         .getCancelcollect({
           uid: this.userInfor.member_id,
-          c_id: '1',
+          c_id: idx,
         })
         .then((res) => {
-          console.log(res, '取消收藏')
+          this.collect(1)
+          this.$message({
+                showClose: true,
+                message: '取消成功',
+                type: 'success',
+              })
         })
-        .catch((e) => {})
+        .catch((e) => {
+          this.$message({
+                showClose: true,
+                message: '取消失败',
+                type: 'error',
+              })
+        })
         .finally(() => {})
     },
 
@@ -992,6 +1030,7 @@ form .btn {
   background: #fff;
   align-items: center;
   padding: 0 40px;
+  justify-content: space-between;
 }
 .coll img {
   width: 156px;
@@ -1012,5 +1051,8 @@ form .btn {
   color: rgba(255, 255, 255, 1);
   line-height: 34px;
   cursor: pointer;
+}
+.active{
+  color: #FFC92F;
 }
 </style>

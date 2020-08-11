@@ -23,7 +23,10 @@
             <div>
               <h6>{{item.title}}</h6>
               <p>{{item.content}}</p>
-              <div class="timer">{{item.add_time}}</div>
+              <div class="timer">
+                <span class="poniter" @click="collect(item.id)">收藏</span>
+                {{item.add_time}}
+              </div>
             </div>
           </div>
         </div>
@@ -77,9 +80,9 @@
               <el-select v-model="value" placeholder="不限" @change="handchange" class="myclass">
                 <el-option
                   v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.cate_id"
+                  :label="item.cate_name"
+                  :value="item.cate_name"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -162,28 +165,7 @@ export default {
           { required: true, message: '占地面积不能为空', trigger: 'blur' },
         ],
       },
-      options: [
-        {
-          value: '1',
-          label: '黄金糕',
-        },
-        {
-          value: '2',
-          label: '双皮奶',
-        },
-        {
-          value: '3',
-          label: '蚵仔煎',
-        },
-        {
-          value: '4',
-          label: '龙须面',
-        },
-        {
-          value: '5',
-          label: '北京烤鸭',
-        },
-      ],
+      options: [],
       value: '',
       contlist: [],
       classid: '建房百科',
@@ -192,8 +174,18 @@ export default {
   },
   computed: mapState({
     meauid: (state) => state.meauid,
+    userInfor: (state) => state.userInfor,
   }),
   created() {
+    request
+      .getPlies()
+      .then((res) => {
+        console.log(res, '层次')
+        this.options = res.data
+      })
+      .catch((e) => {})
+      .finally(() => {})
+
     this.meaunum = this.$store.state.meauid
     this.countlist = this.contlist.slice(
       (this.currentPage - 1) * this.pageSize,
@@ -210,6 +202,7 @@ export default {
       })
       .catch((e) => {})
       .finally(() => {})
+
     // 标签
     request
       .getLabels()
@@ -219,6 +212,25 @@ export default {
       })
       .catch((e) => {})
       .finally(() => {})
+    if (this.meauid == 0) {
+      this.classid = '建房百科'
+      this.getdata(this.classid)
+    } else if (this.meauid == 1) {
+      this.classid = '设计百科'
+      this.getdata(this.classid)
+    } else if (this.meauid == 2) {
+      this.classid = '装修百科'
+      this.getdata(this.classid)
+    } else if (this.meauid == 3) {
+      this.classid = '施工百科'
+      this.getdata(this.classid)
+    } else if (this.meauid == 4) {
+      this.classid = '风水百科'
+      this.getdata(this.classid)
+    } else if (this.meauid == 5) {
+      this.classid = '建房日志'
+      this.getdata(this.classid)
+    }
   },
   methods: {
     // 各种百科
@@ -291,7 +303,7 @@ export default {
             .getSubapply({
               name: this.ruleForm.name,
               phone: this.ruleForm.tel,
-              type: this.options.value,
+              type: this.options.cate_name,
               area: this.ruleForm.area,
               need: '',
             })
@@ -316,6 +328,31 @@ export default {
           return false
         }
       })
+    },
+    collect(num) {
+      // 收藏
+      request
+        .getCollect({
+          uid: this.userInfor.member_id,
+          type: 2,
+          object: num,
+        })
+        .then((res) => {
+          console.log(res, '收藏')
+          this.$message({
+            showClose: true,
+            message: '收藏成功',
+            type: 'success',
+          })
+        })
+        .catch((e) => {
+          this.$message({
+            showClose: true,
+            message: '收藏失败',
+            type: 'error',
+          })
+        })
+        .finally(() => {})
     },
     handchange(label) {
       //层次选择
