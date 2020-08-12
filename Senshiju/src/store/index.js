@@ -11,7 +11,9 @@ export default new Vuex.Store({
     token: localStorage.getItem('istoken'),
     userInfor:JSON.parse(localStorage.getItem('loginData')), //当前账号信息
     isLogin: localStorage.getItem('islogin'), //登录状态
-    
+    user:{
+
+    }
   },
   getters: {
     loginData (state) {
@@ -50,8 +52,8 @@ export default new Vuex.Store({
       localStorage.removeItem('loginData');
       localStorage.removeItem('istoken');
     },
-    getUser(state, userInfor) { //获取用户信息
-      state.userInfor = userInfor
+    getUser(state, user) { //获取用户信息
+      state.user = user
     },
     getislogin(state, status) { // 获取登录状态
       state.islogin = status

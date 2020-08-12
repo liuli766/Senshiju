@@ -86,38 +86,6 @@ export default {
       .finally(() => {})
   },
   methods: {
-    onlogin() {
-      let params = this.userinfo
-      homeApi
-        .loginUserNo(params)
-        .then((res) => {
-          let { data } = res
-          if (data.code === 200) {
-            let token = JSON.parse(localStorage.getItem('userinfo'))
-            if (
-              token.username === params.username &&
-              token.password === params.password
-            ) {
-              this.$store.commit('getUser', params.username)
-              localStorage.setItem('islogin', 'login')
-              this.$toast('登录成功')
-              window.location.href = '/home'
-            }
-          }
-        })
-        .catch(() => {})
-    },
-    handswich(idx) {
-      if (idx == 0) {
-        this.$router.push({
-          path: '/register',
-        })
-      } else {
-        this.$router.push({
-          path: '/login',
-        })
-      }
-    },
     // 获取验证码
     time() {
       if (this.userinfo.phone !== '') {
@@ -133,10 +101,9 @@ export default {
           request
             .getCode({ phone_num })
             .then((res) => {
-              console.log(res)
+              console.log(res, '获取验证码')
             })
-            .catch((e) => {
-            })
+            .catch((e) => {})
             .finally(() => {})
           //倒计时
           this.tmeValue = this.tmeValue - 1
@@ -155,7 +122,61 @@ export default {
         this.$message({
           showClose: true,
           message: '手机号不能为空',
-          type: 'warning',
+          type: 'error',
+        })
+      }
+    },
+    //注册
+    handsubmit() {
+      if (
+        this.userinfo.phone == '' &&
+        this.userinfo.password == '' &&
+        this.code == ''
+      ) {
+        this.p1 = true
+        this.p2 = true
+        this.p3 = true
+        return false
+      } else {
+        let phone = this.userinfo.phone
+        let smscode = this.code
+        request
+          .getRegister({
+            type: 1,
+            phone,
+            psd: '',
+            smscode,
+          })
+          .then((res) => {
+            console.log(res, '')
+            this.$message({
+              showClose: true,
+              message: '注册成功',
+              type: 'success',
+            })
+            this.$router.push({
+              path: '/',
+            })
+          })
+          .catch((e) => {
+            this.$message({
+              showClose: true,
+              message: '注册失败',
+              type: 'error',
+            })
+          })
+          .finally(() => {})
+      }
+    },
+    // 切换登录与注册
+    handswich(idx) {
+      if (idx == 0) {
+        this.$router.push({
+          path: '/register',
+        })
+      } else {
+        this.$router.push({
+          path: '/login',
         })
       }
     },
@@ -185,34 +206,6 @@ export default {
         return false
       } else {
         this.p3 = false
-      }
-    },
-    //注册
-    handsubmit() {
-      if (
-        this.userinfo.phone == '' &&
-        this.userinfo.password == '' &&
-        this.code == ''
-      ) {
-        this.p1 = true
-        this.p2 = true
-        this.p3 = true
-        return false
-      } else {
-        let phone = this.userinfo.phone
-        let smscode = this.code
-        request
-          .getRegister({
-            type: 1,
-            phone,
-            psd: '',
-            smscode,
-          })
-          .then((res) => {
-            console.log(res)
-          })
-          .catch((e) => {})
-          .finally(() => {})
       }
     },
   },

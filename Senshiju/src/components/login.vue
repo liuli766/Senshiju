@@ -23,7 +23,13 @@
         <div>
           <p id="red" v-if="p1">请输入手机号</p>
           <p id="red" v-if="p4">请输入正确的手机</p>
-          <input type="text" class="input" placeholder="请输入手机号" v-model="userinfo.phone" @change="inp1" />
+          <input
+            type="text"
+            class="input"
+            placeholder="请输入手机号"
+            v-model="userinfo.phone"
+            @change="inp1"
+          />
           <p id="red" v-if="p2">请输入密码</p>
           <input
             type="password"
@@ -44,28 +50,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import request from '@/request.js' 
+import { mapState } from 'vuex'
+import request from '@/request.js'
 export default {
   data() {
     return {
       userinfo: {
         phone: '',
-        password: ''
+        password: '',
       },
       navlist: ['短信登录/注册', '密码登录'],
       navid: 1,
-      p1:false,
-      p2:false,
-      p4:false
+      p1: false,
+      p2: false,
+      p4: false,
     }
   },
- computed: {
+  computed: {
     ...mapState({
-      token: state => state.token,
-      islogin: state => state.islogin,
-      userInfor: state => state.userInfor,
-    })
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
+      userInfor: (state) => state.userInfor,
+    }),
   },
   created() {
     if (this.$route.params.islogin === 'loginout') {
@@ -76,11 +82,11 @@ export default {
     handswich(idx) {
       if (idx == 0) {
         this.$router.push({
-          path: '/register'
+          path: '/register',
         })
       } else {
         this.$router.push({
-          path: '/login'
+          path: '/login',
         })
       }
     },
@@ -104,46 +110,48 @@ export default {
       }
     },
     handsubmit() {
-      if (this.userinfo.phone == '' && this.userinfo.password == '' ) {
+      if (this.userinfo.phone == '' && this.userinfo.password == '') {
         this.p1 = true
         this.p2 = true
         return false
-      }else{
-      let phone=this.userinfo.phone
-       request.getRegister({
-        type:2,
-        phone,
-        psd:123456,
-        smscode:''
-      }).then((res)=>{
-        console.log(res)
-        let status=true
-        localStorage.setItem('islogin',status)
-        this.$store.commit('settoken', res.data)
-        this.$store.commit('getislogin',status)
-        localStorage.setItem('istoken',res.data.token)
-
-        this.$message({
-          showClose: true,
-          message: '登录成功',
-          type: 'success',
-        })
-        this.$router.push({
-          path:'/'
-        })
-      }).catch((e) => {
-        let status=false;
-        this.$store.commit('getislogin',status)
-        this.$message({
-          showClose: true,
-          message: e.message,
-          type: 'error',
-        })
-      })
-      .finally(() => {})
+      } else {
+        let phone = this.userinfo.phone
+        request
+          .getRegister({
+            type: 2,
+            phone,
+            psd: this.userinfo.password,
+            smscode: '',
+          })
+          .then((res) => {
+            console.log(res)
+            let status = true
+            localStorage.setItem('islogin', status)
+            this.$store.commit('settoken', res.data)
+            this.$store.commit('getislogin', status)
+            localStorage.setItem('istoken', res.data.token)
+            this.$message({
+                showClose: true,
+                message: '登录成功',
+                type: 'success',
+              })
+              this.$router.push({
+                path: '/',
+              })
+          })
+          .catch((e) => {
+            let status = false
+            this.$store.commit('getislogin', status)
+            this.$message({
+              showClose: true,
+              message: e.message,
+              type: 'error',
+            })
+          })
+          .finally(() => {})
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
