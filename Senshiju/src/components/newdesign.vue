@@ -3,7 +3,7 @@
   <div>
     <h6>最新设计定制案例</h6>
     <div class="drawing poniter" v-for="(item,index) in designlist" :key="index">
-      <img :src="item.imgs" alt />
+      <img :src="item.cover" alt />
       <p class="one-wrap">{{item.intro}}</p>
       <div class="bot">
         <span>
@@ -27,12 +27,26 @@ export default {
       designlist:[]
     }
   },
+  props: {
+    newarr: {
+      type: Array,
+    },
+  },
   created() {
     // 墅图纸共有套
     request
       .getHots({
-        page: 1,
-        style: 1,
+       page: 1,
+        style: '',
+        area: '',
+        face_width: '',
+        depth: '',
+        plies: '',
+        function: '',
+        structure: '',
+        cost: '',
+        by_away: 'asc',
+        sort: 'add_time',
       })
       .then((res) => {
         this.designlist = res.data

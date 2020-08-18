@@ -106,8 +106,8 @@
           class="img"
           v-for="(item,index) in morelist"
           :key="index"
-          :src="item.imgs"
-          alt=""
+          :src="item.cover"
+          alt
           @click="handprodetail(item)"
         />
       </div>
@@ -208,39 +208,48 @@
     </div>
     <!-- 资讯展示 -->
     <div class="mationmain">
-      <transition name="bounce" mode="out-in" class="mationparent">
-        <div class="inforparent" v-for="(item,index) in list1 " :key="index">
-          <div>
-            <div class="inforlist">
-              <img src="../../static/pic.png" alt />
-              <div class="infor_txt">
-                <div class="b">
-                  12{{item}}
-                  <span>/month</span>
-                </div>
-                <span class="hline"></span>
-                <h6 class="h6tit"></h6>
-                <span class="hline1"></span>
-                <p class="txtp two-wrap">社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快</p>
+      <!-- <transition name="bounce" mode="out-in" class="mationparent"> -->
+      <div
+        class="inforparent poniter"
+        v-for="(item,index) in zxlist "
+        :key="index" 
+      >
+        <div>
+          <div class="inforlist"  @click="handbaike(item)">
+            <img :src="item.cover" alt />
+            <div class="infor_txt">
+              <div class="b">
+                {{item.add_time.slice(5,7)}}
+                <span>/month</span>
               </div>
-              <div class="blok"></div>
+              <span class="hline"></span>
+              <h6 class="h6tit">{{item.title}}</h6>
+              <span class="hline1"></span>
+              <p class="txtp two-wrap">{{item.content}}</p>
             </div>
-            <!--  -->
-            <div class="infornews_parent">
-              <div class="infornews" v-for="(item,index) in inList" :key="index">
-                <p class="txtp1 one-wrap">{{item.infotxt}}</p>
-                <div>{{item.time}}</div>
-              </div>
+            <div class="blok"></div>
+          </div>
+          <!--  -->
+          <div class="infornews_parent poniter">
+            <div
+              class="infornews"
+              v-for="(item,index) in inList"
+              :key="index"
+              @click="gobaike(item)"
+            >
+              <p class="txtp1 one-wrap">{{item.content}}</p>
+              <div>{{item.add_time.slice(0,10)}}</div>
             </div>
           </div>
         </div>
-      </transition>
+      </div>
+      <!-- </transition> -->
       <!--  -->
       <div class="btn">
-        <button @click="handprve">
+        <button @click="handprve" class="poniter">
           <span class="iconfont icon-jiantou"></span>
         </button>
-        <button @click="handnext">
+        <button @click="handnext" class="poniter">
           <span class="iconfont icon-arrow_right"></span>
         </button>
       </div>
@@ -272,22 +281,30 @@
     </div>
     <!-- 首页联系客服 -->
     <div class="fixed">
-      <div @click="goqq">
-        <img src="../assets/image/fixed/kf.png" alt />
-        <span>联系客服</span>
-      </div>
+      <!-- <a href="javascript:void(0)" id="contactQQ">
+        
+      </a>-->
+      <a :href="'tencent://message/?uin='+homeList.qq+'&Site=&Menu=yes'" target="_blank">
+        <img
+          :src="'http://wpa.qq.com/pa?p=2:'+homeList.qq+':41'"
+          alt="点击这里给我发消息"
+          style="opacity: 0;"
+        />
+        <div>
+          <img src="../assets/image/fixed/kf.png" alt />
+          <span>联系客服</span>
+        </div>
+      </a>
+
       <div>
         <img src="../assets/image/fixed/erwm.png" alt />
         <span>二维码</span>
+        <img :src="link+homeList.qr_code" alt class="qrimg" />
       </div>
       <div @click="handorder">
         <img src="../assets/image/fixed/ddan.png" alt />
         <span>订单</span>
       </div>
-      <!-- <div>
-        <img src="../assets/image/fixed/gwuc.png" alt />
-        <span>购物车</span>
-      </div>-->
       <div @click="handtop">
         <img src="../assets/image/fixed/fhdb.png" alt />
         <span>返回顶部</span>
@@ -307,6 +324,7 @@ export default {
   },
   data() {
     return {
+      link: 'http://villa.jisapp.cn',
       swiperOption: {
         pagination: {
           el: '.swiper-pagination',
@@ -366,38 +384,16 @@ export default {
       morelist: [], // 查看更多
       idx: 2,
       inforList: [
-        '建房资讯',
         '建房百科',
         '设计百科',
         '装修百科',
         '施工百科',
         '风水百科',
+        '建房日志',
       ],
-      typeinfor: '建房资讯',
-      inList: [
-        {
-          infotxt:
-            '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11',
-        },
-        {
-          infotxt:
-            '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11',
-        },
-        {
-          infotxt:
-            '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11',
-        },
-        {
-          infotxt:
-            '社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快社会的发展越来越快',
-          time: '19 - 12 - 11',
-        },
-      ],
-      list: [1, 2, 3],
-      list1: [],
+      typeinfor: '建房百科',
+      inList: [], //建房资讯
+      zxlist: [], //建房资讯
       design: [
         {
           img: require('../assets/image/shejishi/jiaoliu.png'),
@@ -425,7 +421,7 @@ export default {
         },
       ],
       vdeoimg: true,
-      homeList:[]
+      homeList: [],
     }
   },
   watch: {},
@@ -440,7 +436,12 @@ export default {
     },
   },
   created() {
-    this.list1 = this.list.slice(0, 1)
+    // 联系客服
+    BizQQWPA.addCustom({
+      aty: '0', //指定工号类型,0-自动分流，1-指定工号，2-指定分组
+      nameAccount: '1872124699', //指定的聊天 QQ 号码
+      selector: 'contactQQ', //触发聊天的标签id
+    })
     //热销推荐
     request
       .getHots({
@@ -454,20 +455,24 @@ export default {
       .catch((e) => {})
       .finally(() => {})
 
-      // pc网站首页
-    request.getHomeindex({
-    }).then(res=>{
-      this.homeList=res.data
-      console.log(res,'pc端首页')
-    }) .catch((e) => {})
+    // pc网站首页
+    request
+      .getHomeindex({})
+      .then((res) => {
+        this.homeList = res.data
+        console.log(res, 'pc端首页')
+      })
+      .catch((e) => {})
       .finally(() => {})
 
-
-    this.getzixun()
+    this.getzixun('0')
     this.getprell()
     this.getlunbo()
   },
   methods: {
+    getGoodsHref() {
+      return `http://wpa.qq.com/msgrd?v=3&uin=${homeList.qq}&site=qq&menu=yes`
+    },
     gethots() {
       //热销推荐
       request
@@ -481,14 +486,17 @@ export default {
         .catch((e) => {})
         .finally(() => {})
     },
-    getzixun() {
+    getzixun(src) {
       //资讯
       request
         .getHomebaike({
           page: 1,
+          class: src,
         })
         .then((res) => {
-          console.log(res, '图纸预售')
+          console.log(res, '资讯')
+          this.inList = res.data
+          this.zxlist = this.inList.slice(0, 1)
         })
         .catch((e) => {})
         .finally(() => {})
@@ -529,10 +537,20 @@ export default {
 
     // 别墅资讯
     handInfor(nav) {
-      let list = [...this.hotdata] // 拷贝原数组
-      list = list.filter((item) => item.type === nav)
       this.typeinfor = nav
-      this.hotlist = list
+      if (nav == '建房百科') {
+        this.getzixun('0')
+      } else if (nav == '设计百科') {
+        this.getzixun('1')
+      } else if ((nav = '装修百科')) {
+        this.getzixun('2')
+      } else if (nav == '施工百科') {
+        this.getzixun('3')
+      } else if (nav == '风水百科') {
+        this.getzixun('4')
+      } else if (nav == '建房日志') {
+        this.getzixun('5')
+      }
     },
 
     // 查看更多
@@ -543,20 +561,37 @@ export default {
       this.morelist = [...list, ...this.hotdata.slice(this.idx++, this.idx + 3)]
     },
     handprve() {
-      let first = this.list.shift()
-      this.list.push(first)
-      this.list1 = this.list.slice(0, 1)
+      let first = this.inList.shift()
+      this.inList.push(first)
+      this.zxlist = this.inList.slice(0, 1)
     },
     handnext() {
-      console.log(1)
-      let last = this.list.pop()
-      this.list.unshift(last)
-      this.list1 = this.list.slice(0, 1)
+      let last = this.inList.pop()
+      this.inList.unshift(last)
+      this.zxlist = this.inList.slice(0, 1)
     },
     // 设计师了解详情
     handLearn() {
       this.$router.push({
         path: '/teamDetail',
+      })
+    },
+
+    // 跳转百科详情
+    handbaike(item) {
+      this.$router.push({
+        path: '/articDetail',
+        query: {
+          id: item.id,
+        },
+      })
+    },
+    gobaike(item) {
+      this.$router.push({
+        path: '/articDetail',
+        query: {
+          id: item.id,
+        },
       })
     },
     handtop() {
@@ -565,12 +600,12 @@ export default {
     },
     handprodetail(item) {
       //跳转产品详情
-      let idname=(item.id)
+      let idname = item.id
       this.$router.push({
         path: '/productDetail',
-        query:{
-          id:idname
-        }
+        query: {
+          id: idname,
+        },
       })
     },
     handorder() {
@@ -591,12 +626,6 @@ export default {
         this.vdeoimg = true
       }
     },
-
-    // 联系客服
-
-    goqq(){
-
-    }
   },
   mounted() {
     let nav = document.querySelector('.nav')
@@ -631,5 +660,37 @@ export default {
   left: 50%;
   margin-top: -46px;
   margin-left: -46px;
+}
+.fixed > div {
+  position: relative;
+}
+.fixed > div:hover .qrimg {
+  opacity: 1;
+}
+.qrimg {
+  position: absolute;
+  top: 0;
+  left: -110px;
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  opacity: 0;
+}
+.fixed a > div {
+  background: #fff;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 74px;
+}
+.fixed a > div img {
+  width: 34px;
+  height: 38px;
+  margin-top: 10px;
+}
+.fixed > div > img,
+.fixed a > div > img {
+  margin-bottom: 10px;
 }
 </style>

@@ -8,7 +8,7 @@
     <div class="register_bot">
       <div class="erwm">
         <h6>手机扫码登录</h6>
-        <img src alt />
+        <wxlogin  :appid="'wxe960929de0880424'" :scope="'snsapi_login'"  :redirect_uri="'http://villa.jisapp.cn/index/Login/qr_code'"  ></wxlogin> 
         <p>打开手机微信APP 在【首页—扫一扫】扫描二维码登录</p>
       </div>
       <div class="swich">
@@ -52,6 +52,7 @@
 <script>
 import { mapState } from 'vuex'
 import request from '@/request.js'
+import wxlogin from 'vue-wxlogin';
 export default {
   data() {
     return {
@@ -68,6 +69,7 @@ export default {
       p2: false,
       p3: false,
       p4: false,
+      obj: '',
     }
   },
   computed: {
@@ -77,6 +79,7 @@ export default {
     }),
   },
   created() {
+
     request
       .getQrcode()
       .then((res) => {

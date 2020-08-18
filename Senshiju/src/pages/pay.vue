@@ -30,9 +30,12 @@
           </h6>
           <div class="qrcode">
             <img src alt />
-            <div class="fl_center text">
-              <img src="../assets/image/zf/扫一扫.png" alt />
-              <span>打开手机微信扫码继续支付</span>
+            <div class="fl_center text col">
+              <div>
+                <img src="../assets/image/zf/扫一扫.png" alt />
+                <span>打开手机微信扫码继续支付</span>
+              </div>
+              <div ref="qrCodeUrl" style="margin-top:20px"></div>
             </div>
           </div>
           <img class="img" src="../assets/image/zf/对话框.png" alt />
@@ -59,7 +62,16 @@
 
 <script>
 import request from '@/request.js'
+import { mapState } from 'vuex'
+import QRCode from 'qrcodejs2'
 export default {
+  computed: {
+    ...mapState({
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
+      userInfor: (state) => state.userInfor,
+    }),
+  },
   data() {
     return {
       navlist: [
@@ -77,12 +89,60 @@ export default {
         },
       ],
       choeid: 0, //支付导航选中
+      dataqr: '',
     }
   },
+
+  created() {},
   methods: {
+    creatQrCode(qr) {
+      console.log(qr)
+      var qrcode = new QRCode(this.$refs.qrCodeUrl, {
+        text: qr, // 需要转换为二维码的内容
+        width: 100,
+        height: 100,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H,
+      })
+    },
     swichnav(k) {
       this.choeid = k
     },
+  },
+  mounted() {
+    request
+      .getPay({
+        uid: this.userInfor.member_id,
+        order_num: this.$route.query.data,
+      })
+      .then((res) => {
+        this.dataqr = res.data.wx_pay
+        console.log(this.dataqr)
+        this.creatQrCode(this.dataqr)
+        request
+          .getwxnotify({
+
+          })
+          .then((res) => {
+            console.log(res,'')
+            this.$message({
+            showClose: true,
+            message: '支付成功',
+            type: 'success',
+          })
+          })
+          .catch((e) => {
+            this.$message({
+            showClose: true,
+            message: '支付失败',
+            type: 'error',
+          })
+          })
+          .finally(() => {})
+      })
+      .catch((e) => {})
+      .finally(() => {})
   },
 }
 </script>
@@ -188,10 +248,10 @@ export default {
   margin-top: 27px;
   cursor: pointer;
 }
-.dgzh p{
+.dgzh p {
   font: bold 20px/22px 'Microsoft YaHei';
 }
-.dgzh p span{
-  color: #0084FF;
+.dgzh p span {
+  color: #0084ff;
 }
 </style>

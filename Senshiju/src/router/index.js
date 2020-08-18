@@ -128,6 +128,14 @@ const routes = [
       title: '在线快速订购'
     },
     component: (resolve) => require(['@/pages/orderpay'], resolve)
+  },
+  {
+    path: '/serveQQ',
+    name: 'serveQQ',
+    meta: {
+      title: '联系客服'
+    },
+    component: (resolve) => require(['@/pages/serveQQ'], resolve)
   }
 ]
 

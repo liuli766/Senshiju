@@ -38,9 +38,7 @@ export default new Vuex.Store({
 
   mutations: {
     settoken(state, data) { //vuex存放toke
-      let token = localStorage.getItem('istoken')
-
-      state.token = token
+      state.token = data.token
       state.userInfor=data
       localStorage.setItem("loginData", JSON.stringify(data))
       console.log(state.token)

@@ -8,7 +8,11 @@
     <div class="register_bot">
       <div class="erwm">
         <h6>手机扫码登录</h6>
-        <img src alt />
+        <wxlogin
+          :appid="'wxe960929de0880424'"
+          :scope="'snsapi_login'"
+          :redirect_uri="'http://villa.jisapp.cn/index/Login/qr_code'"
+        ></wxlogin>
         <p>打开手机微信APP 在【首页—扫一扫】扫描二维码登录</p>
       </div>
       <div class="swich">
@@ -52,7 +56,9 @@
 <script>
 import { mapState } from 'vuex'
 import request from '@/request.js'
+import wxlogin from 'vue-wxlogin'
 export default {
+  components: { wxlogin },
   data() {
     return {
       userinfo: {
@@ -125,19 +131,17 @@ export default {
           })
           .then((res) => {
             console.log(res)
-            let status = true
-            localStorage.setItem('islogin', status)
             this.$store.commit('settoken', res.data)
-            this.$store.commit('getislogin', status)
             localStorage.setItem('istoken', res.data.token)
+            console.log(localStorage.getItem('istoken'))
             this.$message({
-                showClose: true,
-                message: '登录成功',
-                type: 'success',
-              })
-              this.$router.push({
-                path: '/',
-              })
+              showClose: true,
+              message: '登录成功',
+              type: 'success',
+            })
+            this.$router.push({
+              path: '/',
+            })
           })
           .catch((e) => {
             let status = false

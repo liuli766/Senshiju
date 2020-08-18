@@ -11,11 +11,11 @@
           </li>
         </nav>
         <!-- 内容 -->
-        <div v-if="countlist.length==0">没有内容</div>
+        <div v-if="contlist.length==0">没有内容</div>
         <div v-show="meauid==0 || meaunum==0" v-else>
           <div
             class="cont poniter"
-            v-for="(item,index) in countlist"
+            v-for="(item,index) in contlist"
             :key="index"
             @click="handarticdetail(item)"
           >
@@ -144,7 +144,6 @@ export default {
       meaunum: 0, //当前选中的item
       pageSize: 5, //当前显示的条数
       currentPage: 1, //当前页数
-      countlist: [], //当前分页渲染的内容
       tag: [],
       ruleForm: {
         name: '',
@@ -170,6 +169,7 @@ export default {
       contlist: [],
       classid: '建房百科',
       hotprllList: [],
+      flag:false
     }
   },
   computed: mapState({
@@ -187,7 +187,7 @@ export default {
       .finally(() => {})
 
     this.meaunum = this.$store.state.meauid
-    this.countlist = this.contlist.slice(
+    this.contlist = this.contlist.slice(
       (this.currentPage - 1) * this.pageSize,
       this.currentPage * this.pageSize
     )
@@ -212,22 +212,22 @@ export default {
       })
       .catch((e) => {})
       .finally(() => {})
-    if (this.meauid == 0) {
+    if (this.meaunum == 0) {
       this.classid = '建房百科'
       this.getdata(this.classid)
-    } else if (this.meauid == 1) {
+    } else if (this.meaunum == 1) {
       this.classid = '设计百科'
       this.getdata(this.classid)
-    } else if (this.meauid == 2) {
+    } else if (this.meaunum == 2) {
       this.classid = '装修百科'
       this.getdata(this.classid)
-    } else if (this.meauid == 3) {
+    } else if (this.meaunum == 3) {
       this.classid = '施工百科'
       this.getdata(this.classid)
-    } else if (this.meauid == 4) {
+    } else if (this.meaunum == 4) {
       this.classid = '风水百科'
       this.getdata(this.classid)
-    } else if (this.meauid == 5) {
+    } else if (this.meaunum == 5) {
       this.classid = '建房日志'
       this.getdata(this.classid)
     }
@@ -242,7 +242,7 @@ export default {
           class: str,
         })
         .then((res) => {
-          console.log(res, '百科')
+          console.log(res.data, '百科')
           this.contlist = res.data
         })
         .catch((e) => {})

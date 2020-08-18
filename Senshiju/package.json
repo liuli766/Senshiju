@@ -14,11 +14,13 @@
     "axios": "^0.19.2",
     "element-ui": "^2.13.2",
     "es6-promise": "^4.2.8",
+    "qrcodejs2": "0.0.2",
     "qs": "^6.9.4",
     "swiper": "^5.4.3",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^4.1.1",
     "vue-router": "^3.0.1",
+    "vue-wxlogin": "^1.0.2",
     "vuex": "^3.5.1"
   },
   "devDependencies": {

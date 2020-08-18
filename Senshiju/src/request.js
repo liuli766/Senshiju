@@ -193,6 +193,24 @@ function buyBlue(data) {
 function getPlies() {
   return http.fetchPost('/index/Home/plies')
 }
+function getPay(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/User/pre_pay', params)
+}
+function getwxnotify(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Notify/wx_notify', params)
+}
+function getartzx(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/api/Common/art_class', params)
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -226,4 +244,7 @@ export default {
   blueApply, //图纸申请
   buyBlue, //购买图纸
   getPlies, //私人订制层次
+  getPay,//支付页面
+  getwxnotify,//微信支付回调
+  getartzx, //首页咨询
 }

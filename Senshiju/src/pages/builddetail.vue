@@ -7,7 +7,7 @@
     </div>
     <!--  -->
     <div class="build_img fl_be">
-      <img src="../../static/bulid.png" alt />
+      <img src="../assets/image/1.png" alt />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
           <h5>三层欧式别墅外观效果图大全农村自建房图纸</h5>
@@ -56,10 +56,10 @@ export default {
         '主体参考造价：25~30万左右'
       ],
       pic: [
-        require('../../static/h.png'),
-        require('../../static/pic.png'),
-        require('../../static/jf.png'),
-        require('../../static/h.png')
+        require('../assets/image/1.png'),
+        require('../assets/image/1.png'),
+        require('../assets/image/1.png'),
+        require('../assets/image/1.png')
       ],
       listdata: []
     }

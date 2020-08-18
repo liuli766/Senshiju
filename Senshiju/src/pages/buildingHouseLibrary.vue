@@ -58,18 +58,18 @@
         </div>
         <img src="../assets/image/bg.png" alt />
         <div class="build_fiflter">
-          <span class="font24">别墅图纸共有套</span>
+          <span class="font24">别墅图纸共有{{newarr.length}}套</span>
           <div class="theme font18">
-            <span>排序</span>
-            <span>
+            <span @click="handsort">排序</span>
+            <span @click="handmoods('moods')">
               人气
               <span class="iconfont icon-jiantou-xia"></span>
             </span>
-            <span>
+            <span @click="handmoods('area')">
               面积
               <span class="iconfont icon-jiantou-xia"></span>
             </span>
-            <span>
+            <span @click="handmoods('add_time')">
               最新
               <span class="iconfont icon-jiantou-xia"></span>
             </span>
@@ -84,7 +84,7 @@
           :key="index"
           @click="handdetail(item.id)"
         >
-          <img :src="item.imgs" alt />
+          <img :src="item.cover" alt />
           <p class="one-wrap">{{item.intro}}</p>
           <div class="bot">
             <span>
@@ -100,7 +100,7 @@
       </div>
     </div>
     <div style="margin-left: 38px;">
-      <newdesign />
+      <newdesign :newarr='newarr'/>
       <newinfo />
     </div>
   </div>
@@ -124,23 +124,9 @@ export default {
       filterList: [],
       filterSelData: '', // 过滤选中的数据
       newarr: [], //筛选
-      arr1: [
-        {
-          type: '现代',
-          img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计',
-        },
-        {
-          type: '欧式',
-          img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计',
-        },
-        {
-          type: '中式合院',
-          img: require('../../static/jf.png'),
-          p: '农村自建房两层楼新中式别墅设计农村自建房两层楼新中式别墅设计',
-        },
-      ],
+      viewlist: '', //style
+      sortnum:0,
+
     }
   },
   created() {
@@ -163,11 +149,20 @@ export default {
       .catch((e) => {})
       .finally(() => {})
 
-    // 墅图纸共有套
+    // 别墅图纸
     request
       .getHots({
         page: 1,
-        style: '新中式',
+        style: '',
+        area: '',
+        face_width: '',
+        depth: '',
+        plies: '',
+        function: '',
+        structure: '',
+        cost: '',
+        by_away: 'desc',
+        sort: '',
       })
       .then((res) => {
         this.newarr = res.data
@@ -181,21 +176,40 @@ export default {
       //跳转产品详情
       this.$router.push({
         path: '/productDetail',
-        query:{
-          id:num
-        }
+        query: {
+          id: num,
+        },
       })
     },
 
+    // 别墅图纸
+    getpic(val, sort,src) {
+      console.log(val,sort,src)
+      request
+        .getHots({
+          page: 1,
+          style: val[0],
+          area: val[1],
+          face_width: val[2],
+          depth: val[3],
+          plies: val[4],
+          function: val[5],
+          structure: val[6],
+          cost: val[7],
+          sort,
+          by_away:src
+        })
+        .then((res) => {
+          this.newarr = res.data
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
     // 点击单个val
     tabClick(data, key, k) {
       // 添加 active ==> true 显示 `active样式`
       this.filterList[k].child.map((item) => {
         item.active = false
-
-        let list = [...this.newarr] // 拷贝原数组
-        list = list.filter((val) => val.style === data.cate_name)
-        this.newarr = list
       })
       this.filterList[k].child[key].active = true
 
@@ -209,7 +223,7 @@ export default {
         })
       })
       this.filterSelData = newArray
-      console.log(this.filterSelData)
+      this.getpic(this.filterSelData)
     },
 
     // 清空
@@ -225,6 +239,21 @@ export default {
           }
         })
       })
+    },
+    // moods-人气；area-面积；add_time-最新
+    handmoods(moods) {
+      
+      this.getpic(this.filterSelData,moods) 
+       
+    },
+    handsort() {
+      this.sortnum++
+      if(this.sortnum%2==1){
+           this.getpic(this.filterSelData,'desc')
+      }else{
+         this.getpic(this.filterSelData,'asc')
+      }
+       
     },
   },
   mounted() {
@@ -340,6 +369,7 @@ export default {
   width: 284px;
   height: 322px;
   transition: all 0.3s;
+  padding-bottom: 10px;
 }
 .drawing:hover {
   box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
@@ -362,6 +392,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 889px;
+  margin-bottom: 50px;
 }
 .bot {
   padding: 24px 13px;

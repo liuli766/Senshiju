@@ -140,7 +140,7 @@ h5 {
   margin: 0 auto;
 }
 .team {
-  background: url(/static/banner.png) no-repeat;
+  background: url(../assets/image/banner.png) no-repeat;
   height: 715px;
   background-size: 100% 100%;
 }

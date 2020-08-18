@@ -75,7 +75,14 @@
                 <span>元</span>
               </div>
               <div>以上都是预估造价，具体价格以客户实际情况为准</div>
-              <el-button class="tmbtn">立刻咨询客服小姐姐</el-button>
+              <a :href="'tencent://message/?uin='+homeList.qq+'&Site=&Menu=yes'" target="_blank">
+                <img
+                  :src="'http://wpa.qq.com/pa?p=2:'+homeList.qq+':41'"
+                  alt="点击这里给我发消息"
+                  style="opacity: 0;"
+                />
+                <el-button class="tmbtn">立刻咨询客服小姐姐</el-button>
+              </a>
             </div>
           </div>
         </div>
@@ -109,10 +116,10 @@
             :key="index"
             class="poniter teamsupport_box_item"
           >
-            <img :src="item.img" alt />
+            <img :src="item.cover" alt />
             <div class="block fl_ar font20">
               <span>{{item.name}}</span>
-              <span class="font14">{{item.occupation}}</span>
+              <span class="font14">{{item.position}}</span>
             </div>
           </div>
         </div>
@@ -150,7 +157,6 @@
 
         <div class="more" v-if="moreList.length<=picList.length">没有更多了</div>
         <div class="more poniter" @click="handmore" v-else>查看更多</div>
-        
       </div>
       <div class="license">
         <h5>我们的口碑您来决定</h5>
@@ -160,7 +166,14 @@
             <img v-for="(item,k) in praiselist" :key="k" :src="link+item.cover" alt />
           </div>
         </div>
-        <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
+        <a :href="'tencent://message/?uin='+homeList.qq+'&Site=&Menu=yes'" target="_blank">
+          <img
+            :src="'http://wpa.qq.com/pa?p=2:'+homeList.qq+':41'"
+            alt="点击这里给我发消息"
+            style="opacity: 0;"
+          />
+          <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
+        </a>
       </div>
     </main>
   </div>
@@ -194,28 +207,7 @@ export default {
           },
         ],
       },
-      teamSupport: [
-        {
-          name: '蔡壮保',
-          occupation: '设计总监',
-          img: require('../../static/srdz.png'),
-        },
-        {
-          name: '汤丞昱',
-          occupation: '设计总监',
-          img: require('../../static/srdz.png'),
-        },
-        {
-          name: '蔡壮保',
-          occupation: '设计总监',
-          img: require('../../static/srdz.png'),
-        },
-        {
-          name: '白若霖',
-          occupation: '设计总监',
-          img: require('../../static/srdz.png'),
-        },
-      ],
+      teamSupport: [],
       // 订制图片展示
       picList: [],
       moreList: [], // 查看更多
@@ -225,10 +217,19 @@ export default {
       drawingslist3: '', //营业执照
       praiselist: [], //口碑
       link: 'http://villa.jisapp.cn',
+      homeList: [],
     }
   },
   mounted() {},
   created() {
+    request
+      .getHomeindex({})
+      .then((res) => {
+        this.homeList = res.data
+        console.log(res, 'pc端首页')
+      })
+      .catch((e) => {})
+      .finally(() => {})
     // 私人定制图片 营业执照、口碑
     request
       .getDrawings()
@@ -255,6 +256,16 @@ export default {
         } else {
           this.moreList = this.picList.slice(0, 4)
         }
+      })
+      .catch((e) => {})
+      .finally(() => {})
+
+    // 设计团队
+    request
+      .getHomrdesign({})
+      .then((res) => {
+        console.log(res, '设计团队')
+        this.teamSupport = res.data
       })
       .catch((e) => {})
       .finally(() => {})

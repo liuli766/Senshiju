@@ -16,14 +16,15 @@
           </div>
         </li>
       </ul>
-      <div class="regieandlogin poniter" v-if="!token">
+      <div class="head poniter regieandlogin" v-if="token">
+        <img :src="userInfor.photo" alt @click="goperson" />
+      </div>
+      <div class="regieandlogin poniter" v-else>
         <router-link to="/register">注册</router-link>|
         <router-link to="/login">登录</router-link>
       </div>
-        <div v-else class="head poniter">
-          <img :src="userInfor.photo" alt="" @click="goperson">
-        </div>
-        
+      
+
       <div class="serch">
         <input type="text" placeholder="请输入关键词" @click="handsearch" />
         <img src="../assets/image/fixed/serch.png" alt class="serchimg" />
@@ -38,32 +39,33 @@ export default {
   data() {
     return {
       li4: 'li4',
+      tok: localStorage.getItem('istoken'),//token
       navList: [
         {
           name: '首页',
           url: '/',
-          code: 'home'
+          code: 'home',
         },
         {
           name: '建房图库',
           url: '/buildingHouseLibrary',
-          code: 'Library'
+          code: 'Library',
         },
         {
           name: '设计团队',
           url: '/DesignTteam',
-          code: 'Tteam'
+          code: 'Tteam',
         },
         {
           name: '私人订制',
           url: '/PersonalTtailor',
-          code: 'Ttailor'
+          code: 'Ttailor',
         },
         {
           name: '建房百科',
           url: '/BuildingEncyclopedia',
-          code: 'Encyclopedia'
-        }
+          code: 'Encyclopedia',
+        },
       ],
       meau: [
         '建房百科',
@@ -71,29 +73,32 @@ export default {
         '装修百科',
         '施工百科',
         '风水百科',
-        '建房日志'
+        '建房日志',
       ],
-      navid: 0 // 当前选中的导航
+      navid: 0, // 当前选中的导航
+      
     }
   },
-  computed: mapState({
-    hedeid: state => state.hedeid,
-    token:state => state.token,
-    userInfor: state => state.userInfor,
-    isLogin: state => state.isLogin
-  }),
-  watch:{
+  computed: {
+    ...mapState({
+      hedeid: (state) => state.hedeid,
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
+      userInfor: (state) => state.userInfor,
+    }),
+  },
+  watch: {
   },
   created() {
-    console.log(this.token)
+   console.log(localStorage.getItem('istoken'))
   },
   mounted() {},
   methods: {
     // 点击导航栏
     changeNav(nav, index) {
       // localStorage.setItem('idnum', index) // 保存下标
-      document.cookie=index
-      console.log( document.cookie,localStorage.getItem('idnum'))
+      document.cookie = index
+      console.log(document.cookie, localStorage.getItem('idnum'))
       // this.$store.commit('headnav', parseInt(localStorage.idnum))
       this.$store.commit('headnav', parseInt(document.cookie))
       this.$router.push({ path: nav.url })
@@ -101,32 +106,28 @@ export default {
     handsearch() {
       // 搜索页面
       this.$router.push({
-        path: '/search'
+        path: '/search',
       })
     },
     handitem(idx) {
       // 跳转建房百科
       this.$router.push({
-        path: '/BuildingEncyclopedia'
+        path: '/BuildingEncyclopedia',
       })
       this.$store.commit('meauidfn', idx)
     },
-    goperson(){
-       this.$router.push({
-        path: '/order'
+    goperson() {
+      this.$router.push({
+        path: '/order',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
-.head img{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-}
-nav ul li{
+
+nav ul li {
   position: relative;
 }
 .li4 {
@@ -139,11 +140,11 @@ nav ul li{
   position: absolute;
   background: url('../assets/image/jfrz.png');
   background-size: 100% 100%;
-  width: 332px;
+  width: 300px;
   top: 25px;
   right: -70px;
-  font-size: 40px;
-  height: 480px;
+  font-size: 24px;
+  height: 400px;
   font-family: Microsoft YaHei;
   color: rgba(0, 0, 0, 1);
   line-height: 40px;
@@ -157,7 +158,7 @@ nav ul li{
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.3s;
-  margin: 0 47px 28px 47px;
+  margin: 0 47px 12px 47px;
 }
 .dropdown li:hover {
   color: #f5c134;
@@ -226,6 +227,15 @@ nav img {
 .el-dropdown-item:hover {
   background-color: #fff !important;
   color: #f5c134 !important;
+}
+.head img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.head{
+  background: #fff;
+  margin: 0;
 }
 </style>
 <style>

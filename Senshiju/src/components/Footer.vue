@@ -1,6 +1,6 @@
 <template>
 <div class="footer">
-    <img src="/static/footer.png" alt="">
+    <img src="../assets/image/footer1.png" alt="">
     <div class="footer_item">
         <div v-for="(item,index) in footerList" :key='index' class="footer_item_l">
             <span>200+</span>

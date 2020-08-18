@@ -172,6 +172,9 @@ export default {
               console.log(res, '提交订单')
               this.$router.push({
                 path: '/pay',
+                query:{
+                  data:res.data
+                }
               })
               this.$message({
                 showClose: true,

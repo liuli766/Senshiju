@@ -109,7 +109,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      pic: [require('../../static/h.png'), require('../../static/pic.png')],
+      pic: [require('../assets/image/1.png'), require('../assets/image/1.png')],
       listdata: [],
       detaillist: [],
       dialogFormVisible: false, //弹出层
