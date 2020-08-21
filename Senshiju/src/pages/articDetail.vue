@@ -11,10 +11,14 @@
           <h6>
             {{this.$route.query.title}}
             <span
-              class="poniter span2"              
+              class="poniter span2"
               v-if="detaillist.is_collect==true"
             >已收藏</span>
-            <span class="poniter span1" v-if="detaillist.is_collect==false" @click.stop="collect(detaillist.id)">收藏</span>
+            <span
+              class="poniter span1"
+              v-if="detaillist.is_collect==false"
+              @click.stop="collect(detaillist.id)"
+            >收藏</span>
           </h6>
           <div class="fl_be detailtj">
             <span>
@@ -36,7 +40,19 @@
         </div>
       </div>
       <div>
-        <newinfo />
+        <div class="newinfo">
+          <h6>小编精选</h6>
+          <!-- <div v-for="(item,k) in newarr" :key="k">
+            <div class="info">
+              <img :src="item.cover" alt />
+              <div class="block">
+                <p>{{item.content}}</p>
+              </div>
+            </div>
+            <div class="p wrap">{{item.content}}</div>
+            <div class="p wrap">{{item.content}}</div>
+          </div>-->
+        </div>
         <div class="hotnavbox">
           <span
             class="hotnav"
@@ -45,16 +61,16 @@
             v-for="(item,index) in hotlist"
             :key="index"
           >{{item}}</span>
-          <div v-for="(item,idx) in hotmoney" :key="'1'+idx" class="hotcontent">
-            <img :src="item.img" alt />
-            <div class="fl_be hotnum">
+          <div v-for="(item,idx) in hotmoney" :key="'1'+idx" class="hotcontent" @click="godetail(item)">
+            <img :src="item.cover" alt />
+            <div class="fl_be hotnum poniter">
               <span>{{item.price}}</span>
               <span>
                 <b>销量:</b>
-                {{item.num}}
+                {{item.number}}
               </span>
             </div>
-            <p>{{item.info}}</p>
+            <p class="intro two-wrap">{{item.intro}}</p>
           </div>
         </div>
       </div>
@@ -74,14 +90,7 @@ export default {
     return {
       hotlist: ['热门爆款', '热门新品'],
       hotnavid: 0,
-      hotmoney: [
-        {
-          img: require('../assets/image/vdeo.png'),
-          price: '¥599.00',
-          num: 3,
-          info: '新款二层新中式农村自建房别墅施工图纸',
-        },
-      ],
+      hotmoney: [],
       detaillist: {},
       next: '',
       prev: '',
@@ -103,22 +112,23 @@ export default {
       return false
     }
     this.getdetail()
+    this.Hots('moods')
   },
   methods: {
-    getdetail(){
+    getdetail() {
       request
-      .getInfo({
-        uid: this.userInfor.member_id,
-        id: this.$route.query.id,
-      })
-      .then((res) => {
-        console.log(res, '百科详情')
-        this.detaillist = res.data.detail
-        this.next=res.data.next
-        this.prev=res.data.prev
-      })
-      .catch((e) => {})
-      .finally(() => {})
+        .getInfo({
+          uid: this.userInfor.member_id,
+          id: this.$route.query.id,
+        })
+        .then((res) => {
+          console.log(res, '百科详情')
+          this.detaillist = res.data.detail
+          this.next = res.data.next
+          this.prev = res.data.prev
+        })
+        .catch((e) => {})
+        .finally(() => {})
     },
     collect(num) {
       // 收藏
@@ -152,8 +162,37 @@ export default {
         })
         .finally(() => {})
     },
+    Hots(str) {
+      request
+        .getHots({
+          page: 1,
+          sort: str,
+        })
+        .then((res) => {
+          this.hotmoney = res.data
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
     handhotnav(e) {
       this.hotnavid = e
+      //热销推荐
+      if (e == 0) {
+        this.Hots('moods')
+      }
+      if (e == 1) {
+        this.Hots('add_time')
+      }
+    },
+    godetail(item) {
+      //跳转产品详情
+      let idname = item.id
+      this.$router.push({
+        path: '/productDetail',
+        query: {
+          id: idname,
+        },
+      })
     },
   },
 }
@@ -162,6 +201,11 @@ export default {
 <style scoped>
 .hotnavbox {
   margin-top: 26px;
+  margin-left: 30px;
+}
+.hotnavbox .intro {
+  font: 16px/28px '';
+  color: #4b4b4b;
 }
 .hotnav {
   font: bold 20px/31px '';
@@ -254,8 +298,8 @@ export default {
   line-height: 34px;
   display: inline-block;
 }
- .span2 {
-   display: inline-block;
+.span2 {
+  display: inline-block;
   font-size: 20px;
   background: #7d7d7d;
   color: #aeaeae;
@@ -264,5 +308,40 @@ export default {
   border-radius: 15px;
   text-align: center;
   line-height: 34px;
+}
+.newinfo h6 {
+  font: 400 18px /26px '';
+  width: 175px;
+  border-bottom: 4px solid #ffde87;
+  margin: auto;
+  margin-bottom: 22px;
+  text-align: center;
+}
+.newinfo .info {
+  position: relative;
+  width: 269px;
+}
+.newinfo .info img {
+  width: 269px;
+  height: 191px;
+}
+.newinfo .info .block {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 12px 3px 8px;
+}
+.newinfo .info .block p {
+  font: 400 14px/23px '';
+  color: #fff;
+  text-align: justify;
+}
+.newinfo .p {
+  width: 268px;
+  border-bottom: 1px dashed #bfbfbf;
+  line-height: 26px;
+  text-align: left;
 }
 </style>

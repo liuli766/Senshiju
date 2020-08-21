@@ -277,10 +277,10 @@
         <!-- 文章收藏 -->
         <div class="orderlist" v-show="chosed==4">
           <h6>收藏的文章</h6>
-          <div v-if="CollnectList.length==0">没有收藏的文章</div>
+          <div v-if="articleList.length==0">没有收藏的文章</div>
           <div
             class="coll flx poniter"
-            v-for="(item,k) in CollnectList"
+            v-for="(item,k) in articleList"
             :key="k"
             @click="goartic(item)"
           >
@@ -374,6 +374,7 @@ export default {
       flag: 0,
       typeid: 1, //图纸，文章
       CollnectList: [], //图纸收藏
+      articleList:[], //图纸收藏
       imageUrl: '',
       cityflag: 1,
       uploadurl: '', //上传图片的路径
@@ -659,7 +660,13 @@ export default {
           type: num,
         })
         .then((res) => {
-          this.CollnectList = res.data
+          if(num==2){
+            this.articleList=res.data
+          }
+          if(num==1){
+            this.CollnectList = res.data
+          }
+          
           console.log(this.CollnectList, num)
         })
         .catch((e) => {})
@@ -673,7 +680,12 @@ export default {
           c_id: idx,
         })
         .then((res) => {
-          this.collect(1)
+          if(this.chosed==3){
+              this.collect(1)
+          }else if(this.chosed==4){
+            this.collect(2)
+          }
+          
           this.$message({
             showClose: true,
             message: '取消成功',

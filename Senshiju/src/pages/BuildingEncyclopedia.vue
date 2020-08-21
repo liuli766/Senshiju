@@ -112,10 +112,10 @@
         <!-- 热销推荐 -->
         <div class="hot">
           <h6>热销·推荐</h6>
-          <div class="flx col poniter" v-for="(item,k) in hotprllList" :key="k">
-            <img :src="item.imgs" alt />
-            <p>{{item.intro}}</p>
-            <div>
+          <div class="flx col poniter" v-for="(item,k) in hotprllList" :key="k" @click="godetail(item)">
+            <img :src="item.cover" alt />
+            <p class="two-wrap">{{item.intro}}</p>
+            <div style="width:100%" class="fl_be">
               <span>{{item.plies}}层别墅</span>
               <span>风格：{{item.style}}</span>
             </div>
@@ -340,6 +340,16 @@ export default {
         query: item,
       })
     },
+    godetail(item) {
+      //跳转产品详情
+      let idname = item.id
+      this.$router.push({
+        path: '/productDetail',
+        query: {
+          id: idname,
+        },
+      })
+    },
   },
   mounted() {
     let nav = document.querySelector('.nav')
@@ -555,6 +565,7 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
   justify-content: space-between;
   align-items: center;
   color: #545454;
+  margin-bottom: 15px;
 }
 </style>
 
