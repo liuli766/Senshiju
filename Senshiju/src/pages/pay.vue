@@ -135,7 +135,7 @@ export default {
     },
     gozhifubao() {
       request
-        .getPay({
+        .getzfb({
           uid: this.userInfor.member_id,
           order_num: this.$route.query.data,
         })
@@ -197,10 +197,10 @@ export default {
           order_num: this.$route.query.data,
         })
         .then((res) => {
-          // this.dataqr = res.data.wx_pay
+          this.dataqr = res.data.wx_pay
           console.log(res, '支付')
           // 微信
-          // this.creatQrCode(this.dataqr)
+          this.creatQrCode(this.dataqr)
         })
         .catch((e) => {})
         .finally(() => {})

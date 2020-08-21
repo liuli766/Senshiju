@@ -235,7 +235,7 @@
               <div style="height: 118px;overflow: auto;">
                 <div class="ordercont fl_ar" v-for="(val,k) in addrlist" :key="k">
                   <span>{{val.name}}</span>
-                  <span>{{val.prov }}{{ val.city}} {{val.district}}</span>
+                  <span>{{val.province }}{{ val.city}} {{val.district}}</span>
                   <span>{{val.address}}</span>
                   <span>{{val.phone}}</span>
                   <span>
@@ -267,14 +267,23 @@
                 <span>{{item.add_time}}</span>
               </div>
             </div>
-            <div class="ycoll" v-if="item.is_collect==1" @click.stop="qxcollect(item.collect_id)">已收藏</div>
+            <div
+              class="ycoll"
+              v-if="item.is_collect==1"
+              @click.stop="qxcollect(item.collect_id)"
+            >已收藏</div>
           </div>
         </div>
         <!-- 文章收藏 -->
         <div class="orderlist" v-show="chosed==4">
           <h6>收藏的文章</h6>
           <div v-if="CollnectList.length==0">没有收藏的文章</div>
-          <div class="coll flx poniter" v-for="(item,k) in CollnectList" :key="k" @click="goartic(item)">
+          <div
+            class="coll flx poniter"
+            v-for="(item,k) in CollnectList"
+            :key="k"
+            @click="goartic(item)"
+          >
             <img :src="item.cover" alt />
             <div class="center">
               <p>{{item.title}}</p>
@@ -283,7 +292,11 @@
                 <span>{{item.add_time}}</span>
               </div>
             </div>
-            <div class="ycoll" v-if="item.is_collect==1" @click.stop="qxcollect(item.collect_id)">已收藏</div>
+            <div
+              class="ycoll"
+              v-if="item.is_collect==1"
+              @click.stop="qxcollect(item.collect_id)"
+            >已收藏</div>
           </div>
         </div>
       </div>
@@ -361,7 +374,6 @@ export default {
       flag: 0,
       typeid: 1, //图纸，文章
       CollnectList: [], //图纸收藏
-      formdata: {},
       imageUrl: '',
       cityflag: 1,
       uploadurl: '', //上传图片的路径
@@ -372,13 +384,16 @@ export default {
       token: (state) => state.token,
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
-      headimg:(state) => state.headimg
+      headimg: (state) => state.headimg,
     }),
   },
   watch: {
     prov: function () {
       this.updateCity()
       this.updateDistrict()
+      let num = localStorage.getItem('isid')
+      let k = localStorage.getItem('isk')
+      this.upd(num, k)
     },
     city: function () {
       this.updateDistrict()
@@ -508,12 +523,8 @@ export default {
     upd(num, k) {
       let arr = this.addrlist
       console.log(arr[k])
-      let strobj={
-        num,
-        k,
-      }
-      strobj=JSON.stringify(strobj)
-      localStorage.setItem('isid',strobj)
+      localStorage.setItem('isid', num)
+      localStorage.setItem('isk', k)
       request
         .getupRes({
           id: num,
@@ -521,7 +532,7 @@ export default {
           address: arr[k].address,
           name: arr[k].name,
           phone: arr[k].phone,
-          province: arr[k].prov,
+          province: arr[k].province,
           city: arr[k].city,
           district: arr[k].district,
         })
@@ -533,10 +544,13 @@ export default {
           this.ruleForm2.addr = arr[k].address
           this.ruleForm2.name = arr[k].name
           this.ruleForm2.phone = arr[k].phone
-          this.prov = arr[k].prov
+          this.prov = arr[k].province
           this.city = arr[k].city
           this.district = arr[k].district
-
+          console.log(this.prov, this.city, this.district)
+          if (arr[k].is_default !== 0) {
+            this.ishook = true
+          }
           console.log(res, '修改')
         })
         .catch((e) => {})
@@ -559,10 +573,10 @@ export default {
               is_default: this.ishook,
             })
             .then((res) => {
-              let strobj=JSON.parse(localStorage.getItem('isid'))
-              this.upd({strobj})
+              let num = localStorage.getItem('isid')
+              let k = localStorage.getItem('isk')
+              this.upd(num, k)
               this.getshop()
-              console.log({strobj})
               this.$message({
                 showClose: true,
                 message: '添加成功',
@@ -645,7 +659,6 @@ export default {
           type: num,
         })
         .then((res) => {
-          
           this.CollnectList = res.data
           console.log(this.CollnectList, num)
         })
@@ -708,18 +721,18 @@ export default {
         },
       })
     },
-   
+
     // // 上传成功回调
     handleAvatarSuccess(res, file) {
       console.log(res)
-       this.imageUrl = URL.createObjectURL(file.raw)
-      if(res.code==0){
+      this.imageUrl = URL.createObjectURL(file.raw)
+      if (res.code == 0) {
         this.imageUrl = res.data
         this.$message.success('上传成功')
-        localStorage.setItem('headImg',res.data)
-        let img= localStorage.getItem('headImg')
-         this.$store.commit('uploadimg',img)
-      }else{
+        localStorage.setItem('headImg', res.data)
+        let img = localStorage.getItem('headImg')
+        this.$store.commit('uploadimg', img)
+      } else {
         this.$message.error('上传失败')
       }
     },
