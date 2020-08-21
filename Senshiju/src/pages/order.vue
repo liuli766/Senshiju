@@ -4,7 +4,7 @@
     <!-- 用户信息 -->
     <div class="yellobg">
       <div class="userintro">
-        <img :src="userInfor.photo" alt />
+        <img :src="headimg" alt />
         <div class="username fl_center">
           <span>{{userInfor.nickname}}</span>
           <span>普通用户</span>
@@ -20,7 +20,6 @@
         <span v-show="chosed==2" class="active">收货地址</span>
         <span v-show="chosed==3" class="active">图纸收藏</span>
         <span v-show="chosed==4" class="active">文章收藏</span>
-
       </nav>
       <!-- div -->
       <div class="order">
@@ -75,19 +74,38 @@
         <div v-show="chosed==1" class="orderlist">
           <h6>个人信息</h6>
           <div class="personinfo">
-            <div class="fl_be">
+            <!-- <div class="fl_be">
               <span>头像</span>
               <div class="fl_center adatar">
                 <img :src="adatar?adatar:userInfor.photo" alt class="photo" />
                 <input
                   type="file"
-                  name
+                  id="file"
+                  name="file"
                   accept="image/gif, image/jpeg, image/jpg, image/png"
                   @change="fileChange"
                 />
                 <i class="el-icon-arrow-right"></i>
               </div>
+            </div>-->
+            <!-- <button @click="upload">提交</button> -->
+
+            <div class="fl_be">
+              <span>头像</span>
+              <el-upload
+                class="avatar-uploader"
+                action="http://villa.jisapp.cn/index/User/up_image"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :data="{uid:userInfor.member_id}"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar photo" />
+                <img v-else :src="headimg" class="photo" />
+                <i class="el-icon-arrow-right" style="margin-top: 20px;"></i>
+              </el-upload>
             </div>
+
             <div class="fl_be">
               <span>昵称</span>
               <div>
@@ -109,6 +127,7 @@
             </div>
             <div class="fl_be">
               <span>修改密码</span>
+
               <div>
                 <span>
                   <input type="password" v-model="password" />
@@ -118,6 +137,7 @@
             </div>
             <div class="fl_be" @click="setpwd">
               <span>设置密码</span>
+
               <div>
                 <i class="el-icon-arrow-right"></i>
               </div>
@@ -128,6 +148,7 @@
           <div class="setpwd" v-if="setpedflag">
             <h5>
               <span>设置密码</span>
+              <i class="el-icon-close poniter" @click="goclose"></i>
             </h5>
             <input type="text" :value="userInfor.phone_num" class="ip" />
             <div class="rel">
@@ -162,24 +183,24 @@
                 <div class="fl_be">
                   <select v-model="prov">
                     <option
-                      :value="item.text ||'prov'"
+                      :value="item.text"
                       v-for="(item,pro) in provunce"
                       :key="pro"
-                    >{{item.text||''}}</option>
+                    >{{item.text}}</option>
                   </select>
                   <select v-model="city">
                     <option
-                      :value="item.text||'city'"
+                      :value="item.text"
                       v-for="(item,cid) in cityArr"
                       :key="cid"
-                    >{{item.text|| ''}}</option>
+                    >{{item.text}}</option>
                   </select>
                   <select v-model="district">
                     <option
-                      :value="item.text||'district'"
+                      :value="item.text"
                       v-for="(item,pro) in districtArr"
                       :key="pro"
-                    >{{item.text||""}}</option>
+                    >{{item.text}}</option>
                   </select>
                 </div>
               </el-form-item>
@@ -215,14 +236,14 @@
                 <div class="ordercont fl_ar" v-for="(val,k) in addrlist" :key="k">
                   <span>{{val.name}}</span>
                   <span>{{val.prov }}{{ val.city}} {{val.district}}</span>
-                  <span>{{val.addr}}</span>
+                  <span>{{val.address}}</span>
                   <span>{{val.phone}}</span>
                   <span>
-                    <span class="poi" @click="upd(val.id)">修改</span>|
+                    <span class="poi" @click="upd(val.id,k)">修改</span>|
                     <span @click="handdel(val.id)" class="poi">删除</span>
                   </span>
                   <span v-if="val.is_default==0"></span>
-                  <span class="defut"  @click="defut(val.id)" v-else>默认地址</span>
+                  <span class="defut" @click="defut(val.id)" v-else>默认地址</span>
                 </div>
               </div>
             </div>
@@ -231,10 +252,13 @@
         <!-- 图纸收藏 -->
         <div class="orderlist" v-show="chosed==3">
           <h6>收藏的图纸</h6>
-          <div v-if="CollnectList.length==0">
-              没有收藏的图纸
-          </div>
-          <div class="coll flx" v-for='(item,k) in CollnectList' :key='k'>
+          <div v-if="CollnectList.length==0">没有收藏的图纸</div>
+          <div
+            class="coll flx poniter"
+            v-for="(item,k) in CollnectList"
+            :key="k"
+            @click="gopicdetail(item)"
+          >
             <img :src="item.cover" alt />
             <div class="center">
               <p>{{item.title}}</p>
@@ -243,16 +267,14 @@
                 <span>{{item.add_time}}</span>
               </div>
             </div>
-            <div class="ycoll" v-if="item.is_collect==1" @click="qxcollect(item.collect_id)">已收藏</div>
+            <div class="ycoll" v-if="item.is_collect==1" @click.stop="qxcollect(item.collect_id)">已收藏</div>
           </div>
         </div>
         <!-- 文章收藏 -->
         <div class="orderlist" v-show="chosed==4">
           <h6>收藏的文章</h6>
-          <div v-if="CollnectList.length==0">
-              没有收藏的文章
-          </div>
-          <div class="coll flx" v-for='(item,k) in CollnectList' :key='k'>
+          <div v-if="CollnectList.length==0">没有收藏的文章</div>
+          <div class="coll flx poniter" v-for="(item,k) in CollnectList" :key="k" @click="goartic(item)">
             <img :src="item.cover" alt />
             <div class="center">
               <p>{{item.title}}</p>
@@ -261,7 +283,7 @@
                 <span>{{item.add_time}}</span>
               </div>
             </div>
-            <div class="ycoll" v-if="item.is_collect==1" @click="qxcollect(item.collect_id)">已收藏</div>
+            <div class="ycoll" v-if="item.is_collect==1" @click.stop="qxcollect(item.collect_id)">已收藏</div>
           </div>
         </div>
       </div>
@@ -273,6 +295,9 @@
 import { mapState } from 'vuex'
 import citydata from '../assets/comm/city'
 import request from '@/request.js'
+import $ from 'jquery'
+import axios from 'axios'
+import qs from 'qs'
 export default {
   data() {
     return {
@@ -329,13 +354,17 @@ export default {
       updlist: [], //修改地址
       add_id: null,
       adatar: '', //头像
-      password: '',
+      password: '123456',
       dialogFormVisible: false, //弹框
       setpedflag: false,
       tmeValue: 60, //获取验证码时间
       flag: 0,
-      typeid:1, //图纸，文章
-      CollnectList:[], //图纸收藏
+      typeid: 1, //图纸，文章
+      CollnectList: [], //图纸收藏
+      formdata: {},
+      imageUrl: '',
+      cityflag: 1,
+      uploadurl: '', //上传图片的路径
     }
   },
   computed: {
@@ -343,6 +372,7 @@ export default {
       token: (state) => state.token,
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
+      headimg:(state) => state.headimg
     }),
   },
   watch: {
@@ -352,13 +382,19 @@ export default {
     },
     city: function () {
       this.updateDistrict()
-    }
+    },
   },
   created() {
     console.log(this.userInfor, this.token)
     console.log(this.add_id)
     this.getshop()
-    
+    // this.uplaod()
+    // if (!this.token) {
+    //   this.$router.push({
+    //     path: '/login',
+    //   })
+    //   return false
+    // }
     // 我的订单
     request
       .getOrders({
@@ -379,6 +415,7 @@ export default {
           uid: this.userInfor.member_id,
         })
         .then((res) => {
+          console.log(res, '地址')
           this.addrlist = res.data
           this.addrlist = this.addrlist.reverse()
           this.addrlist.map((item, k) => {
@@ -394,18 +431,46 @@ export default {
     sure() {
       this.setpedflag = false
     },
+    goclose() {
+      this.setpedflag = false
+    },
     time() {
-      //倒计时
-      this.tmeValue = this.tmeValue - 1
-      this.flag = 1
-      if (this.tmeValue <= 0) {
-        this.tmeValue = 60
-        this.flag = 0
-        return ''
+      if (this.userInfor.phone_num !== '') {
+        let ph = /^1[3|5|7|8|][0-9]{9}$/
+        if (!ph.test(this.userInfor.phone_num)) {
+          this.$message({
+            showClose: true,
+            message: '手机号格式不正确',
+            type: 'warning',
+          })
+        } else {
+          let phone_num = this.userInfor.phone_num
+          request
+            .getCode({ phone_num })
+            .then((res) => {
+              console.log(res, '获取验证码')
+            })
+            .catch((e) => {})
+            .finally(() => {})
+          //倒计时
+          this.tmeValue = this.tmeValue - 1
+          this.flag = 1
+          if (this.tmeValue <= 0) {
+            this.tmeValue = 60
+            this.flag = 0
+            return ''
+          } else {
+            setTimeout(() => {
+              this.time()
+            }, 1000)
+          }
+        }
       } else {
-        setTimeout(() => {
-          this.time()
-        }, 1000)
+        this.$message({
+          showClose: true,
+          message: '手机号不能为空',
+          type: 'error',
+        })
       }
     },
 
@@ -413,40 +478,64 @@ export default {
     preser() {
       request
         .getupInfo({
-          uid: this.userInfor.member_id,
+          member_id: this.userInfor.member_id,
           nickname: this.userInfor.nickname,
           phone_num: this.userInfor.phone_num,
-          password: '',
-          file: this.adatar,
+          password: this.password,
         })
         .then((res) => {
           console.log(res, '修改个人资料')
+          if (res.code == 0) {
+            // this.upload()
+            this.$message({
+              showClose: true,
+              message: '修改成功',
+              type: 'success',
+            })
+          } else {
+            this.$message({
+              showClose: true,
+              message: '修改失败',
+              type: 'error',
+            })
+          }
         })
         .catch((e) => {})
         .finally(() => {})
     },
 
     // 修改收货地址
-    upd(num) {
+    upd(num, k) {
+      let arr = this.addrlist
+      console.log(arr[k])
+      let strobj={
+        num,
+        k,
+      }
+      strobj=JSON.stringify(strobj)
+      localStorage.setItem('isid',strobj)
       request
         .getupRes({
           id: num,
           uid: this.userInfor.member_id,
-          address: this.ruleForm2.addr,
-          name: this.ruleForm2.name,
-          phone: this.ruleForm2.phone,
-          province: this.prov,
-          city: this.city,
-          district: this.district,
+          address: arr[k].address,
+          name: arr[k].name,
+          phone: arr[k].phone,
+          province: arr[k].prov,
+          city: arr[k].city,
+          district: arr[k].district,
         })
         .then((res) => {
-          this.updlist = this.addrlist.filter((item, k) => k == num)
-          this.ruleForm2.addr = this.updlist[0].addr
-          this.ruleForm2.name = this.updlist[0].name
-          this.ruleForm2.phone = this.updlist[0].phone
-          this.prov = this.updlist[0].prov
-          this.city = this.updlist[0].city
-          this.district = this.updlist[0].district
+          this.cityflag = 0
+          this.updateCity()
+          this.updateDistrict()
+          // this.updlist = this.addrlist.filter((item, k) => k == num)
+          this.ruleForm2.addr = arr[k].address
+          this.ruleForm2.name = arr[k].name
+          this.ruleForm2.phone = arr[k].phone
+          this.prov = arr[k].prov
+          this.city = arr[k].city
+          this.district = arr[k].district
 
           console.log(res, '修改')
         })
@@ -467,10 +556,13 @@ export default {
               province: this.prov,
               city: this.city,
               district: this.district,
-              is_default:this.ishook
+              is_default: this.ishook,
             })
             .then((res) => {
+              let strobj=JSON.parse(localStorage.getItem('isid'))
+              this.upd({strobj})
               this.getshop()
+              console.log({strobj})
               this.$message({
                 showClose: true,
                 message: '添加成功',
@@ -541,20 +633,21 @@ export default {
         })
         .finally(() => {})
     },
-    gg(){
+    gg() {
       this.ishook = !this.ishook
     },
-    
+
     // 图纸收藏
     collect(num) {
       request
         .fachcollect({
           uid: this.userInfor.member_id,
-          type:num
+          type: num,
         })
         .then((res) => {
-            console.log(res,'图纸收藏')
-            this.CollnectList = res.data
+          
+          this.CollnectList = res.data
+          console.log(this.CollnectList, num)
         })
         .catch((e) => {})
         .finally(() => {})
@@ -569,17 +662,17 @@ export default {
         .then((res) => {
           this.collect(1)
           this.$message({
-                showClose: true,
-                message: '取消成功',
-                type: 'success',
-              })
+            showClose: true,
+            message: '取消成功',
+            type: 'success',
+          })
         })
         .catch((e) => {
           this.$message({
-                showClose: true,
-                message: '取消失败',
-                type: 'error',
-              })
+            showClose: true,
+            message: '取消失败',
+            type: 'error',
+          })
         })
         .finally(() => {})
     },
@@ -596,26 +689,59 @@ export default {
         path: '/login',
       })
     },
-    //头像选择
-    fileChange(e) {
-      var that = this
-      var file = e.target.files[0]
-      this.adatar = e.target.files[0]
-
-      var reader = new FileReader()
-      reader.onload = function (e) {
-        that.adatar = e.target.result
+    //
+    goartic(item) {
+      //跳转文章详情
+      this.$router.push({
+        path: '/articDetail',
+        query: item,
+      })
+    },
+    gopicdetail(item) {
+      //跳转产品详情
+      let idname = item.object_id
+      console.log(item)
+      this.$router.push({
+        path: '/productDetail',
+        query: {
+          id: idname,
+        },
+      })
+    },
+   
+    // // 上传成功回调
+    handleAvatarSuccess(res, file) {
+      console.log(res)
+       this.imageUrl = URL.createObjectURL(file.raw)
+      if(res.code==0){
+        this.imageUrl = res.data
+        this.$message.success('上传成功')
+        localStorage.setItem('headImg',res.data)
+        let img= localStorage.getItem('headImg')
+         this.$store.commit('uploadimg',img)
+      }else{
+        this.$message.error('上传失败')
       }
-      reader.readAsDataURL(file)
+    },
+    // 上传前格式和图片大小限制
+    beforeAvatarUpload(file) {
+      // console.log(file)
+      // this.imageUrl = file
+      const isJPG = true
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     },
     //侧边导航切换
-    hanchosed(e,typeid) {
+    hanchosed(e, typeid) {
       this.chosed = e
-      if(e==3){
-        typeid=1 //图纸
+      if (e == 3) {
+        typeid = 1 //图纸
         this.collect(typeid)
-      }else if(e==4){
-        typeid=2 //文章
+      } else if (e == 4) {
+        typeid = 2 //文章
         this.collect(typeid)
       }
     },
@@ -1052,7 +1178,13 @@ form .btn {
   line-height: 34px;
   cursor: pointer;
 }
-.active{
-  color: #FFC92F;
+.active {
+  color: #ffc92f;
+}
+.iiii {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
 }
 </style>

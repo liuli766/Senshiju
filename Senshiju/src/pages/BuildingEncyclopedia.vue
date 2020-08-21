@@ -24,8 +24,7 @@
               <h6>{{item.title}}</h6>
               <p>{{item.content}}</p>
               <div class="timer">
-                <span class="poniter" @click="collect(item.id)">收藏</span>
-                {{item.add_time}}
+                <span>{{item.add_time}}</span>
               </div>
             </div>
           </div>
@@ -169,7 +168,7 @@ export default {
       contlist: [],
       classid: '建房百科',
       hotprllList: [],
-      flag:false
+      flag: false,
     }
   },
   computed: mapState({
@@ -329,31 +328,7 @@ export default {
         }
       })
     },
-    collect(num) {
-      // 收藏
-      request
-        .getCollect({
-          uid: this.userInfor.member_id,
-          type: 2,
-          object: num,
-        })
-        .then((res) => {
-          console.log(res, '收藏')
-          this.$message({
-            showClose: true,
-            message: '收藏成功',
-            type: 'success',
-          })
-        })
-        .catch((e) => {
-          this.$message({
-            showClose: true,
-            message: '收藏失败',
-            type: 'error',
-          })
-        })
-        .finally(() => {})
-    },
+    
     handchange(label) {
       //层次选择
       console.log(label)
@@ -447,6 +422,28 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
 }
 .timer {
   text-align: right;
+  display: flex;
+  justify-content: space-between;
+}
+.timer .span1 {
+  font-size: 20px;
+  background: #ffde87;
+  color: #fff;
+  width: 121px;
+  height: 34px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 34px;
+}
+.timer .span2 {
+  font-size: 20px;
+  background: #7d7d7d;
+  color: #aeaeae;
+  width: 121px;
+  height: 34px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 34px;
 }
 .pag {
   display: flex;

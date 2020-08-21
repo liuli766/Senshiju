@@ -44,13 +44,29 @@
         <div v-show="choeid==1" class="zfb">
           <img src="../assets/image/zf/zfbzf.png" alt />
           <p>单笔订单金额超过5万元，推荐您使用支付宝支付</p>
-          <div class="btn">立即支付</div>
+          <div class="btn" @click="gozhifubao">立即支付</div>
         </div>
+        <el-dialog :visible.sync="orderSuccess" width="21.35%" top="30vh" center>
+          <div class="dia-box">
+            <img class="dia-img" src="../assets/image/pay-success.png" />
+            <div class="title bold">支付成功</div>
+          </div>
+        </el-dialog>
         <!-- 对公账号 -->
         <div v-show="choeid==2" class="dgzh">
           <p>
             如果您需要使用对公账户转账，请联系
-            <span>在线客服</span>
+            <a
+              :href="'tencent://message/?uin='+serverqq.qq+'&Site=&Menu=yes'"
+              target="_blank"
+            >
+              <img
+                :src="'http://wpa.qq.com/pa?p=2:'+serverqq.qq+':41'"
+                alt="点击这里给我发消息"
+                style="display: none;"
+              />
+              <span>在线客服</span>
+            </a>
             ，或拨打客服电话
             <span>17708110852</span>
           </p>
@@ -70,6 +86,7 @@ export default {
       token: (state) => state.token,
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
+      serverqq: (state) => state.serverqq,
     }),
   },
   data() {
@@ -89,11 +106,21 @@ export default {
         },
       ],
       choeid: 0, //支付导航选中
-      dataqr: '',
+      dataqr: '', //微信
+      timer: null, //定时器名称
+      ali_pay: '', //支付宝
+      orderSuccess: true,
     }
   },
 
-  created() {},
+  created() {
+    if (!this.token) {
+      this.$router.push({
+        path: '/login',
+      })
+      return false
+    }
+  },
   methods: {
     creatQrCode(qr) {
       console.log(qr)
@@ -106,43 +133,98 @@ export default {
         correctLevel: QRCode.CorrectLevel.H,
       })
     },
+    gozhifubao() {
+      request
+        .getPay({
+          uid: this.userInfor.member_id,
+          order_num: this.$route.query.data,
+        })
+        .then((res) => {
+          this.ali_pay = res
+          this.openZfb(res)
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+    openZfb(form) {
+      this.$confirm('是否支付成功？', '', {
+        distinguishCancelAndClose: true,
+        cancelButtonText: '失败',
+        confirmButtonText: '成功',
+      })
+        .then(() => {})
+        .catch(() => {})
+      let routerData = this.$router.resolve({
+        path: '/orderzfb',
+        query: { htmls: form },
+      })
+      this.htmls = form // 打开新页面
+      window.open(routerData.href, '_ blank')
+      const div = document.createElement('div')
+      div.innerHTML = htmls
+      document.body.appendChild(div)
+      setTimeout(() => {
+        document.forms[0].submit()
+      }, 100)
+      console.log(htmls)
+    },
+    weixin() {
+      request
+        .getwxnotify({
+          id: this.$route.query.data,
+        })
+        .then((res) => {
+          console.log(res, '')
+          if (res.status == 2) {
+            this.orderSuccess = true
+          }
+        })
+        .catch((e) => {
+          // this.$message({
+          //   showClose: true,
+          //   message: '支付失败',
+          //   type: 'error',
+          // })
+        })
+        .finally(() => {})
+    },
+
+    orderpay() {
+      // 支付
+      request
+        .getPay({
+          uid: this.userInfor.member_id,
+          order_num: this.$route.query.data,
+        })
+        .then((res) => {
+          // this.dataqr = res.data.wx_pay
+          console.log(res, '支付')
+          // 微信
+          // this.creatQrCode(this.dataqr)
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
     swichnav(k) {
       this.choeid = k
+      if (k == 0) {
+        this.orderpay()
+      }
     },
   },
   mounted() {
-    request
-      .getPay({
-        uid: this.userInfor.member_id,
-        order_num: this.$route.query.data,
-      })
-      .then((res) => {
-        this.dataqr = res.data.wx_pay
-        console.log(this.dataqr)
-        this.creatQrCode(this.dataqr)
-        request
-          .getwxnotify({
+    if (this.choeid == 0) {
+      this.orderpay()
+    }
 
-          })
-          .then((res) => {
-            console.log(res,'')
-            this.$message({
-            showClose: true,
-            message: '支付成功',
-            type: 'success',
-          })
-          })
-          .catch((e) => {
-            this.$message({
-            showClose: true,
-            message: '支付失败',
-            type: 'error',
-          })
-          })
-          .finally(() => {})
-      })
-      .catch((e) => {})
-      .finally(() => {})
+    // this.timer = setInterval(() => {
+    //   setTimeout(this.weixin, 0)
+    // }, 1000 * 10)
+  },
+
+  beforeDestroy() {
+    clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>
@@ -253,5 +335,8 @@ export default {
 }
 .dgzh p span {
   color: #0084ff;
+}
+.dia-box {
+  text-align: center;
 }
 </style>

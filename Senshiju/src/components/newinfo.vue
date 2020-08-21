@@ -2,20 +2,50 @@
   <!-- 最新资讯 -->
   <div>
     <h6>最新资讯</h6>
-    <div class="info">
-      <img src="../assets/image/map.png" alt />
-      <div class="block">
-        <p>村墅人家618优惠活动，年中抢特价，年 终焕新家</p>
+    <div v-for="(item,k) in newarr" :key="k">
+      <div class="info">
+        <img :src="item.cover" alt />
+        <div class="block">
+          <p>{{item.content}}</p>
+        </div>
       </div>
+      <div class="p wrap">{{item.content}}</div>
+      <div class="p wrap">{{item.content}}</div>
     </div>
-    <div class="p wrap">设计一套别墅多少钱？钢结构房</div>
-    <div class="p wrap">设计一套别墅多少钱？钢结构房</div>
   </div>
 </template>
 
 <script>
+import hotlist from '@/components/hostList.vue'
+import { mapState } from 'vuex'
 export default {
-  
+  data() {
+    return {
+      inList: [],
+    }
+  },
+  props: {
+    newarr: {
+      type: Array,
+    },
+  },
+  methods: {
+    // getzixun(src) {
+    //   //资讯
+    //   request
+    //     .getHomebaike({
+    //       page: 1,
+    //       class:'',
+    //     })
+    //     .then((res) => {
+    //       console.log(res, '资讯')
+    //       this.inList = res.data
+    //       this.zxlist = this.inList.slice(0, 1)
+    //     })
+    //     .catch((e) => {})
+    //     .finally(() => {})
+    // },
+  },
 }
 </script>
 
@@ -49,10 +79,10 @@ h6 {
   color: #fff;
   text-align: justify;
 }
-.p{
-    width: 268px;
-    border-bottom: 1px dashed #BFBFBF;
-    line-height: 26px;
-    text-align: left;
+.p {
+  width: 268px;
+  border-bottom: 1px dashed #bfbfbf;
+  line-height: 26px;
+  text-align: left;
 }
 </style>

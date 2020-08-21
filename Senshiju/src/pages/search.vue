@@ -1,41 +1,46 @@
 <template>
   <div>
-    <div class="hotlist poniter" v-for="(info,k) in serchlist" :key="k" @click="godetail(info)">
-      <div class="hotlist_info">
-        <img :src="info.cover" alt />
-        <div class="lili">
-          <h5 class="bold">{{info.title}}</h5>
-          <div class="font14 color98">{{info.style}} | {{info.area}} | {{info.cost}}</div>
-          <div class="font14 color98 quotations two-wrap">{{info.intro}}</div>
-          <div class="font20 theme price">￥{{info.price}}</div>
+    <main v-if="serchlist.length!==0">
+      <div class="hotlist poniter" v-for="(info,k) in serchlist" :key="k" @click="godetail(info)">
+        <div class="hotlist_info">
+          <img :src="info.cover" alt />
+          <div class="lili">
+            <h5 class="bold">{{info.title}}</h5>
+            <div class="font14 color98">{{info.style}} | {{info.area}} | {{info.cost}}</div>
+            <div class="font14 color98 quotations two-wrap">{{info.intro}}</div>
+            <div class="font20 theme price">￥{{info.price}}</div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
+    <main v-else>
+      <div style="margin: auto;">无相关搜索</div>
+    </main>
   </div>
 </template>
 
 <script>
 import request from '@/request.js'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      serchlist: [],
+        seacrhdata:[]
     }
   },
-  created() {},
+    computed: {
+    ...mapState({
+      hedeid: (state) => state.hedeid,
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
+      userInfor: (state) => state.userInfor,
+      serchlist:(state)=>state.serchlist
+    }),
+  },
+  created() {
+    this.seacrhdata=this.serchlist
+  },
   methods: {
-    serch() {
-      request
-        .getHots({
-          page: 1,
-          search,
-        })
-        .then((res) => {
-          this.serchlist = res.data
-        })
-        .catch((e) => {})
-        .finally(() => {})
-    },
     // 跳转产品详情
     godetail(item) {
       let idname = item.id
@@ -51,6 +56,14 @@ export default {
 </script>
 
 <style scoped>
+main{
+  width: 1200px;
+  margin: 10px auto;
+  display: flex;
+}
+main>div{
+  margin-right: 15px;
+}
 .hotlist_info {
   width: 392px;
   background: #fff;

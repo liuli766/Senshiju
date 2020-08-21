@@ -2,7 +2,8 @@
   <!-- 最新设计案例 -->
   <div>
     <h6>最新设计定制案例</h6>
-    <div class="drawing poniter" v-for="(item,index) in designlist" :key="index">
+    <div class="drawing poniter" v-for="(item,index) in designlist" :key="index"
+    @click="godetail(item)">
       <img :src="item.cover" alt />
       <p class="one-wrap">{{item.intro}}</p>
       <div class="bot">
@@ -27,11 +28,6 @@ export default {
       designlist:[]
     }
   },
-  props: {
-    newarr: {
-      type: Array,
-    },
-  },
   created() {
     // 墅图纸共有套
     request
@@ -53,6 +49,17 @@ export default {
       })
       .catch((e) => {})
       .finally(() => {})
+  },
+  methods: {
+    godetail(num){
+       //跳转产品详情
+      this.$router.push({
+        path: '/productDetail',
+        query: {
+          id: num.id,
+        },
+      })
+    }
   },
 }
 </script>

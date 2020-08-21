@@ -136,11 +136,19 @@ const routes = [
       title: '联系客服'
     },
     component: (resolve) => require(['@/pages/serveQQ'], resolve)
+  },
+  {
+    path: '/orderzfb',
+    name: 'orderzfb',
+    meta: {
+      title: '支付宝支付'
+    },
+    component: (resolve) => require(['@/pages/orderzfb'], resolve)
   }
 ]
 
 const router = new Router({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes
 })

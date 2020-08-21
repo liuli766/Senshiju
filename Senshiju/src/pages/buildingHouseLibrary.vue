@@ -100,8 +100,8 @@
       </div>
     </div>
     <div style="margin-left: 38px;">
-      <newdesign :newarr='newarr'/>
-      <newinfo />
+      <newdesign />
+      <newinfo :newarr='newarr'/>
     </div>
   </div>
 </template>
@@ -189,13 +189,13 @@ export default {
         .getHots({
           page: 1,
           style: val[0],
-          area: val[1],
-          face_width: val[2],
-          depth: val[3],
+          area: val[3],
+          face_width: val[1],
+          depth: val[2],
           plies: val[4],
           function: val[5],
-          structure: val[6],
-          cost: val[7],
+          structure: val[7],
+          cost: val[6],
           sort,
           by_away:src
         })
@@ -234,6 +234,7 @@ export default {
         item.child.map((val, key) => {
           if (val.cate_name == '全部') {
             val.active = true
+            this.getpic(this.filterSelData)
           } else {
             val.active = false
           }

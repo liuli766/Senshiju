@@ -91,16 +91,16 @@ export default {
   methods: {
     // 获取验证码
     time() {
-      if (this.userinfo.phone !== '') {
+      if (this.userinfo.phone_num !== '') {
         let ph = /^1[3|5|7|8|][0-9]{9}$/
-        if (!ph.test(this.userinfo.phone)) {
+        if (!ph.test(this.userinfo.phone_num)) {
           this.$message({
             showClose: true,
             message: '手机号格式不正确',
             type: 'warning',
           })
         } else {
-          let phone_num = this.userinfo.phone
+          let phone_num = this.userinfo.phone_num
           request
             .getCode({ phone_num })
             .then((res) => {

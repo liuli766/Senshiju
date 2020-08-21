@@ -22,6 +22,12 @@ import axios from 'axios'
 Vue.prototype.$axios=axios;
 import qs from 'qs'; //用来解决vue中post请求（详情）
 Vue.prototype.qs = qs;
+const upload = axios.create({
+  //这里配置你自己的url
+  baseURL: 'http://villa.jisapp.cn',
+  timeout: 50000,
+});
+Vue.prototype.$upload = upload;
 // Vue.prototype.api = api;
 
 // router.beforeEach((to, from, next) => {

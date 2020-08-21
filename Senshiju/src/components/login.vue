@@ -10,8 +10,8 @@
         <h6>手机扫码登录</h6>
         <wxlogin
           :appid="'wxe960929de0880424'"
-          :scope="'snsapi_login'"
-          :redirect_uri="'http://villa.jisapp.cn/index/Login/qr_code'"
+          :scope="'snsapi_userinfo'"
+          :redirect_uri="'http://villa.jisapp.cn/index/Login/wx_login'"
         ></wxlogin>
         <p>打开手机微信APP 在【首页—扫一扫】扫描二维码登录</p>
       </div>
@@ -134,14 +134,22 @@ export default {
             this.$store.commit('settoken', res.data)
             localStorage.setItem('istoken', res.data.token)
             console.log(localStorage.getItem('istoken'))
-            this.$message({
-              showClose: true,
-              message: '登录成功',
-              type: 'success',
-            })
-            this.$router.push({
-              path: '/',
-            })
+            if (res.code == 0) {
+              this.$message({
+                showClose: true,
+                message: '登录成功',
+                type: 'success',
+              })
+              this.$router.push({
+                path: '/',
+              })
+            }else{
+              this.$message({
+                showClose: true,
+                message: '登录密码错误',
+                type: 'error',
+              })
+            }
           })
           .catch((e) => {
             let status = false

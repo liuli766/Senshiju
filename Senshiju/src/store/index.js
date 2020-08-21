@@ -7,13 +7,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     meauid: 0, //建房百科菜单选中,
-    hedeid:document.cookie,//导航选中 
+    hedeid:localStorage.getItem('idnum'),//导航选中 
     token: localStorage.getItem('istoken'),
     userInfor:JSON.parse(localStorage.getItem('loginData')), //当前账号信息
     isLogin: localStorage.getItem('islogin'), //登录状态
     user:{
 
-    }
+    },
+    headimg:localStorage.getItem('headImg'),
+    serchlist:[], //搜索内容
+    serverqq:''
   },
   getters: {
     loginData (state) {
@@ -43,6 +46,7 @@ export default new Vuex.Store({
       localStorage.setItem("loginData", JSON.stringify(data))
       console.log(state.token)
       console.log(state.userInfor)
+      state.headimg=data.photo
     },
     cleartoken(state) { // 清除token
       state.token = ""
@@ -62,6 +66,18 @@ export default new Vuex.Store({
     },
     headnav(state, num) { //导航状态
       state.hedeid = num
+    },
+    Serch(state,data){
+      state.serchlist=data
+    },
+    uploadimg(state,img){
+      state.userInfor.photo= img
+      state.headimg=img
+      state.userInfor.photo
+    },
+    serQQ(state,data){
+      state.serverqq=data
     }
-  }
+  },
+  
 })

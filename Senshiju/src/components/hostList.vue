@@ -1,7 +1,7 @@
 <template>
   <div class="hotlist poniter" @click="godetail(info)">
     <div class="hotlist_info">
-      <img :src="info.imgs" alt />
+      <img :src="info.cover" alt />
       <div class="lili">
         <h5 class="bold">{{info.title}}</h5>
         <div class="font14 color98">{{info.style}} | {{info.area}} | {{info.cost}}</div>

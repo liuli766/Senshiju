@@ -8,12 +8,20 @@
     </div>
     <!--  -->
     <div class="build_img fl_be">
-      <img :src="detaillist.imgs" alt />
+      <img :src="detaillist.cover" alt />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
           <h5>{{detaillist.title}}</h5>
-          <span class="font20 poniter" @click="Collect(detaillist.id)" v-if="detaillist.is_collect">收藏</span>
-          <span class="font20 poniter yi" v-else >已收藏</span>
+          <span
+            class="font20 poniter yi"
+            @click="Collect(detaillist.id)"
+            v-if="detaillist.is_collect==true"
+          >已收藏</span>
+          <span
+            class="font20 poniter"
+            @click="Collect(detaillist.id)"
+            v-if="detaillist.is_collect==false"
+          >收藏</span>
         </div>
         <p>
           图纸编号：
@@ -141,7 +149,14 @@ export default {
       userInfor: (state) => state.userInfor,
     }),
   },
+  watch: {},
   created() {
+    if (!this.token) {
+      this.$router.push({
+        path: '/login',
+      })
+      return false
+    }
     this.listdata = this.pic.slice(0, 2)
     // setInterval(this.handprve, 1000);
     // request
@@ -176,20 +191,21 @@ export default {
     })
   },
   methods: {
-
     // 图纸详情
-    handdetail(){
-        request
-      .getBlueDetail({
-        id: this.$route.query.id,
-      })
-      .then((res) => {
-        this.detaillist = res.data
-        this.bianhao = this.detaillist.number.toUpperCase()
-        console.log(res, '图纸详情')
-      })
-      .catch((e) => {})
-      .finally(() => {})
+    handdetail() {
+      request
+        .getBlueDetail({
+          id: this.$route.query.id,
+          uid: this.userInfor.member_id,
+        })
+        .then((res) => {
+          this.detaillist = res.data
+          this.bianhao = this.detaillist.number.toUpperCase()
+          console.log(res, '图纸详情')
+          console.log(this.detaillist.is_collect)
+        })
+        .catch((e) => {})
+        .finally(() => {})
     },
 
     //获取验证码
@@ -260,13 +276,14 @@ export default {
     },
 
     // 跳转订单页
-    orderPay() {this.handdetail()
+    orderPay() {
+      this.handdetail()
       this.$router.push({
         path: '/orderpay',
-        query:{
-          id:this.detaillist.id,
-          price:this.detaillist.price
-        }
+        query: {
+          id: this.detaillist.id,
+          price: this.detaillist.price,
+        },
       })
     },
 
@@ -279,7 +296,7 @@ export default {
           object: num,
         })
         .then((res) => {
-          this.handdetail();
+          this.handdetail()
           this.$message({
             showClose: true,
             message: '收藏成功',
@@ -305,17 +322,17 @@ export default {
         })
         .then((res) => {
           this.$message({
-                showClose: true,
-                message: '取消成功',
-                type: 'success',
-              })
+            showClose: true,
+            message: '取消成功',
+            type: 'success',
+          })
         })
         .catch((e) => {
           this.$message({
-                showClose: true,
-                message: '取消失败',
-                type: 'error',
-              })
+            showClose: true,
+            message: '取消失败',
+            type: 'error',
+          })
         })
         .finally(() => {})
     },

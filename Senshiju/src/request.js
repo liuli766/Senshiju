@@ -211,6 +211,12 @@ function getartzx(data) {
   }
   return http.fetchPost('/api/Common/art_class', params)
 }
+function getupload(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/User/up_image', params)
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -247,4 +253,5 @@ export default {
   getPay,//支付页面
   getwxnotify,//微信支付回调
   getartzx, //首页咨询
+  getupload, //上传图片
 }

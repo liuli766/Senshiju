@@ -4,26 +4,34 @@
       <div>
         <div class="ing">
           当前位置：
-          <router-link to="/">首页</router-link>> 建房资讯 > 农村小庭院怎么设计好看，两层景观庭院好看只要40万
+          <router-link to="/">首页</router-link>
+          > 建房资讯 > {{next}}
         </div>
         <div class="detail">
-          <h6>{{this.$route.query.h6}}</h6>
+          <h6>
+            {{this.$route.query.title}}
+            <span
+              class="poniter span2"              
+              v-if="detaillist.is_collect==true"
+            >已收藏</span>
+            <span class="poniter span1" v-if="detaillist.is_collect==false" @click.stop="collect(detaillist.id)">收藏</span>
+          </h6>
           <div class="fl_be detailtj">
             <span>
-              <i class="el-icon-view"></i>浏览数：1068人已读
+              <i class="el-icon-view"></i>
+              浏览数：{{detaillist.view}}人已读
             </span>
-            <span>2020-05-26 09.41.03</span>
+            <span>{{detaillist.add_time}}</span>
           </div>
-          <p>有时就想人这一生挺无聊的，无非是为了车子，房子，票子，女子和孩子，其中房子是中国人的头等大事， 有钱了要么在城市买房，要么在农村建房，如果你在农村也有宅基地，一定要回家建房， 一家人住一个大院子</p>
-          <p>农村小庭院怎么设计好看? 下面为大家分享40万两层简欧景观庭院简单实用，如果你也喜欢，可以咨询客服定制设计哦。</p>
-          <div class="h5">1.简单低调的欧式外观</div>
+          <p v-html="detaillist.content"></p>
+          <!-- <div class="h5">1.简单低调的欧式外观</div>
           <p
             class="p"
-          >农村地广人稀，最多的土地，建个大院子才能显示气派，一般农村宅基地会在120-300平之间，做 个庭院也是常有的事，大部分人都自己设计，等别墅建房好后在四周做个围墙就更加完美了。</p>
-          <img src="../assets/image/vdeo.png" alt />
+          >农村地广人稀，最多的土地，建个大院子才能显示气派，一般农村宅基地会在120-300平之间，做 个庭院也是常有的事，大部分人都自己设计，等别墅建房好后在四周做个围墙就更加完美了。</p>-->
+          <img :src="detaillist.cover" alt />
           <div class="fl_be poniter">
-            <span class="one-wrap">上一篇:想在农村设计一套私家庭院景观，这里有专业的设计方案</span>
-            <span class="one-wrap">下一篇:想在农村设计一套私家庭院景观，这里有专业的设</span>
+            <span class="one-wrap">上一篇:{{next}}</span>
+            <span class="one-wrap">下一篇:{{prev}}</span>
           </div>
         </div>
       </div>
@@ -38,11 +46,13 @@
             :key="index"
           >{{item}}</span>
           <div v-for="(item,idx) in hotmoney" :key="'1'+idx" class="hotcontent">
-              
             <img :src="item.img" alt />
             <div class="fl_be hotnum">
               <span>{{item.price}}</span>
-              <span><b>销量:</b> {{item.num}}</span>
+              <span>
+                <b>销量:</b>
+                {{item.num}}
+              </span>
             </div>
             <p>{{item.info}}</p>
           </div>
@@ -53,11 +63,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import newinfo from '@/components/newinfo.vue'
-import request from '@/request.js' 
+import request from '@/request.js'
 export default {
   components: {
-    newinfo
+    newinfo,
   },
   data() {
     return {
@@ -68,28 +79,83 @@ export default {
           img: require('../assets/image/vdeo.png'),
           price: '¥599.00',
           num: 3,
-          info: '新款二层新中式农村自建房别墅施工图纸'
-        }
-      ]
+          info: '新款二层新中式农村自建房别墅施工图纸',
+        },
+      ],
+      detaillist: {},
+      next: '',
+      prev: '',
     }
+  },
+  computed: {
+    ...mapState({
+      token: (state) => state.token,
+      islogin: (state) => state.islogin,
+      userInfor: (state) => state.userInfor,
+    }),
   },
   created() {
     console.log(this.$route.query)
-    request
+    if (!this.token) {
+      this.$router.push({
+        path: '/login',
+      })
+      return false
+    }
+    this.getdetail()
+  },
+  methods: {
+    getdetail(){
+      request
       .getInfo({
-        id:0
+        uid: this.userInfor.member_id,
+        id: this.$route.query.id,
       })
       .then((res) => {
-        console.log(res,'百科详情')
+        console.log(res, '百科详情')
+        this.detaillist = res.data.detail
+        this.next=res.data.next
+        this.prev=res.data.prev
       })
       .catch((e) => {})
       .finally(() => {})
-  },
-  methods: {
+    },
+    collect(num) {
+      // 收藏
+      if (!this.token) {
+        this.$router.push({
+          path: '/login',
+        })
+        return false
+      }
+      request
+        .getCollect({
+          uid: this.userInfor.member_id,
+          type: 2,
+          object: num,
+        })
+        .then((res) => {
+          console.log(res, '收藏')
+          this.getdetail()
+          this.$message({
+            showClose: true,
+            message: '收藏成功,请在个人中心，文章收藏里面查看',
+            type: 'success',
+          })
+        })
+        .catch((e) => {
+          this.$message({
+            showClose: true,
+            message: '收藏失败',
+            type: 'error',
+          })
+        })
+        .finally(() => {})
+    },
     handhotnav(e) {
       this.hotnavid = e
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -122,17 +188,17 @@ export default {
   border: 1px solid #434343;
   box-sizing: border-box;
 }
-.hotnum{
-    font: bold 16px/23px '';
-    color: #2A2A2A;
-    margin: 27px 0 19px 0;
+.hotnum {
+  font: bold 16px/23px '';
+  color: #2a2a2a;
+  margin: 27px 0 19px 0;
 }
-.hotnum b{
-    color: #8E8E8E;
+.hotnum b {
+  color: #8e8e8e;
 }
-.hotcontent p{
-    font:400 14px /23px;
-    color: #434343;
+.hotcontent p {
+  font: 400 14px /23px;
+  color: #434343;
 }
 .detailbox .ing {
   font-size: 12px;
@@ -149,7 +215,7 @@ export default {
 .hotcontent img {
   width: 298px;
   height: 244px;
-  margin:20px 0  0px 0;
+  margin: 20px 0 0px 0;
 }
 .detailtj {
   border-bottom: 1px solid #b5b5b5;
@@ -176,5 +242,27 @@ export default {
   width: 551px;
   height: 309px;
   margin: 28px 0 70px 0;
+}
+.span1 {
+  font-size: 20px;
+  background: #ffde87;
+  color: #fff;
+  width: 121px;
+  height: 34px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 34px;
+  display: inline-block;
+}
+ .span2 {
+   display: inline-block;
+  font-size: 20px;
+  background: #7d7d7d;
+  color: #aeaeae;
+  width: 121px;
+  height: 34px;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 34px;
 }
 </style>

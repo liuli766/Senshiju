@@ -42,7 +42,8 @@
     </div>
     <!-- 设计师 -->
     <swiper :options="swiperOption">
-      <swiper-slide v-for="(item,k) in getLunboList" :key="k">
+      <swiper-slide v-for="(item,k) in designlist" :key="k"
+       @click="handLearn(item)">
         <div class="designer">
           <div class="designer_box">
             <div class="designer_main">
@@ -52,10 +53,10 @@
               <div class="h5_bot_div_div">Build a nice and practical villa for you..</div>
               <div class="dashed font24">一对一专业设计设计师</div>
               <div class="dash">
-                白若霖
+                {{item.name}}
                 <span>Bksnnk</span>
               </div>
-              <span class="liaojie font20 poniter" @click="handLearn">点击了解设计师</span>
+              <span class="liaojie font20 poniter">点击了解设计师</span>
               <div class="resevers">
                 <div>精细化设计服务</div>
                 <div class="fuwu">
@@ -72,10 +73,10 @@
               </div>
             </div>
             <div class="picbox fl_be_al">
-              <img :src="item.pic_path" alt />
+              <img :src="item.works[0]" alt />
               <div class="fl_be_al img_pic">
-                <img :src="item.pic_path" alt />
-                <img :src="item.pic_path" alt />
+                <img :src="item.works[1]" alt />
+                <img :src="item.works[2]" alt />
               </div>
             </div>
           </div>
@@ -196,13 +197,13 @@
           <div class="line"></div>
         </div>
       </div>
-      <p class="colord2">不上班茶几上成绩按开始此是世界第三代不上班茶几上成绩按开始此是世界第三代</p>
+      <p class="colord2">不上班茶k几上成绩按开始此是世界第三代不上班茶几上成绩按开始此是世界第三代</p>
       <div class="hotnav">
         <span
-          v-for="(item,index) in inforList"
-          :key="index"
+          v-for="(item,k) in inforList"
+          :key="k"
           :class="{'hot_active':item===typeinfor}"
-          @click="handInfor(item)"
+          @click="handInfor(item,k)"
         >{{item}}</span>
       </div>
     </div>
@@ -274,8 +275,8 @@
         <p class="colord2">百万平方，制造实力</p>
       </div>
       <div class="mapshow">
-        <div class="txt1">村墅人家覆盖265个大城市，服务全国1030个地区</div>
-        <div class="txt2">真实客户案例2000+</div>
+        <div class="txt1">村墅人家覆盖{{homeList.cities}}个大城市，服务全国{{homeList.service_area}}个地区</div>
+        <div class="txt2">真实客户案例{{homeList.real_client}}+</div>
         <img src="../assets/image/map.png" alt />
       </div>
     </div>
@@ -299,7 +300,7 @@
       <div>
         <img src="../assets/image/fixed/erwm.png" alt />
         <span>二维码</span>
-        <img :src="link+homeList.qr_code" alt class="qrimg" />
+        <img :src="homeList.qr_code" alt class="qrimg" />
       </div>
       <div @click="handorder">
         <img src="../assets/image/fixed/ddan.png" alt />
@@ -422,6 +423,7 @@ export default {
       ],
       vdeoimg: true,
       homeList: [],
+      designlist:[], //设计师轮播
     }
   },
   watch: {},
@@ -460,14 +462,23 @@ export default {
       .getHomeindex({})
       .then((res) => {
         this.homeList = res.data
+        this.$store.commit("serQQ",res.data)
         console.log(res, 'pc端首页')
       })
       .catch((e) => {})
       .finally(() => {})
-
-    this.getzixun('0')
     this.getprell()
     this.getlunbo()
+
+    // 首页百科
+    this.getzixun('建房百科')
+
+    // 首页设计师
+    request.getHomrdesign().then(res=>{
+      console.log(res,'设计师轮播')
+      this.designlist=res.data
+    }) .catch((e) => {})
+      .finally(() => {})
   },
   methods: {
     getGoodsHref() {
@@ -520,6 +531,7 @@ export default {
       request
         .getLunbo({ type: 1 })
         .then((res) => {
+          console.log(res,'轮播')
           this.getLunboList = res.data.list
         })
         .catch((e) => {})
@@ -536,20 +548,26 @@ export default {
     },
 
     // 别墅资讯
-    handInfor(nav) {
+    handInfor(nav,k) {
       this.typeinfor = nav
-      if (nav == '建房百科') {
-        this.getzixun('0')
-      } else if (nav == '设计百科') {
-        this.getzixun('1')
-      } else if ((nav = '装修百科')) {
-        this.getzixun('2')
-      } else if (nav == '施工百科') {
-        this.getzixun('3')
-      } else if (nav == '风水百科') {
-        this.getzixun('4')
-      } else if (nav == '建房日志') {
-        this.getzixun('5')
+       if (k == 0) {
+        this.typeinfor = '建房百科'
+        this.getzixun(this.typeinfor)
+      } else if (k == 1) {
+        this.typeinfor = '设计百科'
+        this.getzixun(this.typeinfor)
+      } else if (k == 2) {
+        this.typeinfor = '装修百科'
+        this.getzixun(this.typeinfor)
+      } else if (k== 3) {
+        this.typeinfor = '施工百科'
+        this.getzixun(this.typeinfor)
+      } else if (k == 4) {
+        this.typeinfor = '风水百科'
+        this.getzixun(this.typeinfor)
+      } else if (k == 5) {
+        this.typeinfor = '建房日志'
+        this.getzixun(this.typeinfor)
       }
     },
 
@@ -571,9 +589,14 @@ export default {
       this.zxlist = this.inList.slice(0, 1)
     },
     // 设计师了解详情
-    handLearn() {
+    handLearn(num) {
+      console.log(1)
       this.$router.push({
         path: '/teamDetail',
+        query:{
+          id:num.id,
+          name:num.name
+        }
       })
     },
 

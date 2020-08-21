@@ -17,17 +17,16 @@
         </li>
       </ul>
       <div class="head poniter regieandlogin" v-if="token">
-        <img :src="userInfor.photo" alt @click="goperson" />
+        <img :src="headimg" alt @click="goperson" />
       </div>
       <div class="regieandlogin poniter" v-else>
         <router-link to="/register">注册</router-link>|
         <router-link to="/login">登录</router-link>
       </div>
-      
 
       <div class="serch">
-        <input type="text" placeholder="请输入关键词" @click="handsearch" />
-        <img src="../assets/image/fixed/serch.png" alt class="serchimg" />
+        <input type="text" placeholder="请输入关键词" @keyup.enter='serch' v-model="search" />
+        <img src="../assets/image/fixed/serch.png" alt class="serchimg" @click="serch" />
       </div>
     </nav>
   </div>
@@ -35,11 +34,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import request from '@/request.js'
 export default {
   data() {
     return {
       li4: 'li4',
-      tok: localStorage.getItem('istoken'),//token
+      tok: localStorage.getItem('istoken'), //token
       navList: [
         {
           name: '首页',
@@ -76,7 +76,7 @@ export default {
         '建房日志',
       ],
       navid: 0, // 当前选中的导航
-      
+      search: '', //搜索字符串
     }
   },
   computed: {
@@ -85,29 +85,46 @@ export default {
       token: (state) => state.token,
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
+      serchlist: (state) => state.serchlist,
+      headimg:(state) => state.headimg
     }),
   },
-  watch: {
-  },
+  watch: {},
   created() {
-   console.log(localStorage.getItem('istoken'))
+    console.log(localStorage.getItem('istoken'))
   },
   mounted() {},
   methods: {
     // 点击导航栏
     changeNav(nav, index) {
-      // localStorage.setItem('idnum', index) // 保存下标
+      localStorage.setItem('idnum', index) // 保存下标
       document.cookie = index
-      console.log(document.cookie, localStorage.getItem('idnum'))
+      console.log(document.cookie.slice(-1), localStorage.getItem('idnum'))
       // this.$store.commit('headnav', parseInt(localStorage.idnum))
-      this.$store.commit('headnav', parseInt(document.cookie))
+      this.$store.commit('headnav', parseInt(localStorage.getItem('idnum')))
       this.$router.push({ path: nav.url })
     },
-    handsearch() {
-      // 搜索页面
-      this.$router.push({
-        path: '/search',
-      })
+    // handsearch() {
+    //   // 搜索页面
+    //   this.$router.push({
+    //     path: '/search',
+    //   })
+    // },
+    serch() {
+      request
+        .getHots({
+          page: 1,
+          search: this.search,
+        })
+        .then((res) => {
+          console.log(res)
+          this.$router.push({
+            path: '/search',
+          })
+          this.$store.commit('Serch', res.data)
+        })
+        .catch((e) => {})
+        .finally(() => {})
     },
     handitem(idx) {
       // 跳转建房百科
@@ -126,7 +143,6 @@ export default {
 </script>
 
 <style scoped>
-
 nav ul li {
   position: relative;
 }
@@ -233,7 +249,7 @@ nav img {
   height: 80px;
   border-radius: 50%;
 }
-.head{
+.head {
   background: #fff;
   margin: 0;
 }

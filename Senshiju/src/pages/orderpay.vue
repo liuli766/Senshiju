@@ -176,11 +176,11 @@ export default {
                   data:res.data
                 }
               })
-              this.$message({
-                showClose: true,
-                message: '提交订单成功',
-                type: 'success',
-              })
+              // this.$message({
+              //   showClose: true,
+              //   message: '提交订单成功',
+              //   type: 'success',
+              // })
             })
             .catch((e) => {
               this.$message({
