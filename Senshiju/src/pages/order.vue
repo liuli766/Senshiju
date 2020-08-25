@@ -254,49 +254,48 @@
           <h6>收藏的图纸</h6>
           <div v-if="CollnectList.length==0">没有收藏的图纸</div>
           <div
-            class="coll flx poniter"
+            class="bodetail"
             v-for="(item,k) in CollnectList"
             :key="k"
             @click="gopicdetail(item)"
           >
-            <img :src="item.cover" alt />
-            <div class="center">
-              <p>{{item.title}}</p>
-              <div class="fl_be">
-                <span>￥{{item.cost}}</span>
-                <span>{{item.add_time}}</span>
+            <div class="coll flx poniter">
+              <img :src="item.cover" alt />
+              <div class="center">
+                <p class="pppp">{{item.title}}</p>
+                <div class="fl_be">
+                  <span>￥{{item.price}}</span>
+                  <span>{{item.add_time}}</span>
+                </div>
               </div>
+              <div
+                class="ycoll"
+                v-if="item.is_collect==1"
+                @click.stop="qxcollect(item.collect_id)"
+              >已收藏</div>
             </div>
-            <div
-              class="ycoll"
-              v-if="item.is_collect==1"
-              @click.stop="qxcollect(item.collect_id)"
-            >已收藏</div>
           </div>
         </div>
         <!-- 文章收藏 -->
         <div class="orderlist" v-show="chosed==4">
           <h6>收藏的文章</h6>
           <div v-if="articleList.length==0">没有收藏的文章</div>
-          <div
-            class="coll flx poniter"
-            v-for="(item,k) in articleList"
-            :key="k"
-            @click="goartic(item)"
-          >
-            <img :src="item.cover" alt />
-            <div class="center">
-              <p>{{item.title}}</p>
-              <div class="fl_be">
-                <span>￥{{item.cost}}</span>
-                <span>{{item.add_time}}</span>
+          <div class="bodetail" v-for="(item,k) in articleList" :key="k" @click="goartic(item)">
+            <div class="coll flx poniter">
+              <img :src="item.cover" alt />
+              <div class="center">
+                <p class="pppp">{{item.title}}</p>
+                <div class="fl_be">
+                  <span>￥{{item.price}}</span>
+                  <span>{{item.add_time}}</span>
+                </div>
               </div>
+              <div
+                class="ycoll"
+                v-if="item.is_collect==1"
+                @click.stop="qxcollect(item.collect_id)"
+              >已收藏</div>
             </div>
-            <div
-              class="ycoll"
-              v-if="item.is_collect==1"
-              @click.stop="qxcollect(item.collect_id)"
-            >已收藏</div>
           </div>
         </div>
       </div>
@@ -374,7 +373,7 @@ export default {
       flag: 0,
       typeid: 1, //图纸，文章
       CollnectList: [], //图纸收藏
-      articleList:[], //图纸收藏
+      articleList: [], //图纸收藏
       imageUrl: '',
       cityflag: 1,
       uploadurl: '', //上传图片的路径
@@ -660,13 +659,13 @@ export default {
           type: num,
         })
         .then((res) => {
-          if(num==2){
-            this.articleList=res.data
+          if (num == 2) {
+            this.articleList = res.data
           }
-          if(num==1){
+          if (num == 1) {
             this.CollnectList = res.data
           }
-          
+
           console.log(this.CollnectList, num)
         })
         .catch((e) => {})
@@ -680,12 +679,12 @@ export default {
           c_id: idx,
         })
         .then((res) => {
-          if(this.chosed==3){
-              this.collect(1)
-          }else if(this.chosed==4){
+          if (this.chosed == 3) {
+            this.collect(1)
+          } else if (this.chosed == 4) {
             this.collect(2)
           }
-          
+
           this.$message({
             showClose: true,
             message: '取消成功',
@@ -1179,9 +1178,16 @@ form .btn {
 }
 .coll {
   background: #fff;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
-  padding: 0 40px;
+  padding: 30px 40px;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  border-bottom: 1px dashed #a0a0a0;
+  margin: 0 35px;
+  box-sizing: border-box;
 }
 .coll img {
   width: 156px;
@@ -1211,5 +1217,14 @@ form .btn {
   align-items: center;
   justify-content: center;
   height: 50px;
+}
+
+.bodetail {
+  background: #fff;
+}
+.orderlist .pppp {
+  line-height: 28px;
+  text-align: left;
+  width: 267px;
 }
 </style>

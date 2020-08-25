@@ -2,15 +2,15 @@
   <!-- 最新资讯 -->
   <div>
     <h6>最新资讯</h6>
-    <div v-for="(item,k) in newarr" :key="k">
+    <div v-for="(item,k) in inList" :key="k" @click="godetail(item)" class="poniter box">
       <div class="info">
         <img :src="item.cover" alt />
         <div class="block">
-          <p>{{item.content}}</p>
+          <p>{{item.title}}</p>
         </div>
       </div>
-      <div class="p wrap">{{item.content}}</div>
-      <div class="p wrap">{{item.content}}</div>
+      <div class="p wrap">{{item.title}}</div>
+      <div class="p wrap">{{item.title}}</div>
     </div>
   </div>
 </template>
@@ -18,6 +18,7 @@
 <script>
 import hotlist from '@/components/hostList.vue'
 import { mapState } from 'vuex'
+import request from '@/request.js'
 export default {
   data() {
     return {
@@ -29,22 +30,32 @@ export default {
       type: Array,
     },
   },
+  created() {
+    this.getzixun()
+  },
   methods: {
-    // getzixun(src) {
-    //   //资讯
-    //   request
-    //     .getHomebaike({
-    //       page: 1,
-    //       class:'',
-    //     })
-    //     .then((res) => {
-    //       console.log(res, '资讯')
-    //       this.inList = res.data
-    //       this.zxlist = this.inList.slice(0, 1)
-    //     })
-    //     .catch((e) => {})
-    //     .finally(() => {})
-    // },
+    getzixun() {
+      //资讯
+      request
+        .getHomebaike({
+          page: 1,
+          class:'',
+        })
+        .then((res) => {
+          console.log(res, '资讯')
+          this.inList = res.data
+          // this.zxlist = this.inList.slice(0, 1)
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+    godetail(item){
+      //跳转文章详情
+      this.$router.push({
+        path: '/articDetail',
+        query: item,
+      })
+    }
   },
 }
 </script>
@@ -84,5 +95,8 @@ h6 {
   border-bottom: 1px dashed #bfbfbf;
   line-height: 26px;
   text-align: left;
+}
+.box{
+  margin-bottom: 20px;
 }
 </style>

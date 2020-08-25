@@ -85,7 +85,7 @@
           @click="handdetail(item.id)"
         >
           <img :src="item.cover" alt />
-          <p class="one-wrap">{{item.intro}}</p>
+          <p class="one-wrap">{{item.title}}</p>
           <div class="bot">
             <span>
               占地面积：

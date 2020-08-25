@@ -75,25 +75,13 @@
     <!-- 轮播 -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img src="../assets/image/banner1.png" alt />
-        </div>
-        <div class="swiper-slide">
-          <img src="../assets/image/banner2.png" alt />
-        </div>
-        <div class="swiper-slide">
-          <img src="../assets/image/banner3.png" alt />
-        </div>
-        <div class="swiper-slide">
-          <img src="../assets/image/banner2.png" alt />
-        </div>
-        <div class="swiper-slide">
-          <img src="../assets/image/banner3.png" alt />
+        <div class="swiper-slide" v-for="(item,k) in detaillist.imgs" :key="k">
+          <img :src="item" alt />
         </div>
       </div>
       <!-- 如果需要导航按钮 -->
-      <span class="swiper-button-prev"></span>
-      <span class="swiper-button-next"></span>
+      <span class="swiper-button-prev" style="background: #fff;"></span>
+      <span class="swiper-button-next" style="background: #fff;"></span>
     </div>
     <!-- <div class="swiper">
       <div class="swiper_slide">
