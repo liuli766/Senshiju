@@ -28,46 +28,55 @@
             <span>{{detaillist.add_time}}</span>
           </div>
           <p v-html="detaillist.content"></p>
-          <!-- <div class="h5">1.简单低调的欧式外观</div>
-          <p
-            class="p"
-          >农村地广人稀，最多的土地，建个大院子才能显示气派，一般农村宅基地会在120-300平之间，做 个庭院也是常有的事，大部分人都自己设计，等别墅建房好后在四周做个围墙就更加完美了。</p>-->
           <img :src="detaillist.cover" alt />
           <div class="fl_be poniter">
-            <span class="one-wrap">上一篇:{{next}}</span>
-            <span class="one-wrap">下一篇:{{prev}}</span>
+            <span class="one-wrap" @click="gonext(detaillist.id)">上一篇:{{prev}}</span>
+            <span class="one-wrap" @click="goprev(detaillist.id)">下一篇:{{next}}</span>
           </div>
         </div>
       </div>
       <div>
-        <div class="newinfo">
+        <div class="newinfo poniter">
           <h6>小编精选</h6>
-          <!-- <div v-for="(item,k) in newarr" :key="k">
+          <div v-for="(item,k) in newarr" :key="k" @click="goself(item.id)">
             <div class="info">
               <img :src="item.cover" alt />
               <div class="block">
-                <p>{{item.content}}</p>
+                <p>{{item.title}}</p>
               </div>
             </div>
-            <div class="p wrap">{{item.content}}</div>
-            <div class="p wrap">{{item.content}}</div>
-          </div>-->
+            <div
+              class="p wrap"
+              v-if="prev!=='无'"
+              @click="gonext(detaillist.id)"
+            >{{item.id}}.{{prev}}</div>
+            <div
+              class="p wrap"
+              v-if="next!=='无'"
+              @click="gonext(detaillist.id)"
+            >{{item.id}}.{{next}}</div>
+          </div>
         </div>
         <div class="hotnavbox">
           <span
-            class="hotnav"
+            class="hotnav poniter"
             @click="handhotnav(index)"
             :class="{hotactive:hotnavid===index}"
             v-for="(item,index) in hotlist"
             :key="index"
           >{{item}}</span>
-          <div v-for="(item,idx) in hotmoney" :key="'1'+idx" class="hotcontent" @click="godetail(item)">
+          <div
+            v-for="(item,idx) in hotmoney"
+            :key="'1'+idx"
+            class="hotcontent poniter"
+            @click="godetail(item)"
+          >
             <img :src="item.cover" alt />
             <div class="fl_be hotnum poniter">
               <span>{{item.price}}</span>
               <span>
                 <b>销量:</b>
-                {{item.number}}
+                {{item.moods}}
               </span>
             </div>
             <p class="intro two-wrap">{{item.intro}}</p>
@@ -94,6 +103,7 @@ export default {
       detaillist: {},
       next: '',
       prev: '',
+      newarr: [],
     }
   },
   computed: {
@@ -104,34 +114,44 @@ export default {
     }),
   },
   created() {
-    console.log(this.$route.query)
-    if (!this.token) {
-      this.$router.push({
-        path: '/login',
-      })
-      return false
-    }
     this.getdetail()
     this.Hots('moods')
+    this.getzixun()
   },
   methods: {
     getdetail() {
-      request
-        .getInfo({
-          uid: this.userInfor.member_id,
-          id: this.$route.query.id,
-        })
-        .then((res) => {
-          console.log(res, '百科详情')
-          this.detaillist = res.data.detail
-          this.next = res.data.next
-          this.prev = res.data.prev
-        })
-        .catch((e) => {})
-        .finally(() => {})
+      //详情
+      if (!this.token) {
+        request
+          .getInfo({
+            id: this.$route.query.id,
+          })
+          .then((res) => {
+            this.detaillist = res.data.detail
+            this.next = res.data.next
+            this.prev = res.data.prev
+          })
+          .catch((e) => {})
+          .finally(() => {})
+        return false
+      } else {
+        request
+          .getInfo({
+            uid: this.userInfor.member_id,
+            id: this.$route.query.id,
+          })
+          .then((res) => {
+            this.detaillist = res.data.detail
+            this.next = res.data.next
+            this.prev = res.data.prev
+          })
+          .catch((e) => {})
+          .finally(() => {})
+      }
     },
     collect(num) {
       // 收藏
+
       if (!this.token) {
         this.$router.push({
           path: '/login',
@@ -145,7 +165,6 @@ export default {
           object: num,
         })
         .then((res) => {
-          console.log(res, '收藏')
           this.getdetail()
           this.$message({
             showClose: true,
@@ -163,6 +182,7 @@ export default {
         .finally(() => {})
     },
     Hots(str) {
+      //热门爆款
       request
         .getHots({
           page: 1,
@@ -170,13 +190,15 @@ export default {
         })
         .then((res) => {
           this.hotmoney = res.data
+          console.log(res)
         })
         .catch((e) => {})
         .finally(() => {})
     },
     handhotnav(e) {
+      //热销推荐切换
       this.hotnavid = e
-      //热销推荐
+
       if (e == 0) {
         this.Hots('moods')
       }
@@ -184,8 +206,23 @@ export default {
         this.Hots('add_time')
       }
     },
+    getzixun() {
+      //小编精选
+      request
+        .getHomebaike({
+          page: 1,
+          class: '小编精选',
+        })
+        .then((res) => {
+          console.log(res, '资讯')
+          this.newarr = res.data.slice(0, 1)
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
     godetail(item) {
       //跳转产品详情
+
       let idname = item.id
       this.$router.push({
         path: '/productDetail',
@@ -193,6 +230,41 @@ export default {
           id: idname,
         },
       })
+    },
+    gonext(item) {
+      //上一篇 文章详情
+      if (item - 1 > 0) {
+        this.$router.push({
+          path: '/articDetail',
+          query: {
+            id: item - 1,
+          },
+        })
+        this.getdetail()
+      }
+    },
+    goprev(item) {
+      //下一篇 文章详情
+      console.log(this.$route.query.length)
+      let length = localStorage.getItem('length')
+      if (item + 1 <= length) {
+        this.$router.push({
+          path: '/articDetail',
+          query: {
+            id: item + 1,
+          },
+        })
+        this.getdetail()
+      }
+    },
+    goself(id) {
+      this.$router.push({
+        path: '/articDetail',
+        query: {
+          id,
+        },
+      })
+      this.getdetail()
     },
   },
 }
@@ -285,7 +357,7 @@ export default {
 .detail img {
   width: 551px;
   height: 309px;
-  margin: 28px 0 70px 0;
+  margin: 0 0 70px 0;
 }
 .span1 {
   font-size: 20px;
@@ -308,6 +380,9 @@ export default {
   border-radius: 15px;
   text-align: center;
   line-height: 34px;
+}
+.newinfo {
+  margin-left: 30px;
 }
 .newinfo h6 {
   font: 400 18px /26px '';

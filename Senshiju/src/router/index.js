@@ -13,7 +13,6 @@ const routes = [
     name: 'home',
     meta: {
       title: '首页',
-      // requireAuth: true,// 判断是否需要登录
     },
     component: (resolve) => require(['@/pages/home'], resolve)
   },
@@ -95,6 +94,7 @@ const routes = [
     meta: {
       title: '订单列表'
     },
+    //  requireAuth: true,// 判断是否需要登录
     component: (resolve) => require(['@/pages/order'], resolve)
   },
   {

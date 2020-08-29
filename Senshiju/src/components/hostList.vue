@@ -42,6 +42,7 @@ export default {
   background: #fff;
   margin-bottom: 30px;
   height: 400px;
+  margin-right: 12px;
 }
 .hotlist_info img {
   width: 100%;
@@ -62,7 +63,7 @@ export default {
   margin-top: 20px;
   margin: 20px 0 0 20px;
 }
-.lili{
-  background: #F6F6F6;
+.lili {
+  background: #f6f6f6;
 }
 </style>

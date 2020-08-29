@@ -75,26 +75,17 @@
     <!-- 轮播 -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item,k) in detaillist.imgs" :key="k">
-          <img :src="item" alt />
+        <div class="swiper-slide" v-for="(val,k) in detaillist.imgs" :key="k">
+          <img :src="val" alt />
         </div>
       </div>
       <!-- 如果需要导航按钮 -->
       <span class="swiper-button-prev" style="background: #fff;"></span>
       <span class="swiper-button-next" style="background: #fff;"></span>
     </div>
-    <!-- <div class="swiper">
-      <div class="swiper_slide">
-        <img :src="item" alt v-for="(item,index) in listdata" :key="index" />
-      </div>
-      <span class="iconfont icon-jiantou" @click="handprve"></span>
-      <span class="iconfont icon-jiantou" @click="handnext"></span>
-    </div>-->
     <!--  -->
     <div class="explain">购图前重要说明：</div>
-    <p
-      class="p"
-    >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
+    <p class="explain2">购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
   </div>
 </template>
 
@@ -105,7 +96,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      pic: [require('../assets/image/1.png'), require('../assets/image/1.png')],
+      pic: [],
       listdata: [],
       detaillist: [],
       dialogFormVisible: false, //弹出层
@@ -139,25 +130,7 @@ export default {
   },
   watch: {},
   created() {
-    if (!this.token) {
-      this.$router.push({
-        path: '/login',
-      })
-      return false
-    }
     this.listdata = this.pic.slice(0, 2)
-    // setInterval(this.handprve, 1000);
-    // request
-    //   .getBlueDetail({
-    //     id: this.$route.query.id,
-    //   })
-    //   .then((res) => {
-    //     console.log(res)
-    //     this.detaillist = res.data
-    //     this.bianhao = this.detaillist.number.toUpperCase()
-    //   })
-    //   .catch((e) => {})
-    //   .finally(() => {})
     this.handdetail()
   },
   mounted() {
@@ -181,7 +154,21 @@ export default {
   methods: {
     // 图纸详情
     handdetail() {
-      request
+      if (!this.token) {
+        request
+        .getBlueDetail({
+          id: this.$route.query.id,
+        })
+        .then((res) => {
+          this.detaillist = res.data
+          this.bianhao = this.detaillist.number.toUpperCase()
+          console.log(this.detaillist.is_collect)
+        })
+        .catch((e) => {})
+        .finally(() => {})
+        return false
+      }else{
+        request
         .getBlueDetail({
           id: this.$route.query.id,
           uid: this.userInfor.member_id,
@@ -194,6 +181,8 @@ export default {
         })
         .catch((e) => {})
         .finally(() => {})
+      }
+      
     },
 
     //获取验证码
@@ -230,6 +219,12 @@ export default {
     },
     //立即申请
     submitForm(formName) {
+      if (!this.token) {
+        this.$router.push({
+          path: '/login',
+        })
+        return false
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           request
@@ -277,6 +272,12 @@ export default {
 
     // 收藏
     Collect(num) {
+      if (!this.token) {
+        this.$router.push({
+          path: '/login',
+        })
+        return false
+      }
       request
         .getCollect({
           uid: this.userInfor.member_id,
@@ -303,6 +304,12 @@ export default {
     },
     //取消收藏
     qxcollect(idx) {
+      if (!this.token) {
+        this.$router.push({
+          path: '/login',
+        })
+        return false
+      }
       request
         .getCancelcollect({
           uid: this.userInfor.member_id,
@@ -467,7 +474,7 @@ export default {
   height: 94px;
   line-height: 94px;
 }
-.p {
+.explain2{
   font: 20px/40px '';
   color: #4e4e4e;
   text-align: left;

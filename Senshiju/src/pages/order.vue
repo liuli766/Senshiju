@@ -4,9 +4,10 @@
     <!-- 用户信息 -->
     <div class="yellobg">
       <div class="userintro">
-        <img :src="headimg" alt />
+        <img :src="headimg" v-if="headimg!==null" alt />
+        <img :src="userInfor.photo" v-if="headimg==null" alt />
         <div class="username fl_center">
-          <span>{{userInfor.nickname}}</span>
+          <span v-if="token">{{userInfor.nickname}}</span>
           <span>普通用户</span>
         </div>
       </div>
@@ -74,25 +75,10 @@
         <div v-show="chosed==1" class="orderlist">
           <h6>个人信息</h6>
           <div class="personinfo">
-            <!-- <div class="fl_be">
-              <span>头像</span>
-              <div class="fl_center adatar">
-                <img :src="adatar?adatar:userInfor.photo" alt class="photo" />
-                <input
-                  type="file"
-                  id="file"
-                  name="file"
-                  accept="image/gif, image/jpeg, image/jpg, image/png"
-                  @change="fileChange"
-                />
-                <i class="el-icon-arrow-right"></i>
-              </div>
-            </div>-->
-            <!-- <button @click="upload">提交</button> -->
-
             <div class="fl_be">
               <span>头像</span>
               <el-upload
+                v-if="token"
                 class="avatar-uploader"
                 action="http://villa.jisapp.cn/index/User/up_image"
                 :show-file-list="false"
@@ -100,8 +86,8 @@
                 :data="{uid:userInfor.member_id}"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar photo" />
-                <img v-else :src="headimg" class="photo" />
+                <img v-if="headimg!==null" :src="headimg" class="photo" />
+                <img v-if="headimg==null" :src="userInfor.photo" class="photo" />
                 <i class="el-icon-arrow-right" style="margin-top: 20px;"></i>
               </el-upload>
             </div>
@@ -110,7 +96,7 @@
               <span>昵称</span>
               <div>
                 <span>
-                  <input type="text" v-model="userInfor.nickname" />
+                  <input type="text" v-model="userInfor.nickname" v-if="token" />
                 </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
@@ -120,7 +106,7 @@
               <div>
                 <span>
                   已绑定：
-                  <input type="text" v-model="userInfor.phone_num" />
+                  <input type="text" v-model="userInfor.phone_num" v-if="token" />
                 </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
@@ -150,7 +136,7 @@
               <span>设置密码</span>
               <i class="el-icon-close poniter" @click="goclose"></i>
             </h5>
-            <input type="text" :value="userInfor.phone_num" class="ip" />
+            <input type="text" :value="userInfor.phone_num" class="ip" v-if="token" />
             <div class="rel">
               <input type="text" class="ip" placeholder="请输入4位验证码" />
               <div class="pos poniter" v-if="tmeValue==60" @click="time">
@@ -264,7 +250,7 @@
               <div class="center">
                 <p class="pppp">{{item.title}}</p>
                 <div class="fl_be">
-                  <span>￥{{item.price}}</span>
+                  <span>￥{{item.cost}}</span>
                   <span>{{item.add_time}}</span>
                 </div>
               </div>
@@ -286,7 +272,6 @@
               <div class="center">
                 <p class="pppp">{{item.title}}</p>
                 <div class="fl_be">
-                  <span>￥{{item.price}}</span>
                   <span>{{item.add_time}}</span>
                 </div>
               </div>
@@ -400,16 +385,13 @@ export default {
     },
   },
   created() {
-    console.log(this.userInfor, this.token)
-    console.log(this.add_id)
+    if (!this.token) {
+      this.$router.push({
+        path: '/login',
+      })
+      return false
+    }
     this.getshop()
-    // this.uplaod()
-    // if (!this.token) {
-    //   this.$router.push({
-    //     path: '/login',
-    //   })
-    //   return false
-    // }
     // 我的订单
     request
       .getOrders({
@@ -491,32 +473,39 @@ export default {
 
     //修改个人资料
     preser() {
-      request
-        .getupInfo({
-          member_id: this.userInfor.member_id,
-          nickname: this.userInfor.nickname,
-          phone_num: this.userInfor.phone_num,
-          password: this.password,
+      if (!this.token) {
+        this.$router.push({
+          path: '/login',
         })
-        .then((res) => {
-          console.log(res, '修改个人资料')
-          if (res.code == 0) {
-            // this.upload()
-            this.$message({
-              showClose: true,
-              message: '修改成功',
-              type: 'success',
-            })
-          } else {
-            this.$message({
-              showClose: true,
-              message: '修改失败',
-              type: 'error',
-            })
-          }
-        })
-        .catch((e) => {})
-        .finally(() => {})
+        return false
+      } else {
+        request
+          .getupInfo({
+            member_id: this.userInfor.member_id,
+            nickname: this.userInfor.nickname,
+            phone_num: this.userInfor.phone_num,
+            password: this.password,
+          })
+          .then((res) => {
+            console.log(res, '修改个人资料')
+            if (res.code == 0) {
+              // this.upload()
+              this.$message({
+                showClose: true,
+                message: '修改成功',
+                type: 'success',
+              })
+            } else {
+              this.$message({
+                showClose: true,
+                message: '修改失败',
+                type: 'error',
+              })
+            }
+          })
+          .catch((e) => {})
+          .finally(() => {})
+      }
     },
 
     // 修改收货地址

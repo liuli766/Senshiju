@@ -7,50 +7,49 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     meauid: 0, //建房百科菜单选中,
-    hedeid:localStorage.getItem('idnum'),//导航选中 
+    hedeid: sessionStorage.getItem('idnum'),//导航选中 
     token: localStorage.getItem('istoken'),
-    userInfor:JSON.parse(localStorage.getItem('loginData')), //当前账号信息
+    userInfor: JSON.parse(localStorage.getItem('loginData')), //当前账号信息
     isLogin: localStorage.getItem('islogin'), //登录状态
-    user:{
+    user: {
 
     },
-    headimg:localStorage.getItem('headImg'),
-    serchlist:[], //搜索内容
-    serverqq:''
+    headimg: localStorage.getItem('headImg'),
+    serchlist: [], //搜索内容
+    serverqq: ''
   },
   getters: {
-    loginData (state) {
-      if(state.token) {
+    loginData(state) {
+      if (state.token) {
         return {
-          token:state.token
+          token: state.token
         }
       }
       let token = localStorage.getItem('loginData')
-      if(token) {
+      if (token) {
         return JSON.parse(token)
       }
       return {}
     },
-    gettoken(state,getters) {
+    gettoken(state, getters) {
       const loginData = getters.loginData
-      console.log(loginData,1111)
+      console.log(loginData, 1111)
       return loginData.token
-      
+
     }
   },
 
   mutations: {
     settoken(state, data) { //vuex存放toke
       state.token = data.token
-      state.userInfor=data
+      state.userInfor = data
       localStorage.setItem("loginData", JSON.stringify(data))
-      console.log(state.token)
-      console.log(state.userInfor)
-      state.headimg=data.photo
+      state.headimg = data.photo
+      console.log(state.headimg,data.photo)
     },
     cleartoken(state) { // 清除token
       state.token = ""
-      state.userInfor={}
+      state.userInfor = {}
       localStorage.removeItem('loginData');
       localStorage.removeItem('istoken');
     },
@@ -67,17 +66,16 @@ export default new Vuex.Store({
     headnav(state, num) { //导航状态
       state.hedeid = num
     },
-    Serch(state,data){
-      state.serchlist=data
+    Serch(state, data) {
+      state.serchlist = data
     },
-    uploadimg(state,img){
-      state.userInfor.photo= img
-      state.headimg=img
-      state.userInfor.photo
+    uploadimg(state, img) {
+      state.userInfor.photo = img
+      state.headimg = img
     },
-    serQQ(state,data){
-      state.serverqq=data
+    serQQ(state, data) {
+      state.serverqq = data
     }
   },
-  
+
 })

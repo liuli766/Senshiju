@@ -8,7 +8,7 @@
           v-for="(item,index) in navList"
           :key="index"
           @click="changeNav(item,index,$event)"
-          :class="[{li4:item.name==='建房百科'},[[hedeid==index?'header-active':''],]]"
+          :class="[{li4:item.name==='建房百科'},[[hedeid==null?'bgcolor':[hedeid==index?'header-active':'']],]]"
         >
           {{item.name}}
           <div class="dropdown">
@@ -17,7 +17,8 @@
         </li>
       </ul>
       <div class="head poniter regieandlogin" v-if="token">
-        <img :src="headimg" alt @click="goperson" />
+        <img v-if="headimg!==null" :src="headimg" class="photo"  @click="goperson"/>
+        <img v-if="headimg==null" :src="userInfor.photo" class="photo"  @click="goperson"/>
       </div>
       <div class="regieandlogin poniter" v-else>
         <router-link to="/register">注册</router-link>|
@@ -25,7 +26,7 @@
       </div>
 
       <div class="serch">
-        <input type="text" placeholder="请输入关键词" @keyup.enter='serch' v-model="search" />
+        <input type="text" placeholder="请输入关键词" @keyup.enter="serch" v-model="search" />
         <img src="../assets/image/fixed/serch.png" alt class="serchimg" @click="serch" />
       </div>
     </nav>
@@ -76,7 +77,7 @@ export default {
         '建房日志',
       ],
       navid: 0, // 当前选中的导航
-      search: '', //搜索字符串
+      search: '', //搜索字符串,
     }
   },
   computed: {
@@ -86,30 +87,18 @@ export default {
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
       serchlist: (state) => state.serchlist,
-      headimg:(state) => state.headimg
+      headimg: (state) => state.headimg,
     }),
   },
   watch: {},
-  created() {
-    console.log(localStorage.getItem('istoken'))
-  },
-  mounted() {},
+  created() {},
   methods: {
     // 点击导航栏
     changeNav(nav, index) {
-      localStorage.setItem('idnum', index) // 保存下标
-      document.cookie = index
-      console.log(document.cookie.slice(-1), localStorage.getItem('idnum'))
-      // this.$store.commit('headnav', parseInt(localStorage.idnum))
-      this.$store.commit('headnav', parseInt(localStorage.getItem('idnum')))
+      sessionStorage.setItem('idnum', index) // 保存下标
+      this.$store.commit('headnav', parseInt(sessionStorage.getItem('idnum')))
       this.$router.push({ path: nav.url })
     },
-    // handsearch() {
-    //   // 搜索页面
-    //   this.$router.push({
-    //     path: '/search',
-    //   })
-    // },
     serch() {
       request
         .getHots({
@@ -157,7 +146,7 @@ nav ul li {
   background: url('../assets/image/jfrz.png');
   background-size: 100% 100%;
   width: 300px;
-  top: 25px;
+  top: 42px;
   right: -70px;
   font-size: 24px;
   height: 400px;
@@ -168,7 +157,7 @@ nav ul li {
   z-index: 999;
 }
 .dropdown li:nth-of-type(1) {
-  padding-top: 78px;
+  margin-top: 78px;
 }
 .dropdown li {
   cursor: pointer;
@@ -252,6 +241,14 @@ nav img {
 .head {
   background: #fff;
   margin: 0;
+}
+nav li {
+  background: #fff;
+}
+nav li:nth-of-type(1).bgcolor {
+  ackground: #fed560;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>
 <style>

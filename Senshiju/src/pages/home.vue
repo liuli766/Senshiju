@@ -24,7 +24,7 @@
           <div class="line"></div>
         </div>
       </div>
-      <p class="colord2">不上班茶几上成绩按开始此是世界第三代不上班茶几上成绩按开始此是世界第三代</p>
+      <p class="colord2">我们不做简单的风格堆砌，融合当代流行元素，不拘一格用经典铸造品牌 打造您的专属个性化定制风格别墅方案</p>
       <div class="hotnav">
         <span
           v-for="(item,index) in hotnavList"
@@ -42,8 +42,7 @@
     </div>
     <!-- 设计师 -->
     <swiper :options="swiperOption">
-      <swiper-slide v-for="(item,k) in designlist" :key="k"
-       @click="handLearn(item)">
+      <swiper-slide v-for="(item,k) in designlist" :key="k" @click="handLearn(item)">
         <div class="designer">
           <div class="designer_box">
             <div class="designer_main">
@@ -169,14 +168,7 @@
         </h4>
         <p class="colord2 vdeop">回家建房，就找村墅人家</p>
       </div>
-      <video
-        :src="homeList.home_video"
-        controls
-        poster="../assets/image/vdeo.png"
-        width="1200"
-        height="676"
-        preload="none"
-      ></video>
+      <video :src="homeList.home_video" controls poster width="1200" height="676" preload="none"></video>
       <div class="vedoimg" @click.stop="handplay">
         <img src="../assets/image/player.png" alt v-if="vdeoimg" />
       </div>
@@ -210,13 +202,9 @@
     <!-- 资讯展示 -->
     <div class="mationmain">
       <!-- <transition name="bounce" mode="out-in" class="mationparent"> -->
-      <div
-        class="inforparent poniter"
-        v-for="(item,index) in zxlist "
-        :key="index" 
-      >
+      <div class="inforparent poniter" v-for="(item,index) in zxlist " :key="index">
         <div>
-          <div class="inforlist"  @click="handbaike(item)">
+          <div class="inforlist" @click="handbaike(item)">
             <img :src="item.cover" alt />
             <div class="infor_txt">
               <div class="b">
@@ -423,7 +411,7 @@ export default {
       ],
       vdeoimg: true,
       homeList: [],
-      designlist:[], //设计师轮播
+      designlist: [], //设计师轮播
     }
   },
   watch: {},
@@ -462,7 +450,7 @@ export default {
       .getHomeindex({})
       .then((res) => {
         this.homeList = res.data
-        this.$store.commit("serQQ",res.data)
+        this.$store.commit('serQQ', res.data)
         console.log(res, 'pc端首页')
       })
       .catch((e) => {})
@@ -474,10 +462,13 @@ export default {
     this.getzixun('建房百科')
 
     // 首页设计师
-    request.getHomrdesign().then(res=>{
-      console.log(res,'设计师轮播')
-      this.designlist=res.data
-    }) .catch((e) => {})
+    request
+      .getHomrdesign()
+      .then((res) => {
+        console.log(res, '设计师轮播')
+        this.designlist = res.data
+      })
+      .catch((e) => {})
       .finally(() => {})
   },
   methods: {
@@ -508,6 +499,7 @@ export default {
           console.log(res, '资讯')
           this.inList = res.data
           this.zxlist = this.inList.slice(0, 1)
+          localStorage.setItem('length',res.data.length)
         })
         .catch((e) => {})
         .finally(() => {})
@@ -531,7 +523,7 @@ export default {
       request
         .getLunbo({ type: 1 })
         .then((res) => {
-          console.log(res,'轮播')
+          console.log(res, '轮播')
           this.getLunboList = res.data.list
         })
         .catch((e) => {})
@@ -548,9 +540,9 @@ export default {
     },
 
     // 别墅资讯
-    handInfor(nav,k) {
+    handInfor(nav, k) {
       this.typeinfor = nav
-       if (k == 0) {
+      if (k == 0) {
         this.typeinfor = '建房百科'
         this.getzixun(this.typeinfor)
       } else if (k == 1) {
@@ -559,7 +551,7 @@ export default {
       } else if (k == 2) {
         this.typeinfor = '装修百科'
         this.getzixun(this.typeinfor)
-      } else if (k== 3) {
+      } else if (k == 3) {
         this.typeinfor = '施工百科'
         this.getzixun(this.typeinfor)
       } else if (k == 4) {
@@ -593,10 +585,10 @@ export default {
       console.log(1)
       this.$router.push({
         path: '/teamDetail',
-        query:{
-          id:num.id,
-          name:num.name
-        }
+        query: {
+          id: num.id,
+          name: num.name,
+        },
       })
     },
 

@@ -180,11 +180,6 @@ export default {
           }
         })
         .catch((e) => {
-          // this.$message({
-          //   showClose: true,
-          //   message: '支付失败',
-          //   type: 'error',
-          // })
         })
         .finally(() => {})
     },

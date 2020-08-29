@@ -33,7 +33,6 @@ export default {
     }
   },
   created() {
-    // footer
     request
       .getHomeindex({})
       .then((res) => {

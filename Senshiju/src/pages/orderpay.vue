@@ -151,7 +151,12 @@ export default {
     },
     //立即提交订单
     submitForm(formName) {
-      console.log(this.navidx+1,this.num)
+      if (!this.token) {
+        this.$router.push({
+          path: '/login',
+        })
+        return false
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
           request
@@ -176,11 +181,6 @@ export default {
                   data:res.data
                 }
               })
-              // this.$message({
-              //   showClose: true,
-              //   message: '提交订单成功',
-              //   type: 'success',
-              // })
             })
             .catch((e) => {
               this.$message({
