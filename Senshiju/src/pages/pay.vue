@@ -109,7 +109,7 @@ export default {
       dataqr: '', //微信
       timer: null, //定时器名称
       ali_pay: '', //支付宝
-      orderSuccess: true,
+      orderSuccess: false, //弹出支付成功pop
     }
   },
 
@@ -134,6 +134,7 @@ export default {
       })
     },
     gozhifubao() {
+      //支付宝支付
       request
         .getzfb({
           uid: this.userInfor.member_id,
@@ -147,6 +148,7 @@ export default {
         .finally(() => {})
     },
     openZfb(form) {
+      //打开支付宝页面
       this.$confirm('是否支付成功？', '', {
         distinguishCancelAndClose: true,
         cancelButtonText: '失败',
@@ -179,13 +181,12 @@ export default {
             this.orderSuccess = true
           }
         })
-        .catch((e) => {
-        })
+        .catch((e) => {})
         .finally(() => {})
     },
 
     orderpay() {
-      // 支付
+      // 微信支付
       request
         .getPay({
           uid: this.userInfor.member_id,
@@ -201,10 +202,8 @@ export default {
         .finally(() => {})
     },
     swichnav(k) {
+      //支付导航切换
       this.choeid = k
-      if (k == 0) {
-        this.orderpay()
-      }
     },
   },
   mounted() {

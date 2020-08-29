@@ -37,10 +37,10 @@
           <p id="red" v-if="p2">请输入密码</p>
           <div class="rel">
             <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" @change="inp3" />
-            <div class="pos poniter" @click="time" v-if="tmeValue==60">
+            <div class="pos poniter" @click="getauth" v-if="tmeValue==60">
               <div class="line"></div>获取验证码
             </div>
-            <div class="pos poniter" @click="time" v-else>
+            <div class="pos poniter" v-else>
               <div class="line"></div>
               {{ tmeValue }} s后获取
             </div>
@@ -95,40 +95,53 @@ export default {
   methods: {
     // 获取验证码
     time() {
-      if (this.userinfo.phone_num !== '') {
-        let ph = /^1[3|5|7|8|][0-9]{9}$/
-        if (!ph.test(this.userinfo.phone_num)) {
-          this.$message({
-            showClose: true,
-            message: '手机号格式不正确',
-            type: 'warning',
+      //倒计时
+      this.tmeValue = this.tmeValue - 1
+      this.flag = 1
+      if (this.tmeValue <= 0) {
+        this.tmeValue = 60
+        this.flag = 0
+        return ''
+      } else {
+        setTimeout(() => {
+          this.time()
+        }, 1000)
+      }
+    },
+    getauth() {
+      if (/^1[34578]\d{9}$/.test(this.userinfo.phone)) {
+        request
+          .getCode({
+            phone_num: this.userinfo.phone,
           })
-        } else {
-          let phone_num = this.userinfo.phone_num
-          request
-            .getCode({ phone_num })
-            .then((res) => {
-              console.log(res, '获取验证码')
-            })
-            .catch((e) => {})
-            .finally(() => {})
-          //倒计时
-          this.tmeValue = this.tmeValue - 1
-          this.flag = 1
-          if (this.tmeValue <= 0) {
-            this.tmeValue = 60
-            this.flag = 0
-            return ''
-          } else {
-            setTimeout(() => {
+          .then((res) => {
+            if (res.code == 0) {
+              this.$message({
+                showClose: true,
+                message: '发送成功',
+                type: 'success',
+              })
               this.time()
-            }, 1000)
-          }
-        }
+            } else {
+              this.$message({
+                showClose: true,
+                message: '发送失败',
+                type: 'error',
+              })
+            }
+          })
+          .catch(() => {
+            this.$message({
+              showClose: true,
+              message: '发送失败',
+              type: 'error',
+            })
+          })
+          .finally(() => {})
       } else {
         this.$message({
           showClose: true,
-          message: '手机号不能为空',
+          message: '手机格式不正确',
           type: 'error',
         })
       }
