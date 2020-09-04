@@ -206,7 +206,8 @@
                 设置为默认收货地址
               </div>
               <el-form-item>
-                <el-button class="btn" @click="submitForm('ruleForm2')">提交</el-button>
+                <el-button class="btn" v-if="!pulicid" @click="submitForm('ruleForm2')">新增</el-button>
+                <el-button class="btn" v-else @click="upd('ruleForm2')">提交</el-button>
               </el-form-item>
             </el-form>
 
@@ -225,7 +226,7 @@
                   <span>{{val.address}}</span>
                   <span>{{val.phone}}</span>
                   <span>
-                    <span class="poi" @click="upd(val.id,k)">修改</span>|
+                    <span class="poi" @click="xiugai(val.id,k)">修改</span>|
                     <span @click="handdel(val.id)" class="poi">删除</span>
                   </span>
                   <span v-if="val.is_default==0"></span>
@@ -348,7 +349,6 @@ export default {
       districtArr: [], //选择县
       ishook: false, //勾勾是否选中
       addrlist: [], //收货地址
-      updlist: [], //修改地址
       add_id: null,
       adatar: '', //头像
       password: '123456',
@@ -362,6 +362,7 @@ export default {
       imageUrl: '',
       cityflag: 1,
       uploadurl: '', //上传图片的路径
+      pulicid: '',
     }
   },
   computed: {
@@ -507,46 +508,54 @@ export default {
           .finally(() => {})
       }
     },
-
-    // 修改收货地址
-    upd(num, k) {
+    xiugai(num, k) {
+      this.pulicid = num
       let arr = this.addrlist
       console.log(arr[k])
       localStorage.setItem('isid', num)
       localStorage.setItem('isk', k)
+      this.cityflag = 0
+      this.updateCity()
+      this.updateDistrict()
+      // this.updlist = this.addrlist.filter((item, k) => k == num)
+      this.ruleForm2.addr = arr[k].address
+      this.ruleForm2.name = arr[k].name
+      this.ruleForm2.phone = arr[k].phone
+      this.prov = arr[k].province
+      this.city = arr[k].city
+      this.district = arr[k].district
+      console.log(this.prov, this.city, this.district)
+      if (arr[k].is_default !== 0) {
+        this.ishook = true
+      }
+    },
+    // 修改收货地址
+    upd() {
+      let num = localStorage.getItem('isid')
+      let k = localStorage.getItem('isk')
+      let arr = this.addrlist
       request
         .getupRes({
           id: num,
           uid: this.userInfor.member_id,
-          address: arr[k].address,
-          name: arr[k].name,
-          phone: arr[k].phone,
-          province: arr[k].province,
-          city: arr[k].city,
-          district: arr[k].district,
+          address: this.ruleForm2.addr,
+          name: this.ruleForm2.name,
+          phone: this.ruleForm2.phone,
+          province: this.prov,
+          city: this.city,
+          district: this.district,
+          is_default: this.ishook,
         })
         .then((res) => {
-          this.cityflag = 0
-          this.updateCity()
-          this.updateDistrict()
-          // this.updlist = this.addrlist.filter((item, k) => k == num)
-          this.ruleForm2.addr = arr[k].address
-          this.ruleForm2.name = arr[k].name
-          this.ruleForm2.phone = arr[k].phone
-          this.prov = arr[k].province
-          this.city = arr[k].city
-          this.district = arr[k].district
-          console.log(this.prov, this.city, this.district)
-          if (arr[k].is_default !== 0) {
-            this.ishook = true
-          }
           console.log(res, '修改')
+          this.getshop()
         })
         .catch((e) => {})
         .finally(() => {})
     },
     //  添加收货地址
     submitForm(formName) {
+      console.log(345)
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let newaddr = []
@@ -562,9 +571,6 @@ export default {
               is_default: this.ishook,
             })
             .then((res) => {
-              let num = localStorage.getItem('isid')
-              let k = localStorage.getItem('isk')
-              this.upd(num, k)
               this.getshop()
               this.$message({
                 showClose: true,

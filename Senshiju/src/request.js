@@ -223,6 +223,12 @@ function getzfb(data) {
   }
   return http.fetchPost('/index/User/pre_alipay', params)
 }
+function getzfbnotify(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Notify/ali_notify', params)
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -261,4 +267,5 @@ export default {
   getartzx, //首页咨询
   getupload, //上传图片
   getzfb, //支付宝支付
+  getzfbnotify, //支付宝回调
 }

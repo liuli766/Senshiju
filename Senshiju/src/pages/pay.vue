@@ -170,7 +170,7 @@ export default {
       }, 100)
       console.log(htmls)
     },
-    weixin() {
+    weixin() { //微信回调 
       request
         .getwxnotify({
           id: this.$route.query.data,
