@@ -91,7 +91,9 @@ export default {
     }),
   },
   watch: {},
-  created() {},
+  created() {
+    console.log(this.hedeid)
+  },
   methods: {
     // 点击导航栏
     changeNav(nav, index) {
@@ -246,7 +248,7 @@ nav li {
   background: #fff;
 }
 nav li:nth-of-type(1).bgcolor {
-  ackground: #fed560;
+  background: #fed560;
   padding: 10px;
   border-radius: 10px;
 }

@@ -42,7 +42,7 @@
     </div>
     <!-- 设计师 -->
     <swiper :options="swiperOption">
-      <swiper-slide v-for="(item,k) in designlist" :key="k" @click="handLearn(item)">
+      <swiper-slide v-for="(item,k) in designlist" :key="k">
         <div class="designer">
           <div class="designer_box">
             <div class="designer_main">
@@ -55,7 +55,7 @@
                 {{item.name}}
                 <span>Bksnnk</span>
               </div>
-              <span class="liaojie font20 poniter">点击了解设计师</span>
+              <span class="liaojie font20 poniter"  @click="handLearn(item)">点击了解设计师</span>
               <div class="resevers">
                 <div>精细化设计服务</div>
                 <div class="fuwu">
@@ -323,7 +323,7 @@ export default {
           delay: 3000,
           disableOnInteraction: false, // 手动切换之后继续自动轮播
         },
-        loop: true,
+        loop: false,
         navigation: {
           nextEl: '.swiper-button-next', // 左边按钮
           prevEl: '.swiper-button-prev', // 右边按钮
