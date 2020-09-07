@@ -199,14 +199,14 @@ export default {
   color: #fff;
 }
 .explain {
-  font: 30px/40px '';
+  font: 30px/40px 'Microsoft YaHei';
   color: #4e4e4e;
   text-align: left;
   height: 94px;
   line-height: 94px;
 }
 .p {
-  font: 20px/40px '';
+  font: 20px/40px 'Microsoft YaHei';
   color: #4e4e4e;
   text-align: left;
 }

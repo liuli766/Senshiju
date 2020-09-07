@@ -30,12 +30,7 @@
             <div>
               <div class="works">作品精选</div>
               <div class="piclist">
-                <img
-                  :src="pic"
-                  alt
-                  v-for="(pic,idx) in item.works"
-                  :key="idx"
-                />
+                <img :src="pic" alt v-for="(pic,idx) in item.works" :key="idx" />
               </div>
             </div>
           </div>
@@ -70,7 +65,7 @@ export default {
       })
       .then((res) => {
         console.log(res, '设计师团队')
-        this.teamList=res.data
+        this.teamList = res.data
         if (this.teamList < 8) {
           this.moreList = this.teamList
         } else {
@@ -122,7 +117,7 @@ main {
 }
 h5 {
   margin-top: 88px;
-  font: bold 40px/1 '';
+  font: bold 40px/1 'Microsoft YaHei';
   margin-bottom: 14px;
 }
 .teamen {
@@ -205,10 +200,10 @@ nav img {
   justify-content: space-between;
 }
 .designeteam_r .tro .name {
-  font: 400 20px/1 '';
+  font: 400 20px/1 'Microsoft YaHei';
 }
 .designeteam_r .tro .occupation {
-  font: 400 14px/20px '';
+  font: 400 14px/20px 'Microsoft YaHei';
   color: #6e6e6e;
   margin-left: 19px;
 }
@@ -222,7 +217,7 @@ nav img {
   box-sizing: border-box;
 }
 .details {
-  font: 400 12px/1 '';
+  font: 400 12px/1 'Microsoft YaHei';
   color: #6e6e6e;
 }
 .ellipsis {
@@ -238,13 +233,15 @@ nav img {
   align-items: center;
 }
 .designeteam_r p {
-  font: 400 14px/20px '';
   margin-top: 23px;
   text-align: left;
+  font: 400 14px/20px 'Microsoft YaHei';
 }
 .works {
-  font: 400 14px/1 '';
+  font: 400 14px/1 'Microsoft YaHei';
   text-align: left;
+  font-size: 14px;
+  line-height: 1;
 }
 .designeteam_l img {
   width: 158px;

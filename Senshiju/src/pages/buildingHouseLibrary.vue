@@ -322,7 +322,7 @@ export default {
 }
 .txt {
   margin: 10px;
-  font: bold 18px/1 '';
+  font: bold 18px/1 'Microsoft YaHei';
 }
 .style {
   display: block;

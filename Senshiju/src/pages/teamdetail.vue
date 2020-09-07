@@ -87,7 +87,7 @@ export default {
   margin-right: 22px;
 }
 .bordersan h5 {
-  font: 500 26px/1 '';
+  font: 500 26px/1 'Microsoft YaHei';
   color: #323232;
   margin-bottom: 26px;
 }
@@ -95,7 +95,7 @@ article {
   margin-top: 22px;
 }
 article p {
-  font: 400 16px/40px '';
+  font: 400 16px/40px 'Microsoft YaHei';
   color: #323232;
 }
 .bordersan_r {

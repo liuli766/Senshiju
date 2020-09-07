@@ -51,7 +51,7 @@
           </div>
           <div class="kferwm">
             <h6>客服热线</h6>
-            <img src alt />
+            <img src='../assets/image/kefu.png' alt />
           </div>
         </div>
 
@@ -992,10 +992,12 @@ nav {
   font-size: 23px;
 }
 .kfcenter > div > p {
-  font: bold 18px/24px '';
   color: #717171;
   text-indent: 20px;
   text-align: left;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: bold;
 }
 .kfcenter > div > p:nth-of-type(2) {
   margin-top: 20px;
@@ -1048,13 +1050,15 @@ nav {
 }
 .setpwd h5 {
   height: 44px;
-  font: bold 24px/1 '';
   color: #434343;
   text-align: left;
   margin-left: 29px;
   margin-top: 40px;
   border-bottom: 1px solid #bfbfbf;
   margin-bottom: 45px;
+  line-height: 1;
+  font-weight: bold;
+  font-size: 24px;
 }
 .setpwd h5 span {
   padding-bottom: 16px;
@@ -1085,9 +1089,11 @@ nav {
   margin-right: 16px;
 }
 .orderlist h6 {
-  font: bold 24px/49px '';
   color: #434343;
   background: rgba(197, 196, 196, 1);
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 48px;
 }
 .ordernav {
   background: #fff;

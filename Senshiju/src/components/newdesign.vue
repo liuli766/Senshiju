@@ -66,7 +66,7 @@ export default {
 
 <style scoped>
 h6{
-    font: 400 18px /26px '';
+    font: 400 18px /26px 'Microsoft YaHei';
     width: 175px;
     border-bottom: 2px solid #FFDE87;
     margin: auto;

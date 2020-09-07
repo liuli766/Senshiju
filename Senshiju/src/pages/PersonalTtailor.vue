@@ -394,15 +394,17 @@ nav img {
 }
 .private_apply h6 {
   height: 98px;
-  font: 400 17px/98px '';
+  font-size: 16px;
+  line-height: 98px;
 }
 .personform {
   width: 375px;
 }
 .red {
   color: #fe0350;
-  font: 12px/1 '';
   margin: 50px 0 24px 0;
+  font-size: 12px;
+  line-height: 1;
 }
 .ybtn,
 .tmbtn {
@@ -413,24 +415,28 @@ nav img {
   border-radius: 7px;
 }
 .private_apply_r {
-  font: 400 12px/1 '';
   color: #98a4c1;
   padding-left: 44px;
   border-left: 1px solid #ededed;
   margin-left: 40px;
   height: 250px;
+  font-size: 12px;
+  line-height: 20px;
 }
 .private_apply_r .themecost {
   display: flex;
   align-items: center;
 }
 .private_apply_r .themecost span:nth-of-type(1) {
-  font: bold 30px/54px '';
   color: #f4a010;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 54px;
 }
 .private_apply_r .themecost span:nth-of-type(2) {
   color: #f4a010;
-  font: 400 12px/1 '';
+  font-size: 12px;
+  line-height: 1;
 }
 .tmbtn {
   margin-top: 85px;
@@ -483,13 +489,15 @@ nav img {
 .teamsupport h5,
 .license h5,
 .show h5 {
-  font: bold 36px/1 '';
   color: #333;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 1;
 }
 .teamsupport > p,
 .license > p,
 .show > p {
-  font: 400 18px/1 '';
+  font: 400 18px/1 'CTXiYuanSJ';
   margin: 22px 0 40px 0;
 }
 .teamsupport_box_item img {

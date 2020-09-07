@@ -233,7 +233,7 @@ export default {
 }
 .pay h6 {
   color: #242424;
-  font: bold 24px/20px '';
+  font: bold 24px/20px 'Microsoft YaHei';
   margin-bottom: 29px;
   text-align: left;
 }
@@ -248,7 +248,7 @@ export default {
 .pay .payment {
   background: #f9f9f9;
   height: 69px;
-  font: bold 22px/20px '';
+  font: bold 22px/20px 'Microsoft YaHei';
   color: #505050;
   margin-bottom: 39px;
 }
@@ -273,7 +273,7 @@ export default {
 }
 .cot .wx h6 span:nth-of-type(1) {
   color: #1c1c1c;
-  font: bold 30px/20px '';
+  font: bold 30px/20px 'Microsoft YaHei';
   display: block;
 }
 .img {
@@ -283,7 +283,7 @@ export default {
 }
 .cot .wx h6 span:nth-of-type(2) {
   color: #1c1c1c;
-  font: bold 16px/20px '';
+  font: bold 16px/20px 'Microsoft YaHei';
   margin-top: 4px;
   display: block;
 }

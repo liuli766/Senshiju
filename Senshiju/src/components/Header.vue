@@ -148,7 +148,7 @@ nav ul li {
   background: url('../assets/image/jfrz.png');
   background-size: 100% 100%;
   width: 300px;
-  top: 42px;
+  top: 18px;
   right: -70px;
   font-size: 24px;
   height: 400px;

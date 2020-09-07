@@ -168,7 +168,7 @@
         </h4>
         <p class="colord2 vdeop">回家建房，就找村墅人家</p>
       </div>
-      <video :src="homeList.home_video" controls poster width="1200" height="676" preload="none"></video>
+      <video :src="homeList.home_video" controls poster='../assets/image/video.png' width="1200" height="676" preload="none"></video>
       <div class="vedoimg" @click.stop="handplay">
         <img src="../assets/image/player.png" alt v-if="vdeoimg" />
       </div>

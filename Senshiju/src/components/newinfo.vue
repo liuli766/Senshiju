@@ -62,7 +62,7 @@ export default {
 
 <style scoped>
 h6 {
-  font: 400 18px /26px '';
+  font: 400 18px /26px 'Microsoft YaHei';
   width: 175px;
   border-bottom: 2px solid #ffde87;
   margin: auto;
@@ -86,7 +86,7 @@ h6 {
   padding: 12px 3px 8px;
 }
 .info .block p {
-  font: 400 14px/23px '';
+  font: 400 14px/23px 'Microsoft YaHei';
   color: #fff;
   text-align: justify;
 }

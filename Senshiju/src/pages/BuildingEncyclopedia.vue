@@ -397,7 +397,7 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
   margin-right: 14px;
 }
 .meauactice {
-  font: bold 24px/1 '';
+  font: bold 24px/1 'Microsoft YaHei';
   color: #2f2f2f;
 }
 .cont {
@@ -555,7 +555,7 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
   height: 169px;
 }
 .hot p {
-  font: 400 14px/28px '';
+  font: 400 14px/28px 'Microsoft YaHei';
   color: #545454;
   margin: 8px 0 12px 0;
   text-align: left;

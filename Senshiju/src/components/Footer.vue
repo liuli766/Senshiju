@@ -64,7 +64,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   color: #fff;
-  font: 26px/40px '';
+  font: 26px/40px 'Microsoft YaHei';
   position: absolute;
   top: 50%;
   right: 0;

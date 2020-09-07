@@ -276,11 +276,14 @@ export default {
   margin-left: 30px;
 }
 .hotnavbox .intro {
-  font: 16px/28px '';
   color: #4b4b4b;
+  font-size: 16px;
+  line-height: 28px;
 }
 .hotnav {
-  font: bold 20px/31px '';
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 30px;
   color: #3a3a3a;
   padding: 4px 23px;
   border-bottom: 3px solid #3a3a3a;
@@ -305,7 +308,9 @@ export default {
   box-sizing: border-box;
 }
 .hotnum {
-  font: bold 16px/23px '';
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
   color: #2a2a2a;
   margin: 27px 0 19px 0;
 }
@@ -313,7 +318,8 @@ export default {
   color: #8e8e8e;
 }
 .hotcontent p {
-  font: 400 14px /23px;
+  font-size: 14px;
+  line-height: 22px;
   color: #434343;
 }
 .detailbox .ing {
@@ -324,7 +330,9 @@ export default {
   margin-bottom: 18px;
 }
 .detail h6 {
-  font: bold 24px/1 '';
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 1;
   color: #565656;
   margin: 35px 0 45px 0;
 }
@@ -338,7 +346,7 @@ export default {
   padding-bottom: 18px;
 }
 .detail > p {
-  font: 400 16px/29px '';
+  font: 400 16px/29px 'Microsoft YaHei';
   color: #707070;
 }
 .detail > p:nth-of-type(1) {
@@ -347,7 +355,7 @@ export default {
   text-indent: 20px;
 }
 .h5 {
-  font: bold 18px/28px '';
+  font: bold 18px/28px 'Microsoft YaHei';
   color: #707070;
   margin: 26px 0 32px 0;
 }
@@ -385,7 +393,7 @@ export default {
   margin-left: 30px;
 }
 .newinfo h6 {
-  font: 400 18px /26px '';
+  font: 400 18px /26px 'Microsoft YaHei';
   width: 175px;
   border-bottom: 4px solid #ffde87;
   margin: auto;
@@ -409,7 +417,7 @@ export default {
   padding: 12px 3px 8px;
 }
 .newinfo .info .block p {
-  font: 400 14px/23px '';
+  font: 400 14px/23px 'Microsoft YaHei';
   color: #fff;
   text-align: justify;
 }

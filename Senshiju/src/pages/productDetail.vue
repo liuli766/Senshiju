@@ -468,16 +468,17 @@ export default {
   color: #fff;
 }
 .explain {
-  font: 30px/40px '';
   color: #4e4e4e;
   text-align: left;
   height: 94px;
   line-height: 94px;
+  font-size: 30px;
 }
 .explain2{
-  font: 20px/40px '';
   color: #4e4e4e;
   text-align: left;
+  font-size: 20px;
+  line-height: 40px;
 }
 .border {
   width: 780px;
@@ -496,7 +497,7 @@ export default {
   background: #ffbf22;
   color: #fff;
   border-radius: 10px;
-  font: 400 40px/1 '';
+  font: 400 40px/1 'Microsoft YaHei';
 }
 .span {
   position: absolute;
