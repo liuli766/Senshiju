@@ -75,6 +75,7 @@ export default {
         '施工百科',
         '风水百科',
         '建房日志',
+        '体育新闻'
       ],
       navid: 0, // 当前选中的导航
       search: '', //搜索字符串,
@@ -151,7 +152,7 @@ nav ul li {
   top: 18px;
   right: -70px;
   font-size: 24px;
-  height: 400px;
+  height: 500px;
   font-family: Microsoft YaHei;
   color: rgba(0, 0, 0, 1);
   line-height: 40px;
@@ -159,13 +160,14 @@ nav ul li {
   z-index: 999;
 }
 .dropdown li:nth-of-type(1) {
-  margin-top: 78px;
+  margin-top: 94px;
 }
 .dropdown li {
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.3s;
   margin: 0 47px 12px 47px;
+  
 }
 .dropdown li:hover {
   color: #f5c134;
@@ -181,6 +183,7 @@ nav ul li {
 nav {
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 }
 nav ul {
   width: 912px;

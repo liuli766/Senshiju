@@ -34,7 +34,7 @@
           <span>建筑开间:{{detaillist.plies}}</span>
           <span>建筑进深:{{detaillist.depth}}</span>
           <span>销售面积:{{detaillist.face_width}}</span>
-          <span>主体参考造价:{{detaillist.plies}}</span>
+          <span>主体参考造价:{{detaillist.cost}}</span>
         </div>
         <div class="tel">: 176-8324-2994</div>
         <div class="button fl_be">
@@ -80,12 +80,15 @@
         </div>
       </div>
       <!-- 如果需要导航按钮 -->
-      <span class="swiper-button-prev" style="background: #fff;"></span>
-      <span class="swiper-button-next" style="background: #fff;"></span>
+      <span class="swiper-button-prev" style="background: transparent;"></span>
+      <span class="swiper-button-next" style="background: transparent;"></span>
     </div>
     <!--  -->
     <div class="explain">购图前重要说明：</div>
     <p class="explain2">购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
+      <div v-for="(val,k) in detaillist.imgs"  :key="k" class="detailpic">
+        <img :src="val">
+      </div>
   </div>
 </template>
 
@@ -545,5 +548,9 @@ export default {
 .dia input::placeholder {
   color: #ff151b;
   font-size: 38px;
+}
+.detailpic img{
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -27,33 +27,33 @@
 }
 
 .designer_main h5 {
-  font: bold 37px/32px '';
+  font: bold 37px/32px 'Microsoft YaHei';
   color: #fff;
 }
 
 .h5_bot {
-  font: 20px/1 '';
+  font: 20px/1 'Microsoft YaHei';
   margin: 11px 0 38px 0;
 }
 
 .h5_bot_div {
-  font: 20px/1 '';
+  font: 20px/1 'Microsoft YaHei';
 }
 
 .h5_bot_div_div {
-  font: 16px/1 '';
+  font: 16px/1 'Microsoft YaHei';
   margin: 12px 0 47px 0;
 }
 
 .dash {
-  font: bold 26px/1 '';
+  font: bold 26px/1 'Microsoft YaHei';
   padding: 18px 0 22px 0;
   border-bottom: 1px dashed #fff;
   width: 330px;
 }
 
 .dash span {
-  font: 400 26px/1 '';
+  font: 400 26px/1 'Microsoft YaHei';
 }
 
 .dashed {
@@ -75,7 +75,7 @@
 }
 
 .resevers {
-  font: bold 24px/1 '';
+  font: bold 24px/1 'Microsoft YaHei';
   display: flex;
   align-items: center;
 }
@@ -242,7 +242,7 @@ p {
 
 .txt {
   margin: 10px;
-  font: bold 24px/1 '';
+  font: bold 24px/1 'Microsoft YaHei';
 }
 
 .presell {
@@ -361,7 +361,7 @@ p {
 
 .h6 {
   color: #000;
-  font: bold 20px/1 '';
+  font: bold 20px/1 'Microsoft YaHei';
   margin: 20px 0 18px 0;
 }
 
@@ -432,13 +432,13 @@ p {
 }
 
 .b {
-  font: bold 30px/1 '';
+  font: bold 30px/1 'Microsoft YaHei';
   color: #000;
   margin-bottom: 18px;
 }
 
 .b span {
-  font: bold 12px/1 '';
+  font: bold 12px/1 'Microsoft YaHei';
   color: #333;
 }
 
@@ -450,7 +450,7 @@ p {
 }
 
 .h6tit {
-  font: 26px/1 '';
+  font: 26px/1 'Microsoft YaHei';
   color: #000;
   margin-top: 30px;
   margin-bottom: 14px;
@@ -464,7 +464,7 @@ p {
 }
 
 .txtp {
-  font: 17px/30px '';
+  font: 17px/30px 'Microsoft YaHei';
   color: #949494;
 }
 
@@ -517,12 +517,12 @@ p {
 }
 
 .mapshow .txt1 {
-  font: 20px/20px '';
+  font: 20px/20px 'Microsoft YaHei';
   color: #989898;
 }
 
 .mapshow .txt2 {
-  font: 40px/1 '';
+  font: 40px/1 'Microsoft YaHei';
   color: #1f1f1f;
   margin-top: 41px;
 }

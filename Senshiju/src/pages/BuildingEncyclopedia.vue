@@ -22,7 +22,7 @@
             <img :src="item.cover" alt />
             <div>
               <h6>{{item.title}}</h6>
-              <p>{{item.content}}</p>
+              <p class="three-wrap" style="height:80px;">{{item.content}}</p>
               <div class="timer">
                 <span>{{item.add_time}}</span>
               </div>
@@ -106,7 +106,7 @@
           <h6>热门标签</h6>
           <div class="line"></div>
           <div class="tag_item">
-            <span v-for="(item,index) in tag" :key="index">{{item.label_name}}</span>
+            <span v-for="(item,index) in tag" :key="index" >{{item.label_name}}</span>
           </div>
         </div>
         <!-- 热销推荐 -->
@@ -139,6 +139,7 @@ export default {
         '施工百科',
         '风水百科',
         '建房日志',
+        '体育新闻'
       ],
       meaunum: 0, //当前选中的item
       pageSize: 5, //当前显示的条数
@@ -169,6 +170,12 @@ export default {
       classid: '建房百科',
       hotprllList: [],
       flag: false,
+    }
+  },
+  watch: {
+    meaunum(oldnew){
+      console.log(oldnew)
+       this.$store.commit('meauidfn', oldnew)
     }
   },
   computed: mapState({
@@ -229,6 +236,9 @@ export default {
     } else if (this.meaunum == 5) {
       this.classid = '建房日志'
       this.getdata(this.classid)
+    }else if (this.meaunum == 6) {
+      this.classid = '体育新闻'
+      this.getdata(this.classid)
     }
   },
   methods: {
@@ -249,6 +259,7 @@ export default {
     },
     meauitem(idx, classid) {
       this.meaunum = idx
+       this.$store.commit('meauidfn', idx)
       if (idx == 0) {
         this.classid = '建房百科'
         this.getdata(this.classid)
@@ -266,6 +277,9 @@ export default {
         this.getdata(this.classid)
       } else if (idx == 5) {
         this.classid = '建房日志'
+        this.getdata(this.classid)
+      }else if (idx == 6) {
+        this.classid = '体育新闻'
         this.getdata(this.classid)
       }
     },
@@ -433,7 +447,8 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
 .timer {
   text-align: right;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 .timer .span1 {
   font-size: 20px;

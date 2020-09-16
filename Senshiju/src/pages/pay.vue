@@ -52,6 +52,12 @@
             <div class="title bold">支付成功</div>
           </div>
         </el-dialog>
+        <el-dialog :visible.sync="ordererror" width="21.35%" top="30vh" center>
+          <div class="dia-box">
+            <!-- <img class="dia-img" src="../assets/image/pay-success.png" /> -->
+            <div class="title bold">支付失败</div>
+          </div>
+        </el-dialog>
         <!-- 对公账号 -->
         <div v-show="choeid==2" class="dgzh">
           <p>
@@ -110,9 +116,9 @@ export default {
       timer: null, //定时器名称
       ali_pay: '', //支付宝
       orderSuccess: false, //弹出支付成功pop
+      ordererror:false
     }
   },
-
   created() {
     if (!this.token) {
       this.$router.push({
@@ -120,6 +126,7 @@ export default {
       })
       return false
     }
+    
   },
   methods: {
     creatQrCode(qr) {
@@ -170,21 +177,22 @@ export default {
       }, 100)
       console.log(htmls)
     },
-    weixin() { //微信回调 
-      request
+    weixin(){
+        request
         .getwxnotify({
           id: this.$route.query.data,
         })
         .then((res) => {
           console.log(res, '')
-          if (res.status == 2) {
+          if (res.data.status == 2) {
             this.orderSuccess = true
+          }else{
+            this.ordererror = true
           }
         })
         .catch((e) => {})
         .finally(() => {})
     },
-
     orderpay() {
       // 微信支付
       request
@@ -197,6 +205,7 @@ export default {
           console.log(res, '支付')
           // 微信
           this.creatQrCode(this.dataqr)
+          // this.weixin()
         })
         .catch((e) => {})
         .finally(() => {})
