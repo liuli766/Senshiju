@@ -30,8 +30,8 @@
           <p v-html="detaillist.content"></p>
           <img :src="detaillist.cover" alt />
           <div class="fl_be poniter">
-            <span class="one-wrap" @click="gonext(detaillist.id)">上一篇:{{prev}}</span>
-            <span class="one-wrap" @click="goprev(detaillist.id)">下一篇:{{next}}</span>
+            <span class="one-wrap" @click="gonext(prev_id)">上一篇:{{prev}}</span>
+            <span class="one-wrap" @click="goprev(next_id)">下一篇:{{next}}</span>
           </div>
         </div>
       </div>
@@ -48,12 +48,12 @@
             <div
               class="p wrap"
               v-if="prev!=='无'"
-              @click="gonext(detaillist.id)"
+              @click="gonext(prev_id)"
             >{{item.id}}.{{prev}}</div>
             <div
               class="p wrap"
               v-if="next!=='无'"
-              @click="gonext(detaillist.id)"
+              @click="gonext(next_id)"
             >{{item.id}}.{{next}}</div>
           </div>
         </div>
@@ -102,7 +102,9 @@ export default {
       hotmoney: [],
       detaillist: {},
       next: '',
+      next_id: '',
       prev: '',
+      prev_id: '',
       newarr: [],
     }
   },
@@ -114,22 +116,27 @@ export default {
     }),
   },
   created() {
-    this.getdetail()
+    this.getdetail(this.$route.query.id)
     this.Hots('moods')
     this.getzixun()
   },
   methods: {
-    getdetail() {
+    getdetail(id) {
+      console.log(id)
       //详情
       if (!this.token) {
         request
           .getInfo({
-            id: this.$route.query.id,
+            id: this.$route.query.id?this.$route.query.id:id,
           })
           .then((res) => {
             this.detaillist = res.data.detail
             this.next = res.data.next
+            this.next_id = res.data.next_id
             this.prev = res.data.prev
+            this.prev_id = res.data.prev_id
+              console.log(this.next_id)
+              console.log(this.prev_id)
           })
           .catch((e) => {})
           .finally(() => {})
@@ -143,7 +150,11 @@ export default {
           .then((res) => {
             this.detaillist = res.data.detail
             this.next = res.data.next
+            this.next_id = res.data.next_id
             this.prev = res.data.prev
+            this.prev_id = res.data.prev_id
+              console.log(this.next_id)
+              console.log(this.prev_id)
           })
           .catch((e) => {})
           .finally(() => {})
@@ -231,40 +242,44 @@ export default {
         },
       })
     },
-    gonext(item) {
+    gonext(id) {
       //上一篇 文章详情
-      if (item - 1 > 0) {
-        this.$router.push({
+      console.log(id)
+      if(id!==''){
+          this.$router.push({
           path: '/articDetail',
           query: {
-            id: item - 1,
+            id: id,
           },
         })
-        this.getdetail()
+        this.getdetail(id)
       }
+       
     },
-    goprev(item) {
+    goprev(id) {
       //下一篇 文章详情
-      console.log(this.$route.query.length)
-      let length = localStorage.getItem('length')
-      if (item + 1 <= length) {
-        this.$router.push({
+      if(id!==''){
+          this.$router.push({
           path: '/articDetail',
           query: {
-            id: item + 1,
+            id: id,
           },
         })
-        this.getdetail()
+        this.getdetail(id)
       }
+      
     },
     goself(id) {
-      this.$router.push({
+      if(id!==''){
+          this.$router.push({
         path: '/articDetail',
         query: {
           id,
         },
       })
-      this.getdetail()
+      this.getdetail(id)
+      }
+      
     },
   },
 }

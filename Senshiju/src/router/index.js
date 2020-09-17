@@ -144,6 +144,14 @@ const routes = [
       title: '支付宝支付'
     },
     component: (resolve) => require(['@/pages/orderzfb'], resolve)
+  },
+  {
+    path:'/paysucess',
+    name:'paysucess',
+    meta:{
+      title:'支付成功',
+    },
+    component: (resolve) => require(['@/pages/paysucess'], resolve)
   }
 ]
 

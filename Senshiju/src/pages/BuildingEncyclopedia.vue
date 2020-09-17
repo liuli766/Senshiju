@@ -2,7 +2,7 @@
   <div style="padding-bottom:40px">
     <img src="../assets/image/jfbk.png" class="bannerimg" alt />
     <div class="main">
-      <main>
+      <main style=" margin-right: 15px;">
         <nav>
           <div class="line"></div>
           <li v-for="(item,index) in meau" :key="index">
@@ -12,7 +12,7 @@
         </nav>
         <!-- 内容 -->
         <div v-if="contlist.length==0">没有内容</div>
-        <div v-show="meauid==0 || meaunum==0" v-else>
+        <div v-else>
           <div
             class="cont poniter"
             v-for="(item,index) in contlist"
@@ -106,7 +106,7 @@
           <h6>热门标签</h6>
           <div class="line"></div>
           <div class="tag_item">
-            <span v-for="(item,index) in tag" :key="index" >{{item.label_name}}</span>
+            <span v-for="(item,index) in tag" :key="index" @click="handTag(item)">{{item.label_name}}</span>
           </div>
         </div>
         <!-- 热销推荐 -->
@@ -170,6 +170,7 @@ export default {
       classid: '建房百科',
       hotprllList: [],
       flag: false,
+      lable:'体育新闻'
     }
   },
   watch: {
@@ -248,7 +249,8 @@ export default {
       request
         .getHomebaike({
           page: 1,
-          class: str,
+          class: str?str:'',
+          label:this.lable
         })
         .then((res) => {
           console.log(res.data, '百科')
@@ -364,6 +366,11 @@ export default {
         },
       })
     },
+    handTag(item){
+      console.log(item)
+        this.lable=item.label_name
+        this.getdata({})
+    }
   },
   mounted() {
     let nav = document.querySelector('.nav')

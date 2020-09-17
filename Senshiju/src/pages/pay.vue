@@ -52,12 +52,6 @@
             <div class="title bold">支付成功</div>
           </div>
         </el-dialog>
-        <el-dialog :visible.sync="ordererror" width="21.35%" top="30vh" center>
-          <div class="dia-box">
-            <!-- <img class="dia-img" src="../assets/image/pay-success.png" /> -->
-            <div class="title bold">支付失败</div>
-          </div>
-        </el-dialog>
         <!-- 对公账号 -->
         <div v-show="choeid==2" class="dgzh">
           <p>
@@ -116,7 +110,7 @@ export default {
       timer: null, //定时器名称
       ali_pay: '', //支付宝
       orderSuccess: false, //弹出支付成功pop
-      ordererror:false
+      ordererror: false,
     }
   },
   created() {
@@ -126,7 +120,6 @@ export default {
       })
       return false
     }
-    
   },
   methods: {
     creatQrCode(qr) {
@@ -177,17 +170,15 @@ export default {
       }, 100)
       console.log(htmls)
     },
-    weixin(){
-        request
+    weixin() {
+      request
         .getwxnotify({
           id: this.$route.query.data,
         })
         .then((res) => {
-          console.log(res, '')
           if (res.data.status == 2) {
-            this.orderSuccess = true
-          }else{
-            this.ordererror = true
+            this.orderSuccess=true
+            return false
           }
         })
         .catch((e) => {})
@@ -220,9 +211,7 @@ export default {
       this.orderpay()
     }
 
-    // this.timer = setInterval(() => {
-    //   setTimeout(this.weixin, 0)
-    // }, 1000 * 10)
+    this.timer = setInterval(this.weixin, 3000)
   },
 
   beforeDestroy() {
