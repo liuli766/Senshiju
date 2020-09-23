@@ -16,7 +16,8 @@ export default new Vuex.Store({
     },
     headimg: localStorage.getItem('headImg'),
     serchlist: [], //搜索内容
-    serverqq: ''
+    serverqq: '',
+    isfooter:true
   },
   getters: {
     loginData(state) {
@@ -62,6 +63,9 @@ export default new Vuex.Store({
     },
     meauidfn(state, num) {//建房百科菜单选中
       state.meauid = num
+    },
+    changNav(state,val){
+      state.isfooter=val
     },
     headnav(state, num) { //导航状态
       state.hedeid = num

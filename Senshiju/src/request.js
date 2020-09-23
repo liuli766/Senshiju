@@ -229,6 +229,12 @@ function getzfbnotify(data) {
   }
   return http.fetchPost('/index/Notify/ali_notify', params)
 }
+function getLinks(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/api/Common/links', params)
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -268,4 +274,5 @@ export default {
   getupload, //上传图片
   getzfb, //支付宝支付
   getzfbnotify, //支付宝回调
+  getLinks,//底部链接
 }

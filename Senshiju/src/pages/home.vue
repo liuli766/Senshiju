@@ -72,10 +72,10 @@
               </div>
             </div>
             <div class="picbox fl_be_al">
-              <img :src="item.works[0]" alt />
+              <img :src="item.cover" alt />
               <div class="fl_be_al img_pic">
-                <img :src="item.works[1]" alt />
-                <img :src="item.works[2]" alt />
+                <img :src="c" alt  v-for="(c,v) in item.works.slice(0,2)" :key="v"/>
+                <!-- <img :src="item.works[1]" alt /> -->
               </div>
             </div>
           </div>
@@ -379,6 +379,7 @@ export default {
         '施工百科',
         '风水百科',
         '建房日志',
+        // '体育新闻'
       ],
       typeinfor: '建房百科',
       inList: [], //建房资讯

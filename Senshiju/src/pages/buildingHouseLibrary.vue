@@ -371,6 +371,11 @@ export default {
   height: 322px;
   transition: all 0.3s;
   padding-bottom: 10px;
+  margin-left: 15px;
+  box-shadow: 10px 10px 5px #e2e1e1;
+}
+.drawing:nth-of-type(3n){
+  margin-left: 0px;
 }
 .drawing:hover {
   box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
@@ -379,6 +384,7 @@ export default {
 .drawing img {
   width: 284px;
   height: 238px;
+  border-radius: 10px 10px 0 0;
 }
 .drawing p {
   width: 239px;
@@ -391,7 +397,6 @@ export default {
 .drawing_box {
   margin-top: 50px;
   display: flex;
-  justify-content: space-between;
   width: 889px;
   margin-bottom: 50px;
 }

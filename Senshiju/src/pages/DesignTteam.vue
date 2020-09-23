@@ -252,12 +252,12 @@ nav img {
   width: 370px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-top: 16px;
 }
 .piclist img {
   width: 116px;
   height: 110px;
+  margin-right: 10px;
 }
 .designeteam {
   flex-wrap: wrap;

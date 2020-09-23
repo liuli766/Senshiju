@@ -4,7 +4,7 @@
       <img :src="info.cover" alt />
       <div class="lili">
         <h5 class="bold">{{info.title}}</h5>
-        <div class="font14 color98">{{info.style}} | {{info.area}} | {{info.cost}}</div>
+        <div class="font14 color98">{{info.style}} | {{info.area}}㎡ | {{info.cost}}</div>
         <div class="font14 color98 quotations two-wrap">{{info.intro}}</div>
         <div class="font20 theme price">￥{{info.price}}</div>
       </div>

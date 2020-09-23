@@ -139,7 +139,6 @@ export default {
         '施工百科',
         '风水百科',
         '建房日志',
-        '体育新闻'
       ],
       meaunum: 0, //当前选中的item
       pageSize: 5, //当前显示的条数
@@ -170,7 +169,7 @@ export default {
       classid: '建房百科',
       hotprllList: [],
       flag: false,
-      lable:'体育新闻'
+      // lable:'体育新闻'
     }
   },
   watch: {
@@ -237,9 +236,6 @@ export default {
     } else if (this.meaunum == 5) {
       this.classid = '建房日志'
       this.getdata(this.classid)
-    }else if (this.meaunum == 6) {
-      this.classid = '体育新闻'
-      this.getdata(this.classid)
     }
   },
   methods: {
@@ -279,9 +275,6 @@ export default {
         this.getdata(this.classid)
       } else if (idx == 5) {
         this.classid = '建房日志'
-        this.getdata(this.classid)
-      }else if (idx == 6) {
-        this.classid = '体育新闻'
         this.getdata(this.classid)
       }
     },
@@ -598,7 +591,7 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
 }
 /* 分页样式修改 */
 .el-pagination.is-background .el-pager li:not(.disabled).active {
-  background-color: #ffde87;
+  background-color: #ffde87 !important;
   color: #fff;
 }
 .el-pagination.is-background .el-pager li.active {
@@ -606,13 +599,13 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
   cursor: default;
 }
 .el-pagination.is-background .el-pager li:hover {
-  color: #ffde87;
+  color: #ffde87 !important;
 }
 .el-pagination.is-background .el-pager li:not(.disabled):hover {
-  color: #ffde87;
+  color: #ffde87 !important;
 }
 .el-pagination.is-background .el-pager li:not(.disabled).active:hover {
-  background-color: #ffde87;
+  background-color: #ffde87 !important;
   color: #fff;
 }
 .btn-next,

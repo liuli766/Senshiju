@@ -8,7 +8,7 @@
     </div>
     <!--  -->
     <div class="build_img fl_be">
-      <img :src="detaillist.cover" alt />
+      <img :src="detaillist.cover" alt style="width:686px" />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
           <h5>{{detaillist.title}}</h5>
@@ -23,20 +23,24 @@
             v-if="detaillist.is_collect==false"
           >收藏</span>
         </div>
-        <p>
+        <p style="margin-bottom:36px">
           图纸编号：
           <span>{{bianhao}}</span>
         </p>
         <div class="layer fl_be">
           <span>别墅层数:{{detaillist.plies}}</span>
           <span>结构形式:{{detaillist.structure}}</span>
-          <span>占地面积:{{detaillist.face_width}}</span>
-          <span>建筑开间:{{detaillist.plies}}</span>
-          <span>建筑进深:{{detaillist.depth}}</span>
-          <span>销售面积:{{detaillist.face_width}}</span>
+          <span>占地面积:{{detaillist.area}}M</span>
+          <span>建筑开间:{{detaillist.build}}</span>
+          <span>建筑进深:{{detaillist.depth}}M</span>
+          <span>销售面积:{{detaillist.sell_area}}M</span>
           <span>主体参考造价:{{detaillist.cost}}</span>
         </div>
-        <div class="tel">: 176-8324-2994</div>
+        <div style="display:flex;">
+          <img src="../assets/image/tel.png" alt style="width:28px;height:28px;margin-right:10px" />
+          <div class="tel">: {{detaillist.phone}}</div>
+        </div>
+
         <div class="button fl_be">
           <button class="poniter" @click="orderPay">立即购买此套图纸</button>
           <button class="poniter" @click="dialogFormVisible = true">申请按此套图纸施工</button>
@@ -75,7 +79,7 @@
     <!-- 轮播 -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(val,k) in detaillist.imgs" :key="k">
+        <div class="swiper-slide" v-for="(val,k) in detaillist.photos" :key="k">
           <img :src="val" alt />
         </div>
       </div>
@@ -84,11 +88,15 @@
       <span class="swiper-button-next" style="background: transparent;"></span>
     </div>
     <!--  -->
-    <div class="explain">购图前重要说明：</div>
-    <p class="explain2">购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
-      <div v-for="(val,k) in detaillist.imgs"  :key="k" class="detailpic">
-        <img :src="val">
-      </div>
+    <div class="fengeline"></div>
+    <div class="explain">图纸介绍</div>
+    <p
+      class="explain2"
+    >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
+    <div class="fengeline" style="margin-top:12px"></div>
+    <div v-for="(val,k) in detaillist.imgs" :key="k" class="detailpic">
+      <img :src="val" />
+    </div>
   </div>
 </template>
 
@@ -159,33 +167,32 @@ export default {
     handdetail() {
       if (!this.token) {
         request
-        .getBlueDetail({
-          id: this.$route.query.id,
-        })
-        .then((res) => {
-          this.detaillist = res.data
-          this.bianhao = this.detaillist.number.toUpperCase()
-          console.log(this.detaillist.is_collect)
-        })
-        .catch((e) => {})
-        .finally(() => {})
+          .getBlueDetail({
+            id: this.$route.query.id,
+          })
+          .then((res) => {
+            this.detaillist = res.data
+            this.bianhao = this.detaillist.number.toUpperCase()
+            console.log(this.detaillist.is_collect)
+          })
+          .catch((e) => {})
+          .finally(() => {})
         return false
-      }else{
+      } else {
         request
-        .getBlueDetail({
-          id: this.$route.query.id,
-          uid: this.userInfor.member_id,
-        })
-        .then((res) => {
-          this.detaillist = res.data
-          this.bianhao = this.detaillist.number.toUpperCase()
-          console.log(res, '图纸详情')
-          console.log(this.detaillist.is_collect)
-        })
-        .catch((e) => {})
-        .finally(() => {})
+          .getBlueDetail({
+            id: this.$route.query.id,
+            uid: this.userInfor.member_id,
+          })
+          .then((res) => {
+            this.detaillist = res.data
+            this.bianhao = this.detaillist.number.toUpperCase()
+            console.log(res, '图纸详情')
+            console.log(this.detaillist.is_collect)
+          })
+          .catch((e) => {})
+          .finally(() => {})
       }
-      
     },
 
     //获取验证码
@@ -403,7 +410,7 @@ export default {
   height: 520px;
 }
 .build_img img {
-  min-width: 686px;
+  /* min-width: 686px; */
   height: 100%;
 }
 .build_img h5 {
@@ -431,9 +438,14 @@ export default {
   padding: 10px 0;
   padding-right: 14px;
   padding-left: 17px;
+  box-sizing: border-box;
+  width: 514px;
 }
 .build_img_t {
   align-items: normal;
+  border-bottom: 1px solid #000;
+  padding-bottom: 12px;
+  margin-bottom: 113px;
 }
 .build_img_r p {
   font: 400 20px/26px 'Adobe Heiti Std';
@@ -477,7 +489,7 @@ export default {
   line-height: 94px;
   font-size: 30px;
 }
-.explain2{
+.explain2 {
   color: #4e4e4e;
   text-align: left;
   font-size: 20px;
@@ -549,8 +561,15 @@ export default {
   color: #ff151b;
   font-size: 38px;
 }
-.detailpic img{
+.detailpic img {
   width: 100%;
   height: 100%;
+}
+.fengeline {
+  border: 1px solid #b5b5b5;
+  height: 4px;
+  width: 100%;
+  border-left-color: transparent;
+  border-right-color: transparent;
 }
 </style>

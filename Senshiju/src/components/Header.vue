@@ -26,7 +26,7 @@
       </div>
 
       <div class="serch">
-        <input type="text" placeholder="请输入关键词" @keyup.enter="serch" v-model="search" />
+        <input type="text" placeholder="请输入关键词" @keyup.enter="serch" v-model="search" @input="serch"/>
         <img src="../assets/image/fixed/serch.png" alt class="serchimg" @click="serch" />
       </div>
     </nav>
@@ -75,7 +75,6 @@ export default {
         '施工百科',
         '风水百科',
         '建房日志',
-        '体育新闻'
       ],
       navid: 0, // 当前选中的导航
       search: '', //搜索字符串,
@@ -89,11 +88,15 @@ export default {
       userInfor: (state) => state.userInfor,
       serchlist: (state) => state.serchlist,
       headimg: (state) => state.headimg,
+      isfooter:(state) =>state.isfooter
     }),
   },
   watch: {},
   created() {
     console.log(this.hedeid)
+    if(this.$route.path=='/'){
+       this.$store.commit('changNav',true)
+    }
   },
   methods: {
     // 点击导航栏
@@ -101,6 +104,13 @@ export default {
       sessionStorage.setItem('idnum', index) // 保存下标
       this.$store.commit('headnav', parseInt(sessionStorage.getItem('idnum')))
       this.$router.push({ path: nav.url })
+      if(nav.url=='/'){
+       this.$store.commit('changNav',true)
+       console.log('true')
+    }else{
+      this.$store.commit('changNav',false)
+       console.log('false')
+    }
     },
     serch() {
       request
@@ -137,6 +147,8 @@ export default {
 <style scoped>
 nav ul li {
   position: relative;
+  padding: 10px;
+  border-radius: 10px;
 }
 .li4 {
   position: relative;
@@ -149,10 +161,10 @@ nav ul li {
   background: url('../assets/image/jfrz.png');
   background-size: 100% 100%;
   width: 300px;
-  top: 18px;
+  top: 38px;
   right: -70px;
   font-size: 24px;
-  height: 500px;
+  height: 533px;
   font-family: Microsoft YaHei;
   color: rgba(0, 0, 0, 1);
   line-height: 40px;
@@ -166,8 +178,7 @@ nav ul li {
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.3s;
-  margin: 0 47px 12px 47px;
-  
+  margin: 0 47px 10px 47px;
 }
 .dropdown li:hover {
   color: #f5c134;

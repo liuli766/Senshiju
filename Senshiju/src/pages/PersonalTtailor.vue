@@ -141,8 +141,7 @@
         <h5>定制图纸展示</h5>
         <p>私人定制能带来更贴心的享受</p>
         <div class="showpic fl_be">
-          <img src="../assets/image/srdz1.png" alt />
-          <img src="../assets/image/srdz2.png" alt />
+          <img :src="c.cover" v-for="(c,v) in caselist" :key="v"/>
         </div>
         <div class="fl_be show_img">
           <el-image
@@ -162,7 +161,7 @@
         <h5>我们的口碑您来决定</h5>
         <p>为您与客户真实的聊天记录</p>
         <div>
-          <div class="mouth fl_be">
+          <div class="mouth fl_be" style="flex-wrap: wrap;">
             <img v-for="(item,k) in praiselist" :key="k" :src="link+item.cover" alt />
           </div>
         </div>
@@ -218,6 +217,7 @@ export default {
       praiselist: [], //口碑
       link: 'http://villa.jisapp.cn',
       homeList: [],
+      caselist:[]
     }
   },
   mounted() {},
@@ -239,6 +239,7 @@ export default {
         this.drawingslist2 = res.data.license[1].cover
         this.drawingslist3 = res.data.license[2].cover
         this.praiselist = res.data.praise
+        this.caselist = res.data.case
       })
       .catch((e) => {})
       .finally(() => {})
@@ -567,6 +568,7 @@ nav img {
 .mouth img {
   width: 364px;
   height: 755px;
+  margin-bottom: 20px;
 }
 .permit img {
   width: 464px;
