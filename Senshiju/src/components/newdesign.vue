@@ -73,21 +73,19 @@ h6{
     margin-bottom: 22px;
 }
 .drawing {
-  width: 269px;
-  height: 269px;
+  width: 230px;
+  height: 242px;
   transition: all 0.3s;
   margin-bottom: 20px;
+  transition: all .2s;
 }
-.drawing:hover {
-  box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
-    -10px 10px 5px #e2e1e1, -10px -10px 5px #e2e1e1;
-}
+
 .drawing img {
-  width:269px;
-height:191px;
+  width:230px;
+height:160px;
 }
 .drawing p {
-  width: 239px;
+  /* width: 239px; */
   margin: 9px 5px 7px 3px;
   font-size: 16px;
   font-family: SimHei;

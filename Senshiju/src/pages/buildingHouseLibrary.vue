@@ -3,20 +3,7 @@
     <div>
       <div class="content">
         <div class="hot">
-          <h4 class="font29">
-            建房
-            <span class="theme">·图库</span>
-          </h4>
-          <div class="flex colord2">
-            <div class="font20 flex">
-              <div class="line"></div>·
-            </div>
-            <div class="txt">BUILDING GALLERY</div>
-            <div class="font20 flex">
-              ·
-              <div class="line"></div>
-            </div>
-          </div>
+          <img src="../assets/image/jfh1.png" alt="">
         </div>
         <!--  -->
         <div class="build">
@@ -35,7 +22,7 @@
       </div>
       <!--  -->
       <div class="build_bg">
-        <div class="fl_be" style="height:50px">
+        <div class="fl_be font16" style="height:50px">
           <span v-if="filterSelData===''" style="color:#FFD02D">
             已选条件：
             <span
@@ -59,7 +46,7 @@
         <img src="../assets/image/bg.png" alt />
         <div class="build_fiflter">
           <span class="font24">别墅图纸共有{{newarr.length}}套</span>
-          <div class="theme font18">
+          <div class="theme font16">
             <span @click="handsort">排序</span>
             <span @click="handmoods('moods')">
               人气
@@ -270,15 +257,15 @@ export default {
 }
 .content {
   border: 1px dashed#bfbfbf;
-  width: 889px;
+  width: 940px;
   margin: 0 auto;
 }
 .build_bg {
-  width: 889px;
+  width: 940px;
   margin: 0 auto;
 }
 .build_bg > img {
-  width: 889px;
+  width: 940px;
 }
 .hot {
   padding: 50px 0 32px 0;
@@ -328,15 +315,17 @@ export default {
   display: block;
   width: 50px;
   text-align: center;
+  font-size: 16px;
 }
 .line_h {
   display: flex;
 }
 .line_h li {
   padding: 6px 8px;
-  margin-right: 14px;
+  margin-right: 5px;
   border-radius: 7px;
   margin-bottom: 8px;
+  font-size: 14px;
 }
 .build {
   margin: 0 auto;
@@ -344,6 +333,7 @@ export default {
 }
 .bg_active {
   background: #fdd45f;
+  font-size: 16px;
 }
 .bulid_child {
   display: flex;
@@ -363,28 +353,39 @@ export default {
   height: 60px;
   border-bottom: 1px solid #d2d2d2;
 }
-.theme.font18 span + span {
-  margin-left: 50px;
+.theme span + span {
+  margin-left: 40px;
+}
+.theme span{
+  display: inline-block;
+  cursor: pointer;
 }
 .drawing {
-  width: 284px;
-  height: 322px;
+  width: 300px;
+  height: 334px;
   transition: all 0.3s;
   padding-bottom: 10px;
-  margin-left: 15px;
-  box-shadow: 10px 10px 5px #e2e1e1;
+  /* margin-left: 15px; */
+  box-shadow: 4px 4px 4px #b6b5b5;
+  margin-bottom: 20px;
+  /* border-radius: 6px; */
+  overflow: hidden;
+  margin-left: 13px;
+  transition: all .2s;
 }
 .drawing:nth-of-type(3n){
-  margin-left: 0px;
+  margin-right: 0px;
 }
 .drawing:hover {
-  box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
-    -10px 10px 5px #e2e1e1, -10px -10px 5px #e2e1e1;
+  /* box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
+    -10px 10px 5px #e2e1e1, -10px -10px 5px #e2e1e1; */
+    margin-top: -10px;
+    transition: all .2s;
 }
 .drawing img {
-  width: 284px;
-  height: 238px;
-  border-radius: 10px 10px 0 0;
+  width: 300px;
+  height: 210px;
+ 
 }
 .drawing p {
   width: 239px;
@@ -397,8 +398,9 @@ export default {
 .drawing_box {
   margin-top: 50px;
   display: flex;
-  width: 889px;
+  width: 940px;
   margin-bottom: 50px;
+  flex-wrap: wrap;
 }
 .bot {
   padding: 24px 13px;

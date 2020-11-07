@@ -25,7 +25,7 @@
             <img src="../assets/image/zf/wx.png" alt />
             <div class="flx col">
               <span>微信支付</span>
-              <span>使用微信支付，请使用5.0版以上的微信</span>
+              <span style="margin-top:15px">使用微信支付，请使用5.0版以上的微信</span>
             </div>
           </h6>
           <div class="qrcode">
@@ -87,6 +87,8 @@ export default {
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
       serverqq: (state) => state.serverqq,
+      isShowlogin: (state) => state.isShowlogin,
+      isShowregister: (state) => state.isShowregister,
     }),
   },
   data() {
@@ -115,9 +117,7 @@ export default {
   },
   created() {
     if (!this.token) {
-      this.$router.push({
-        path: '/login',
-      })
+       this.$store.commit('ShowLogin',true)
       return false
     }
   },
@@ -128,7 +128,7 @@ export default {
         text: qr, // 需要转换为二维码的内容
         width: 100,
         height: 100,
-        colorDark: '#000000',
+        colorDark: '#333000',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H,
       })
@@ -176,9 +176,14 @@ export default {
           id: this.$route.query.data,
         })
         .then((res) => {
-          if (res.data.status == 2) {
+          if (res.code==0) {
             this.orderSuccess=true
-            return false
+            this.$router.push({
+              path:'/order'
+            })
+            return true;
+          }else{
+            return false;
           }
         })
         .catch((e) => {})
@@ -211,7 +216,7 @@ export default {
       this.orderpay()
     }
 
-    this.timer = setInterval(this.weixin, 3000)
+    this.timer = setInterval(this.weixin, 1000*10)
   },
 
   beforeDestroy() {
@@ -241,7 +246,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   border: 1px solid rgba(146, 146, 146, 1);
   border-radius: 0px 0px 10px 10px;
-  margin-bottom: 20px;
+  margin-bottom: 80px;
 }
 .pay .payment {
   background: #f9f9f9;

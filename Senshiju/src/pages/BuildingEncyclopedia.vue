@@ -116,7 +116,7 @@
             <img :src="item.cover" alt />
             <p class="two-wrap">{{item.intro}}</p>
             <div style="width:100%" class="fl_be">
-              <span>{{item.plies}}层别墅</span>
+              <span>{{item.plies}}别墅</span>
               <span>风格：{{item.style}}</span>
             </div>
           </div>
@@ -383,7 +383,7 @@ main {
 }
 .bannerimg {
   width: 100%;
-  height: 254px;
+  height: 100%;
 }
 nav {
   display: flex;
@@ -443,6 +443,7 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
   line-height: 25px;
   text-indent: 20px;
   text-align: justify;
+  color: #333;
 }
 .timer {
   text-align: right;
@@ -617,7 +618,7 @@ nav li:nth-of-type(1) span:nth-of-type(1) {
 .el-pagination button,
 .el-pagination span:not([class*='suffix']) {
   min-width: 98.5px;
-  color: #000;
+  color: #333;
   background: #fff;
   border: 1px solid #eee;
 }

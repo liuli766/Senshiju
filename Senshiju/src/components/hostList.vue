@@ -3,9 +3,9 @@
     <div class="hotlist_info">
       <img :src="info.cover" alt />
       <div class="lili">
-        <h5 class="bold">{{info.title}}</h5>
-        <div class="font14 color98">{{info.style}} | {{info.area}}㎡ | {{info.cost}}</div>
-        <div class="font14 color98 quotations two-wrap">{{info.intro}}</div>
+        <h5 class="bold one-wrap">{{info.title.slice(0,10)}}</h5>
+        <div class="font14 color98">{{info.style}} &nbsp;&nbsp; | &nbsp;&nbsp;{{info.area}}㎡ &nbsp;&nbsp;| &nbsp;&nbsp;{{info.cost}}</div>
+        <div class="font14 color98 quotations one-wrap">{{info.describe}}</div>
         <div class="font20 theme price">￥{{info.price}}</div>
       </div>
     </div>
@@ -37,33 +37,45 @@ export default {
 </script>
 
 <style scoped>
+.hotlist{
+    width:360px;
+    /* margin-left: 2%; */
+    margin-bottom: 20px;
+    float: left;
+    /* border-radius: 6px; */
+    /* box-shadow: 7px 5px 30px #f2f0f0; */
+    overflow: hidden;
+    margin: 0 20px;
+    margin-bottom: 50px;
+}
+.hotlist:nth-last-of-type(1),.hotlist:nth-last-of-type(2),.hotlist:nth-last-of-type(3){
+  margin-bottom: 0;
+}
 .hotlist_info {
-  width: 392px;
-  background: #fff;
-  margin-bottom: 30px;
-  height: 400px;
-  margin-right: 12px;
+  overflow: hidden;
+  background: #f6f6f6;
+  height: 398px;
 }
 .hotlist_info img {
-  width: 100%;
-  height: 238px;
+  /* width: 392px;
+  height: 392px; */
+  width: 360px;
+  display: block;
+  height: 250px;
 }
 .bold {
   font: bold 22px/1 'Microsoft Ya Hei';
-  color: #000;
-  margin: 20px 0;
-  margin-top: 0;
-  padding-top: 20px;
+  color: #333;
+  margin: 18px 0;
 }
 .price {
-  margin: 10px 0;
   padding-bottom: 10px;
 }
 .quotations {
-  margin-top: 20px;
-  margin: 20px 0 0 20px;
+  margin: 18px 0 0 20px;
+  line-height: 24px;
 }
 .lili {
-  background: #f6f6f6;
+  height: 188px;
 }
 </style>

@@ -30,7 +30,7 @@
             <div>
               <div class="works">作品精选</div>
               <div class="piclist">
-                <img :src="pic" alt v-for="(pic,idx) in item.works" :key="idx" />
+                <img :src="pic" alt v-for="(pic,idx) in item.works.slice(0,3)" :key="idx" />
               </div>
             </div>
           </div>
@@ -242,6 +242,7 @@ nav img {
   text-align: left;
   font-size: 14px;
   line-height: 1;
+  color: #333;
 }
 .designeteam_l img {
   width: 158px;
@@ -267,5 +268,6 @@ nav img {
   background: rgba(255, 255, 255, 1);
   margin-top: 40px;
   line-height: 70px;
+  color: #333;
 }
 </style>

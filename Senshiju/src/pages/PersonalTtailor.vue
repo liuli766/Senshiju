@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#FAFAFA">
+  <div style="background: #fafafa">
     <!--私人订制  -->
     <!-- <div class="team">
       <div class="nav1">
@@ -21,7 +21,7 @@
         </nav>
       </div>
     </div>-->
-    <img src="../assets/image/person.png" alt class="bannerimg" />
+    <img src="../assets/image/person.jpg" alt class="bannerimg" />
     <main>
       <!-- 私人订制申请 -->
       <div>
@@ -60,7 +60,9 @@
               </el-form-item>
               <el-form-item>
                 <div class="red">为了您的权益，我们将对你的信息严格保密</div>
-                <el-button class="ybtn" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button class="ybtn" @click="submitForm('ruleForm')"
+                  >提交</el-button
+                >
               </el-form-item>
             </el-form>
             <div class="private_apply_r">
@@ -75,11 +77,16 @@
                 <span>元</span>
               </div>
               <div>以上都是预估造价，具体价格以客户实际情况为准</div>
-              <a :href="'tencent://message/?uin='+homeList.qq+'&Site=&Menu=yes'" target="_blank">
+              <a
+                :href="
+                  'tencent://message/?uin=' + homeList.qq + '&Site=&Menu=yes'
+                "
+                target="_blank"
+              >
                 <img
-                  :src="'http://wpa.qq.com/pa?p=2:'+homeList.qq+':41'"
+                  :src="'http://wpa.qq.com/pa?p=2:' + homeList.qq + ':41'"
                   alt="点击这里给我发消息"
-                  style="opacity: 0;"
+                  style="opacity: 0"
                 />
                 <el-button class="tmbtn">立刻咨询客服小姐姐</el-button>
               </a>
@@ -95,81 +102,92 @@
           <p>让您体验“真正的别墅生活”</p>
           <p>更贴心的服务</p>
           <div class="line"></div>
-          <p>Better understand your villa life</p>
-          <p>Villagers</p>
-          <p>Let you experience "real villa life"</p>
-          <p>More intimate service</p>
+          <p class="font12">Better understand your villa life</p>
+          <p class="font12">Villagers</p>
+          <p class="font12">Let you experience "real villa life"</p>
+          <p class="font12">More intimate service</p>
         </div>
         <div class="life_r">
           <img src="../assets/image/srdz.png" alt />
-          <p>村墅人家是四川别墅之家建筑科技有限公司旗下品牌，创建于2015年08月。专注于新农村自建房 设计、别墅设计和别墅室内装修设计、园林景观设计及施工一站式服务，集合行业顶尖设计资源 致力于打造全国优秀别墅设计公司和私宅设计，服务于中国新农村的建设和城镇化的进程</p>
-          <p>公司总部位于四川成都，公司拥有专业的设计团队，秉承以人为本，回归自然绿色创新的设计 理念，为您提供方便快捷低成本的别墅设计方案，采取传统的公司经营和现代互联网相结合的方 式，以专业创新的设计理念结合客户的需求为出发点，帮您打造一个理想的家园。</p>
+          <p>
+            村墅人家是四川别墅之家建筑科技有限公司旗下品牌，创建于2015年08月。专注于新农村自建房
+            设计、别墅设计和别墅室内装修设计、园林景观设计及施工一站式服务，集合行业顶尖设计资源
+            致力于打造全国优秀别墅设计公司和私宅设计，服务于中国新农村的建设和城镇化的进程
+          </p>
+          <p>
+            公司总部位于四川成都，公司拥有专业的设计团队，秉承以人为本，回归自然绿色创新的设计
+            理念，为您提供方便快捷低成本的别墅设计方案，采取传统的公司经营和现代互联网相结合的方
+            式，以专业创新的设计理念结合客户的需求为出发点，帮您打造一个理想的家园。
+          </p>
         </div>
       </div>
       <!-- 设计团队支持 -->
       <div class="teamsupport">
         <h5>设计团队支持</h5>
         <p>更加专业，更加精细化，满足高品质的设计需求</p>
-        <div class="teamsupport_box fl_ar">
-          <div
-            v-for="(item,index) in teamSupport"
+        <div class="teamsupport_box">
+          <div @click="GoTeamDetail(item)"
+            v-for="(item, index) in teamSupport"
             :key="index"
             class="poniter teamsupport_box_item"
           >
             <img :src="item.cover" alt />
             <div class="block fl_ar font20">
-              <span>{{item.name}}</span>
-              <span class="font14">{{item.position}}</span>
+              <span class="font20">{{ item.name }}</span>
+              <span class="font14">{{ item.position }}</span>
             </div>
           </div>
         </div>
       </div>
       <!-- 营业执照 -->
       <div class="license">
-        <h5>营业执照</h5>
-        <p>您的安心，我们的放心</p>
-        <div>
-          <div class="permit" style="margin-right:77px">
-            <img :src="link+drawingslist1" alt />
-            <img :src="link+drawingslist2" alt />
-          </div>
-          <img :src="link+drawingslist3" alt />
-        </div>
+        <img src="../assets/image/srdz-yyzz.png" alt="">
       </div>
       <!-- 定制图纸展示 -->
       <div class="show">
         <h5>定制图纸展示</h5>
         <p>私人定制能带来更贴心的享受</p>
-        <div class="showpic fl_be">
-          <img :src="c.cover" v-for="(c,v) in caselist" :key="v"/>
-        </div>
-        <div class="fl_be show_img">
+        <!-- <div class="showpic">
+          <img :src="c.cover" v-for="(c,v) in moreList" :key="v" class="el_image"/>
+        </div> -->
+        <div class="show_img">
           <el-image
             class="el_image"
             style="width: 100px; height: 100px"
-            :src="item.cover"
-            v-for="(item,index) in moreList"
-            :key="index"
-            :preview-src-list="picList"
-          ></el-image>
+            v-for="c in moreList"
+            :key="c.id"
+            :src="c.cover"
+            :preview-src-list="srcList"
+          >
+            fit="cover" >
+          </el-image>
         </div>
-
-        <div class="more" v-if="moreList.length<=picList.length">没有更多了</div>
+        <div class="more" v-if="picList.length <= moreList.length">
+          没有更多了
+        </div>
         <div class="more poniter" @click="handmore" v-else>查看更多</div>
       </div>
       <div class="license">
         <h5>我们的口碑您来决定</h5>
         <p>为您与客户真实的聊天记录</p>
         <div>
-          <div class="mouth fl_be" style="flex-wrap: wrap;">
-            <img v-for="(item,k) in praiselist" :key="k" :src="link+item.cover" alt />
+          <div class="mouth" style="flex-wrap: wrap">
+            <img
+              v-for="(item, k) in praiselist"
+              :key="k"
+              :src="item.cover"
+              alt
+            />
           </div>
         </div>
-        <a :href="'tencent://message/?uin='+homeList.qq+'&Site=&Menu=yes'" target="_blank">
+        <a
+          :href="'tencent://message/?uin=' + homeList.qq + '&Site=&Menu=yes'"
+          target="_blank"
+        >
           <img
-            :src="'http://wpa.qq.com/pa?p=2:'+homeList.qq+':41'"
+            :src="'http://wpa.qq.com/pa?p=2:' + homeList.qq + ':41'"
             alt="点击这里给我发消息"
-            style="opacity: 0;"
+            style="opacity: 0"
           />
           <div class="morekf poniter">查看更多客户反馈请咨询客服</div>
         </a>
@@ -206,6 +224,7 @@ export default {
           },
         ],
       },
+      srcList: [],
       teamSupport: [],
       // 订制图片展示
       picList: [],
@@ -215,9 +234,10 @@ export default {
       drawingslist2: '', //营业执照
       drawingslist3: '', //营业执照
       praiselist: [], //口碑
-      link: 'http://villa.jisapp.cn',
       homeList: [],
-      caselist:[]
+      caselist: [],
+      url:
+        'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
     }
   },
   mounted() {},
@@ -239,19 +259,13 @@ export default {
         this.drawingslist2 = res.data.license[1].cover
         this.drawingslist3 = res.data.license[2].cover
         this.praiselist = res.data.praise
-        this.caselist = res.data.case
-      })
-      .catch((e) => {})
-      .finally(() => {})
+        // this.caselist = res.data.case
+        this.picList = res.data.case
 
-    // 定制图纸
-    request
-      .teamDrawings({
-        page: 1,
-      })
-      .then((res) => {
-        console.log(res, '定制图纸')
-        this.picList = res.data
+        this.picList.map((item) => {
+          this.srcList.push(item.cover)
+        })
+        console.log(this.srcList)
         if (this.picList < 4) {
           this.moreList = this.picList
         } else {
@@ -260,6 +274,23 @@ export default {
       })
       .catch((e) => {})
       .finally(() => {})
+
+    // // 定制图纸
+    // request
+    //   .teamDrawings({
+    //     page: 1,
+    //   })
+    //   .then((res) => {
+    //     console.log(res, '定制图纸')
+    //     this.picList = res.data
+    //     if (this.picList < 4) {
+    //       this.moreList = this.picList
+    //     } else {
+    //       this.moreList = this.picList.slice(0, 4)
+    //     }
+    //   })
+    //   .catch((e) => {})
+    //   .finally(() => {})
 
     // 设计团队
     request
@@ -272,6 +303,18 @@ export default {
       .finally(() => {})
   },
   methods: {
+    GoTeamDetail(src){
+        this.$router.push({
+        path: '/teamDetail',
+        query: {
+          id: src.id,
+          name: src.name,
+        },
+      })
+    },
+    HandLoad(e) {
+      console.log(e)
+    },
     // 点击导航栏
     changeNav(nav) {
       this.navActiveCode = nav.code
@@ -322,6 +365,14 @@ export default {
 </script>
 
 <style scoped>
+.permit {
+  display: flex;
+  margin-left: 118px;
+}
+.permit img {
+  width: 456px;
+  height: 691px;
+}
 .bannerimg {
   width: 100%;
   height: 100%;
@@ -461,10 +512,13 @@ nav img {
   color: #6d6d6d;
   text-align: left;
 }
+.life_l p.font12 {
+  font-size: 12px;
+}
 .line {
   width: 50px;
   height: 1px;
-  background: #000;
+  background: #333;
   margin: 24px 0;
 }
 .life_r img {
@@ -508,15 +562,23 @@ nav img {
 }
 .teamsupport_box_item {
   width: 285px;
-  height: 366px;
+  height: 428px;
   position: relative;
   overflow: hidden;
+  margin-right: 15px;
+}
+.teamsupport_box_item:nth-last-of-type(4n) {
+  margin-right: 0;
 }
 .teamsupport_box_item:hover .block {
   bottom: 0;
 }
 .teamsupport_box_item:hover img {
   transform: scale(1.2);
+}
+.teamsupport_box {
+  display: flex;
+  flex-wrap: wrap;
 }
 .block {
   flex-direction: column;
@@ -530,15 +592,22 @@ nav img {
 }
 .showpic {
   margin-bottom: 40px;
+  display: flex;
+  flex-wrap: wrap;
 }
 .showpic img {
   width: 576px;
   height: 402px;
+  margin-bottom: 20px;
 }
 .el_image {
-  width: 280px !important;
+  width: 23% !important;
   height: 195px !important;
   margin-bottom: 19px;
+  margin-right: 31px;
+}
+.el_image:nth-of-type(4n) {
+  margin-right: 0;
 }
 .more {
   width: 122px;
@@ -547,9 +616,18 @@ nav img {
   border: 1px solid rgba(0, 0, 0, 1);
   margin: 0 auto;
   margin-top: 40px;
+  font-size: 22px;
 }
 .show_img {
   flex-wrap: wrap;
+  display: flex;
+}
+.show_img img {
+  width: 23%;
+  margin-right: 20px;
+}
+.show_img img:nth-of-type(4n) {
+  margin-right: 0;
 }
 .morekf {
   width: 334px;
@@ -564,14 +642,16 @@ nav img {
 }
 .mouth {
   margin-bottom: 40px;
+  display: flex;
 }
 .mouth img {
-  width: 364px;
+  width: 32%;
   height: 755px;
   margin-bottom: 20px;
+  margin-right: 24px;
+  /* margin: 15px auto; */
 }
-.permit img {
-  width: 464px;
-  height: 696px;
+.mouth img:nth-of-type(3n) {
+  margin-right: 0;
 }
 </style>

@@ -1,37 +1,34 @@
 <template>
-  <div style="background:#f6f6f6">
+  <div style="background: #fafafa">
     <swiper :options="swiperOption">
-      <swiper-slide v-for="(item,k) in getLunboList" :key="k">
+      <swiper-slide v-for="(item, k) in getLunboList" :key="k">
         <img class="sw" :src="item.pic_path" alt />
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
-      <img class="swiper-button-prev" src="../assets/image/back.png" slot="button-prev" alt />
-      <img class="swiper-button-next" src="../assets/image/back.png" slot="button-next" alt />
+      <img
+        class="swiper-button-prev"
+        src="../assets/image/back.png"
+        slot="button-prev"
+        alt
+      />
+      <img
+        class="swiper-button-next"
+        src="../assets/image/back.png"
+        slot="button-next"
+        alt
+      />
     </swiper>
     <!-- 热销推荐 -->
     <div class="hot bgcolorf6">
-      <h4 class="font40">
-        热销
-        <span class="theme">·推荐</span>
-      </h4>
-      <div class="flex colord2">
-        <div class="font20 flex">
-          <div class="line"></div>·
-        </div>
-        <div class="txt">HOT SELLING</div>
-        <div class="font20 flex">
-          ·
-          <div class="line"></div>
-        </div>
-      </div>
-      <p class="colord2">我们不做简单的风格堆砌，融合当代流行元素，不拘一格用经典铸造品牌 打造您的专属个性化定制风格别墅方案</p>
+      <img src="../assets/image/h1.png" alt="" />
       <div class="hotnav">
         <span
-          v-for="(item,index) in hotnavList"
+          v-for="(item, index) in hotnavList"
           :key="index"
-          :class="{'hot_active':item===type}"
+          :class="{ hot_active: item === type }"
           @click="handhotnav(item)"
-        >{{item}}</span>
+          >{{ item }}</span
+        >
       </div>
     </div>
     <!-- 新中式 -->
@@ -42,20 +39,24 @@
     </div>
     <!-- 设计师 -->
     <swiper :options="swiperOption">
-      <swiper-slide v-for="(item,k) in designlist" :key="k">
+      <swiper-slide v-for="(item, k) in designlist" :key="k">
         <div class="designer">
           <div class="designer_box">
             <div class="designer_main">
               <h5>专业设计</h5>
               <div class="h5_bot">DESIGN TEAM</div>
               <div class="h5_bot_div">为您打造好看又实用的别墅。</div>
-              <div class="h5_bot_div_div">Build a nice and practical villa for you..</div>
+              <div class="h5_bot_div_div">
+                Build a nice and practical villa for you..
+              </div>
               <div class="dashed font24">一对一专业设计设计师</div>
               <div class="dash">
-                {{item.name}}
+                {{ item.name }}
                 <span>Bksnnk</span>
               </div>
-              <span class="liaojie font20 poniter"  @click="handLearn(item)">点击了解设计师</span>
+              <span class="liaojie font21 poniter" @click="handLearn(item)"
+                >点击了解设计师</span
+              >
               <div class="resevers">
                 <div>精细化设计服务</div>
                 <div class="fuwu">
@@ -63,18 +64,27 @@
                 </div>
               </div>
               <div class="fl_ar technological">
-                <div v-for="(item,index) in design" :key="index" class="technological_design fl_ar">
+                <div
+                  v-for="(item, index) in design"
+                  :key="index"
+                  class="technological_design fl_ar"
+                >
                   <div class="borderf fl_center">
                     <img :src="item.img" alt />
                   </div>
-                  <span>{{item.name}}</span>
+                  <span class="font18">{{ item.name }}</span>
                 </div>
               </div>
             </div>
             <div class="picbox fl_be_al">
               <img :src="item.cover" alt />
               <div class="fl_be_al img_pic">
-                <img :src="c" alt  v-for="(c,v) in item.works.slice(0,2)" :key="v"/>
+                <img
+                  :src="c"
+                  alt
+                  v-for="(c, v) in item.works.slice(0, 2)"
+                  :key="v"
+                />
                 <!-- <img :src="item.works[1]" alt /> -->
               </div>
             </div>
@@ -84,27 +94,13 @@
     </swiper>
     <!-- 图纸预售 -->
     <div class="hot bgcolorf6">
-      <h4 class="font40">
-        图纸
-        <span class="theme">·预售</span>
-      </h4>
-      <div class="flex colord2">
-        <div class="font20 flex">
-          <div class="line"></div>·
-        </div>
-        <div class="txt">PRESELL</div>
-        <div class="font20 flex">
-          ·
-          <div class="line"></div>
-        </div>
-      </div>
-      <p class="colord2">不上班茶几上成绩按开始此是世界第三不上班茶几上成绩按开始此是世界第三代不上班茶几上成绩按开始此是世界第三代</p>
+      <img src="../assets/image/h2.png" alt="" />
     </div>
     <div class="presell">
       <div class="presell_child">
         <img
           class="img"
-          v-for="(item,index) in morelist"
+          v-for="(item, index) in morelist"
           :key="index"
           :src="item.cover"
           alt
@@ -113,26 +109,19 @@
       </div>
     </div>
     <div class="presell_bottom">
-      <div class="more poniter" @click="handmore" v-if="morelist.length<hotdata.length">查看更多</div>
+      <div
+        class="more poniter"
+        @click="handmore"
+        v-if="morelist.length < hotdata.length"
+      >
+        查看更多
+      </div>
       <div class="more poniter" v-else>没有更多了</div>
     </div>
 
     <!-- 服务流程 -->
     <div class="hot bgcolorf6">
-      <h4 class="font40">
-        服务
-        <span class="theme">·流程</span>
-      </h4>
-      <div class="flex colord2">
-        <div class="font20 flex">
-          <div class="line"></div>·
-        </div>
-        <div class="txt">SERVICE PROCESS</div>
-        <div class="font20 flex">
-          ·
-          <div class="line"></div>
-        </div>
-      </div>
+      <img src="../assets/image/h3.png" alt="" />
     </div>
     <!-- 服务流程 -->
     <div class="posfuwu">
@@ -148,73 +137,71 @@
       </div>
       <!--  -->
       <div class="process">
-        <div v-for="(item,index) in serviceList" :key="index" class="process_item">
+        <div
+          v-for="(item, index) in serviceList"
+          :key="index"
+          class="process_item"
+        >
           <div class="fdae31">
             <img :src="item.img" alt />
           </div>
-          <h6 class="h6">{{item.name}}</h6>
-          <li class="color98">{{item.name1}}</li>
-          <li class="color98">{{item.name2}}</li>
-          <li class="color98">{{item.name3}}</li>
+          <h6 class="h6">{{ item.name }}</h6>
+          <li class="color98">{{ item.name1 }}</li>
+          <li class="color98">{{ item.name2 }}</li>
+          <li class="color98">{{ item.name3 }}</li>
         </div>
       </div>
     </div>
     <!-- 视频实例 -->
     <div class="video">
-      <div class="hot bgcolorf6 vdeodiv">
-        <h4 class="font40">
-          一栋别墅
-          <span class="theme">·一处景</span>
-        </h4>
-        <p class="colord2 vdeop">回家建房，就找村墅人家</p>
+      <div class="hot bgcolorf6">
+        <img src="../assets/image/h4.png" alt="" />
       </div>
-      <video :src="homeList.home_video" controls poster='../assets/image/video.png' width="1200" height="676" preload="none"></video>
+      <video
+        :src="homeList.home_video"
+        controls
+        poster="../assets/image/video.png"
+        width="1200"
+        height="676"
+        preload="none"
+      ></video>
       <div class="vedoimg" @click.stop="handplay">
         <img src="../assets/image/player.png" alt v-if="vdeoimg" />
       </div>
     </div>
     <!-- 别墅资讯 -->
     <div class="hot bgcolorf6">
-      <h4 class="font40">
-        别墅
-        <span class="theme">·资讯</span>
-      </h4>
-      <div class="flex colord2">
-        <div class="font20 flex">
-          <div class="line"></div>·
-        </div>
-        <div class="txt">INFORMATION</div>
-        <div class="font20 flex">
-          ·
-          <div class="line"></div>
-        </div>
-      </div>
-      <p class="colord2">不上班茶k几上成绩按开始此是世界第三代不上班茶几上成绩按开始此是世界第三代</p>
+      <img src="../assets/image/h5.png" alt="" />
       <div class="hotnav">
         <span
-          v-for="(item,k) in inforList"
+          v-for="(item, k) in inforList"
           :key="k"
-          :class="{'hot_active':item===typeinfor}"
-          @click="handInfor(item,k)"
-        >{{item}}</span>
+          :class="{ hot_active: item === typeinfor }"
+          @click="handInfor(item, k)"
+          >{{ item }}</span
+        >
       </div>
     </div>
     <!-- 资讯展示 -->
     <div class="mationmain">
       <!-- <transition name="bounce" mode="out-in" class="mationparent"> -->
-      <div class="inforparent poniter" v-for="(item,index) in zxlist " :key="index">
+      <div
+        class="inforparent poniter"
+        v-for="(item, index) in zxlist"
+        :key="index"
+      >
         <div>
           <div class="inforlist" @click="handbaike(item)">
             <img :src="item.cover" alt />
             <div class="infor_txt">
               <div class="b">
-                {{item.add_time.slice(5,7)}}
+                {{ item.add_time.slice(5, 7) }}
                 <span>/month</span>
               </div>
               <span class="hline"></span>
-              <h6 class="h6tit">{{item.title}}</h6>
+              <h6 class="h6tit">{{ item.title }}</h6>
               <span class="hline1"></span>
-              <p class="txtp two-wrap">{{item.content}}</p>
+              <p class="txtp two-wrap">{{ item.content }}</p>
             </div>
             <div class="blok"></div>
           </div>
@@ -222,12 +209,12 @@
           <div class="infornews_parent poniter">
             <div
               class="infornews"
-              v-for="(item,index) in inList"
+              v-for="(item, index) in inList"
               :key="index"
               @click="gobaike(item)"
             >
-              <p class="txtp1 one-wrap">{{item.content}}</p>
-              <div>{{item.add_time.slice(0,10)}}</div>
+              <p class="txtp1 one-wrap">{{ item.content }}</p>
+              <div>{{ item.add_time.slice(0, 10) }}</div>
             </div>
           </div>
         </div>
@@ -243,41 +230,49 @@
         </button>
       </div>
     </div>
-    <!-- 地图展示 -->
-    <div style="padding-bottom:40px">
+    <!-- 建房专题 -->
+    <div style="margin-top: 40px">
       <div class="hot bgcolorf6">
-        <h4 class="font40">
-          地图
-          <span class="theme">·展示</span>
-        </h4>
-        <div class="flex colord2">
-          <div class="font20 flex">
-            <div class="line"></div>·
-          </div>
-          <div class="txt">Map display</div>
-          <div class="font20 flex">
-            ·
-            <div class="line"></div>
+        <img src="../assets/image/h7.png" alt="" />
+      </div>
+    </div>
+    <div class="display_box">
+      <div v-for="(item,v) in 5" :key="v" @click="GoDisplay(item)">
+        <!-- 图片 -->
+        <div>
+          <div class="display_child display_child1">
+            <img src="../assets/image/srdz2.png" class="display_img" alt="" />
+            <div class="display_block">详情</div>
           </div>
         </div>
-        <p class="colord2">百万平方，制造实力</p>
+        <!-- 标题 -->
+        <div class="display_child">
+          <p class="display_p">提前狂欢</p>
+        </div>
       </div>
-      <div class="mapshow">
-        <div class="txt1">村墅人家覆盖{{homeList.cities}}个大城市，服务全国{{homeList.service_area}}个地区</div>
-        <div class="txt2">真实客户案例{{homeList.real_client}}+</div>
-        <img src="../assets/image/map.png" alt />
+      <div class="presell_bottom" style="margin-top:70px">
+      <div
+        class="more poniter"
+        @click="handmore"
+      >
+        查看更多
       </div>
+      <!-- <div class="more poniter" v-else>没有更多了</div> -->
+    </div>
     </div>
     <!-- 首页联系客服 -->
     <div class="fixed">
       <!-- <a href="javascript:void(0)" id="contactQQ">
         
       </a>-->
-      <a :href="'tencent://message/?uin='+homeList.qq+'&Site=&Menu=yes'" target="_blank">
+      <a
+        :href="'tencent://message/?uin=' + homeList.qq + '&Site=&Menu=yes'"
+        target="_blank"
+      >
         <img
-          :src="'http://wpa.qq.com/pa?p=2:'+homeList.qq+':41'"
+          :src="'http://wpa.qq.com/pa?p=2:' + homeList.qq + ':41'"
           alt="点击这里给我发消息"
-          style="opacity: 0;"
+          style="opacity: 0"
         />
         <div>
           <img src="../assets/image/fixed/kf.png" alt />
@@ -299,17 +294,21 @@
         <span>返回顶部</span>
       </div>
     </div>
+    <login v-if="isShowlogin" />
   </div>
 </template>
 
 <script>
 import hotlist from '@/components/hostList.vue'
+import login from '@/components/login.vue'
+
 import { mapState } from 'vuex'
 import request from '@/request.js'
 import axios from 'axios'
 export default {
   components: {
     hotlist,
+    login,
   },
   data() {
     return {
@@ -330,7 +329,7 @@ export default {
         },
       },
       hotdata: [],
-      hotnavList: ['新中式', '四合院', '欧式', '现代'],
+      hotnavList: ['新中式', '中式风格与四合院', '欧式', '现代'],
       getLunboList: [], //轮播数据
       serviceList: [
         {
@@ -417,6 +416,9 @@ export default {
   },
   watch: {},
   computed: {
+    ...mapState({
+      isShowlogin: (state) => state.isShowlogin,
+    }),
     hotlist: {
       get: function () {
         let list = [...this.hotdata]
@@ -500,7 +502,7 @@ export default {
           console.log(res, '资讯')
           this.inList = res.data
           this.zxlist = this.inList.slice(0, 1)
-          localStorage.setItem('length',res.data.length)
+          localStorage.setItem('length', res.data.length)
         })
         .catch((e) => {})
         .finally(() => {})
@@ -599,6 +601,7 @@ export default {
         path: '/articDetail',
         query: {
           id: item.id,
+          title: item.title,
         },
       })
     },
@@ -642,6 +645,11 @@ export default {
         this.vdeoimg = true
       }
     },
+    GoDisplay(item){//跳转建房百科专题
+        this.$router.push({
+          path:'/Display'
+        })
+    }
   },
   mounted() {
     let nav = document.querySelector('.nav')
@@ -652,11 +660,58 @@ export default {
 
 <style scoped>
 @import '../assets/index.css';
+.display_box {
+  width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 56px 0 46px 0;
+  overflow: hidden;
+
+}
+.display_box>div{
+  float: left;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.display_box>div:nth-of-type(3n-1){
+  margin: 0 74px;
+}
+.display_img {
+  width: 350px;
+  height: 244px;
+  position: relative;
+}
+.display_p {
+  font-size: 20px;
+  color: #333;
+  text-align: left;
+}
+.display_child {
+  position: relative;
+  width: 350px;
+}
+.display_child1 {
+  margin-bottom: 16px;
+}
+.display_block {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: #fff;
+  height: 72px;
+  box-sizing: border-box;
+  padding: 12px 28px;
+  width: 100%;
+  font-size: 20px;
+}
 .vdeodiv {
   padding-bottom: 0;
 }
 .vdeop {
   margin: 12px auto;
+  margin-bottom: 40px;
+  color: #999;
 }
 .video {
   position: relative;
@@ -681,7 +736,7 @@ export default {
   position: relative;
 }
 .fixed > div:hover .qrimg {
-  opacity: 1;
+  display: block;
 }
 .qrimg {
   position: absolute;
@@ -690,7 +745,7 @@ export default {
   width: 100px;
   height: 100px;
   background: #fff;
-  opacity: 0;
+  display: none;
 }
 .fixed a > div {
   background: #fff;

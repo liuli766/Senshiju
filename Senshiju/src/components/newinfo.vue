@@ -6,11 +6,11 @@
       <div class="info">
         <img :src="item.cover" alt />
         <div class="block">
-          <p>{{item.title}}</p>
+          <p class="two-wrap">{{item.title}}</p>
         </div>
       </div>
-      <div class="p wrap">{{item.title}}</div>
-      <div class="p wrap">{{item.title}}</div>
+      <div class="p wrap two-wrap">{{item.title}}</div>
+      <div class="p wrap two-wrap">{{item.title}}</div>
     </div>
   </div>
 </template>
@@ -71,11 +71,11 @@ h6 {
 }
 .info {
   position: relative;
-  width: 269px;
+  width: 228px;
 }
 .info img {
-  width: 269px;
-  height: 191px;
+  width: 230px;
+  height: 160px;
 }
 .info .block {
   position: absolute;
@@ -84,6 +84,7 @@ h6 {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
   padding: 12px 3px 8px;
+  box-sizing: border-box;
 }
 .info .block p {
   font: 400 14px/23px 'Microsoft YaHei';
@@ -91,10 +92,12 @@ h6 {
   text-align: justify;
 }
 .p {
-  width: 268px;
+  width: 228px;
   border-bottom: 1px dashed #bfbfbf;
   line-height: 26px;
   text-align: left;
+  font-size: 14px;
+  padding-left: 5px;
 }
 .box{
   margin-bottom: 20px;

@@ -1,14 +1,14 @@
 <template>
-  <!-- 注册 -->
-  <div class="register">
-    <div class="register_logo">
-      <img src="../assets/image/logo (1).png" alt />
-      <i class="el-icon-close"></i>
+  <div class="modlue">
+    <div class="login_box">
+        <div class="register_logo">
+      <img src="../assets/image/logo (1).svg" alt/>
+      <i class="el-icon-close" @click="handclose"></i>
     </div>
     <div class="register_bot">
       <div class="erwm">
         <h6>手机扫码登录</h6>
-        <wxlogin
+        <wxlogin style="height:300px"
           :appid="'wxe960929de0880424'"
           :scope="'snsapi_userinfo'"
           :redirect_uri="'http://villa.jisapp.cn/index/Login/wx_login'"
@@ -42,23 +42,23 @@
             v-model="userinfo.password"
             @change="inp2"
           />
-          <!-- <el-input class="input" placeholder="请输入手机号" v-model="phone" clearable></el-input>
-
-          <el-input class="pass input" placeholder="请输入密码" v-model="password" show-password></el-input>-->
         </div>
         <button @click="handsubmit">登录</button>
         <p>未注册的手机号验证后将自动登录 登录后即表示同意《服务协议》</p>
       </div>
     </div>
+    </div>
   </div>
 </template>
+
 
 <script>
 import { mapState } from 'vuex'
 import request from '@/request.js'
 import wxlogin from 'vue-wxlogin'
+import register from '@/components/register.vue'
 export default {
-  components: { wxlogin },
+  components: { wxlogin ,register},
   data() {
     return {
       userinfo: {
@@ -77,6 +77,8 @@ export default {
       token: (state) => state.token,
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
+      isShowlogin: (state) => state.isShowlogin,
+      isShowregister: (state) => state.isShowregister,
     }),
   },
   created() {
@@ -85,15 +87,16 @@ export default {
     }
   },
   methods: {
+    handclose(){
+      this.$store.commit('ShowLogin', false)
+    },
     handswich(idx) {
       if (idx == 0) {
-        this.$router.push({
-          path: '/register',
-        })
+        this.$store.commit('ShowRegister',true)
+        this.$store.commit('ShowLogin',false)
       } else {
-        this.$router.push({
-          path: '/login',
-        })
+        this.$store.commit('ShowRegister',false)
+        this.$store.commit('ShowLogin',true)
       }
     },
     inp1() {
@@ -143,6 +146,7 @@ export default {
               this.$router.push({
                 path: '/',
               })
+              this.$store.commit('ShowLogin',false)
             }else{
               this.$message({
                 showClose: true,
@@ -167,7 +171,9 @@ export default {
 }
 </script>
 
+
 <style scoped>
+
 #red {
   min-height: 14px;
   height: auto;
@@ -197,16 +203,11 @@ i:hover {
 }
 .register_logo {
   display: flex;
-  width: 976px;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 69px;
-}
-.register_logo img {
-  width: 271px;
-  height: 58px;
-  padding: 10px;
+  margin-bottom: 30px;
+  box-sizing: border-box;
 }
 .erwm {
   width: 295px;
@@ -274,6 +275,7 @@ i:hover {
   margin-bottom: 30px;
   padding-left: 47px;
   box-sizing: border-box;
+  font-size: 14px;
 }
 .pos .line {
   width: 1px;
@@ -333,5 +335,28 @@ input:-moz-placeholder {
 input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #787878;
+}
+.modlue{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, .5);
+  overflow-y: hidden;
+  top:0;
+  z-index: 99;
+  left: 0;
+}
+.login_box{
+  background: #fff;
+  width: 976px;
+  height: 640px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -488px;
+  margin-top: -338px;
+  border-radius: 6px;
+  padding: 34px 67px 102px 40px;
+  box-sizing: border-box;
 }
 </style>

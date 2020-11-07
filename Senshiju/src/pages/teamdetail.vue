@@ -15,6 +15,7 @@
               </article>
             </div>
             <div class="fl_be_al starrating">
+              <img src="../assets/image/xx.png" alt="" style="width:18px;height:18px;margin-right:6px">
               <div class="fl_be_al star">
                 评价星级：
                 <el-rate v-model="value" disabled show-score text-color="#ff9900"></el-rate>

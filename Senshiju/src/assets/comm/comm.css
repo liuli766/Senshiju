@@ -63,9 +63,17 @@
 }
 
 .font20 {
-  font-size: 20px;
+  font-size: 26px;
 }
-
+.font21{
+  font-size: 21px;
+}
+.font18{
+  font-size: 18px;
+}
+.font16{
+  font-size: 16px;
+}
 .font22 {
   font-size: 22px;
 }
@@ -79,7 +87,7 @@
 }
 
 .font40 {
-  font-size: 40px;
+  font-size: 44px;
 }
 
 /*  */

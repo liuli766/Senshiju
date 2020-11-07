@@ -124,8 +124,8 @@ export default {
   line-height: 32px;
   padding: 14px 0;
   padding-left: 52px;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
   margin-bottom: 46px;
 }
 .build_img {
@@ -185,7 +185,7 @@ export default {
 }
 .tel {
   font: 400 26px/34px 'Adobe Heiti Std';
-  color: #000000;
+  color: #333000;
   margin-bottom: 25px;
 }
 .build_img_r button {

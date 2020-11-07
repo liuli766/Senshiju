@@ -11,13 +11,13 @@ export default new Vuex.Store({
     token: localStorage.getItem('istoken'),
     userInfor: JSON.parse(localStorage.getItem('loginData')), //当前账号信息
     isLogin: localStorage.getItem('islogin'), //登录状态
-    user: {
-
-    },
     headimg: localStorage.getItem('headImg'),
     serchlist: [], //搜索内容
     serverqq: '',
-    isfooter:true
+    isfooter: true,
+    isShowlogin: false,
+    isShowregister: false,
+    isModule: true,
   },
   getters: {
     loginData(state) {
@@ -41,12 +41,21 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    ShowModule(state, val) {
+      state.isModule = val
+    },
+    ShowLogin(state, val) {
+      state.isShowlogin = val
+    },
+    ShowRegister(state, val) {
+      state.isShowregister = val
+    },
     settoken(state, data) { //vuex存放toke
       state.token = data.token
       state.userInfor = data
       localStorage.setItem("loginData", JSON.stringify(data))
       state.headimg = data.photo
-      console.log(state.headimg,data.photo)
+      console.log(state.headimg, data.photo)
     },
     cleartoken(state) { // 清除token
       state.token = ""
@@ -64,8 +73,8 @@ export default new Vuex.Store({
     meauidfn(state, num) {//建房百科菜单选中
       state.meauid = num
     },
-    changNav(state,val){
-      state.isfooter=val
+    changNav(state, val) {
+      state.isfooter = val
     },
     headnav(state, num) { //导航状态
       state.hedeid = num

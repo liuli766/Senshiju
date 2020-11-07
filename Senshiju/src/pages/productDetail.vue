@@ -4,46 +4,73 @@
     <div class="current">
       当前位置：
       <router-link to="/">首页</router-link>
-      >图纸列表>{{detaillist.title}}
+      >图纸列表>{{ detaillist.title }}
     </div>
     <!--  -->
-    <div class="build_img fl_be">
-      <img :src="detaillist.cover" alt style="width:686px" />
+    <div class="build_img">
+      <img :src="detaillist.cover" alt style="width: 686px; height: 478px" />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
-          <h5>{{detaillist.title}}</h5>
+          <h5>{{ detaillist.title }}</h5>
           <span
             class="font20 poniter yi"
-            @click="Collect(detaillist.id)"
-            v-if="detaillist.is_collect==true"
-          >已收藏</span>
+            @click="qxcollect(detaillist.id)"
+            v-if="detaillist.is_collect == true"
+            >已收藏</span
+          >
           <span
             class="font20 poniter"
             @click="Collect(detaillist.id)"
-            v-if="detaillist.is_collect==false"
-          >收藏</span>
+            v-if="detaillist.is_collect == false"
+            >收藏</span
+          >
         </div>
-        <p style="margin-bottom:36px">
-          图纸编号：
-          <span>{{bianhao}}</span>
+        <p
+          style="
+            font-size: 25px;
+            letter-spacing: 3px;
+            color: #707070;
+            margin-bottom: 16px;
+          "
+        >
+          成品图纸<span
+            style="font-size: 38px; letter-spacing: 2px; color: #fe5303"
+            >￥{{ detaillist.price }}</span
+          >
+        </p>
+        <p
+          style="
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: #fe5303;
+            font-weight: 300;
+            margin-bottom: 44px;
+          "
+        >
+          付款后3天内发货
         </p>
         <div class="layer fl_be">
-          <span>别墅层数:{{detaillist.plies}}</span>
-          <span>结构形式:{{detaillist.structure}}</span>
-          <span>占地面积:{{detaillist.area}}M</span>
-          <span>建筑开间:{{detaillist.build}}</span>
-          <span>建筑进深:{{detaillist.depth}}M</span>
-          <span>销售面积:{{detaillist.sell_area}}M</span>
-          <span>主体参考造价:{{detaillist.cost}}</span>
+          <span>别墅层数:{{ detaillist.plies }}</span>
+          <span>结构形式:{{ detaillist.structure }}</span>
+          <span>占地面积:{{ detaillist.area }}m²</span>
+          <span>建筑开间:{{ detaillist.build }}m</span>
+          <span>建筑进深:{{ detaillist.depth }}m</span>
+          <span>建筑面积:{{ detaillist.sell_area }}m²</span>
+          <span>主体参考造价:{{ detaillist.cost }}</span>
         </div>
-        <div style="display:flex;">
-          <img src="../assets/image/tel.png" alt style="width:28px;height:28px;margin-right:10px" />
-          <div class="tel">: {{detaillist.phone}}</div>
+        <div style="display: flex">
+          <img
+            src="../assets/image/tel.png"
+            alt
+            style="width: 28px; height: 28px; margin-right: 10px"
+          />
+          <div class="tel">: {{ detaillist.phone }}</div>
         </div>
 
         <div class="button fl_be">
-          <button class="poniter" @click="orderPay">立即购买此套图纸</button>
-          <button class="poniter" @click="dialogFormVisible = true">申请按此套图纸施工</button>
+          <button class="poniter" @click="orderPay" style="margin: 0 auto">
+            立即购买此套图纸
+          </button>
         </div>
       </div>
     </div>
@@ -57,52 +84,89 @@
           label-width="780px"
           class="personform"
         >
-          <div class="border">您选的图纸编号为 {{bianhao}}</div>
+          <div class="border">您选的图纸编号为 {{ bianhao }}</div>
           <el-form-item prop="name">
-            <el-input type="text" v-model="ruleForm.name" autocomplete="off" placeholder="*您的姓名"></el-input>
+            <el-input
+              type="text"
+              v-model="ruleForm.name"
+              autocomplete="off"
+              placeholder="*您的姓名"
+            ></el-input>
           </el-form-item>
           <div class="tel fl_be">
             <el-form-item prop="tel">
-              <el-input type="text" v-model="ruleForm.tel" autocomplete="off" placeholder="*您的电话号码"></el-input>
+              <el-input
+                type="text"
+                v-model="ruleForm.tel"
+                autocomplete="off"
+                placeholder="*您的电话号码"
+              ></el-input>
             </el-form-item>
             <el-form-item prop="yzm">
-              <el-input type="text" v-model="ruleForm.yzm" autocomplete="off" placeholder="*请输入验证码"></el-input>
-              <span class="span poniter" @click="time" v-if="tmeValue==60">发送验证码</span>
+              <el-input
+                type="text"
+                v-model="ruleForm.yzm"
+                autocomplete="off"
+                placeholder="*请输入验证码"
+              ></el-input>
+              <span class="span poniter" @click="time" v-if="tmeValue == 60"
+                >发送验证码</span
+              >
               <span class="span poniter" v-else>{{ tmeValue }} s后获取</span>
             </el-form-item>
           </div>
-          <el-button class="ybtn" @click="submitForm('ruleForm')">点击申请</el-button>
+          <el-button class="ybtn" @click="submitForm('ruleForm')"
+            >点击申请</el-button
+          >
         </el-form>
       </el-dialog>
     </div>
 
     <!-- 轮播 -->
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(val,k) in detaillist.photos" :key="k">
-          <img :src="val" alt />
+
+  <div class="swiper-father ">
+      <div class="swiper-container swiper-container1">
+        <div class="swiper-wrapper">
+          <div
+            class="swiper-slide"
+            v-for="(val, k) in detaillist.photos"
+            :key="k"
+            @click="swctich(val)"
+          >
+            <img :src="val" alt />
+          </div>
         </div>
+        <!-- 如果需要导航按钮 -->
       </div>
-      <!-- 如果需要导航按钮 -->
-      <span class="swiper-button-prev" style="background: transparent;"></span>
-      <span class="swiper-button-next" style="background: transparent;"></span>
-    </div>
+      <span
+          class="swiper-button-prev"
+          style="background: transparent"
+          slot="button-prev"
+        ></span>
+        <span
+          class="swiper-button-next"
+          style="background: transparent; right: 8px"
+          slot="button-next"
+        ></span>
+  </div>
+
     <!--  -->
     <div class="fengeline"></div>
     <div class="explain">图纸介绍</div>
-    <p
-      class="explain2"
-    >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
-    <div class="fengeline" style="margin-top:12px"></div>
-    <div v-for="(val,k) in detaillist.imgs" :key="k" class="detailpic">
+    <p class="explain2">{{ detaillist.describe }}</p>
+    <div class="fengeline" style="margin-top: 12px;margin-bottom:20px"></div>
+    <!-- <div v-for="(val,k) in detaillist.imgs" :key="k" class="detailpic">
       <img :src="val" />
-    </div>
+    </div> -->
+    <div v-html="detaillist.imgs" class="detailpic"></div>
   </div>
 </template>
 
 <script>
 import Swiper from 'swiper'
 import request from '@/request.js'
+import login from '@/components/login.vue'
+import register from '@/components/register.vue'
 import { mapState } from 'vuex'
 export default {
   data() {
@@ -137,17 +201,21 @@ export default {
     ...mapState({
       token: (state) => state.token,
       userInfor: (state) => state.userInfor,
+      isShowlogin: (state) => state.isShowlogin,
+      isShowregister: (state) => state.isShowregister,
+      isModule: (state) => state.isModule,
     }),
   },
   watch: {},
   created() {
+    this.$store.commit('ShowModule', true)
     this.listdata = this.pic.slice(0, 2)
     this.handdetail()
   },
   mounted() {
     const mySwiper = new Swiper('.swiper-container', {
       observer: true,
-      slidesPerView: 3,
+      slidesPerView: 4,
       autoplay: {
         delay: 3000,
         disableOnInteraction: false, // 手动切换之后继续自动轮播
@@ -163,6 +231,10 @@ export default {
     })
   },
   methods: {
+    swctich(item) {
+      console.log(item)
+      this.detaillist.cover = item
+    },
     // 图纸详情
     handdetail() {
       if (!this.token) {
@@ -171,6 +243,7 @@ export default {
             id: this.$route.query.id,
           })
           .then((res) => {
+            console.log(res, '88778')
             this.detaillist = res.data
             this.bianhao = this.detaillist.number.toUpperCase()
             console.log(this.detaillist.is_collect)
@@ -230,9 +303,10 @@ export default {
     //立即申请
     submitForm(formName) {
       if (!this.token) {
-        this.$router.push({
-          path: '/login',
-        })
+        // this.$router.push({
+        //   path: '/login',
+        // })
+        this.$store.commit('ShowLogin', true)
         return false
       }
       this.$refs[formName].validate((valid) => {
@@ -276,6 +350,8 @@ export default {
         query: {
           id: this.detaillist.id,
           price: this.detaillist.price,
+          two_price: this.detaillist.two_price,
+          three_price: this.detaillist.three_price,
         },
       })
     },
@@ -283,9 +359,10 @@ export default {
     // 收藏
     Collect(num) {
       if (!this.token) {
-        this.$router.push({
-          path: '/login',
-        })
+        // this.$router.push({
+        //   path: '/login',
+        // })
+        this.$store.commit('ShowLogin', true)
         return false
       }
       request
@@ -315,17 +392,20 @@ export default {
     //取消收藏
     qxcollect(idx) {
       if (!this.token) {
-        this.$router.push({
-          path: '/login',
-        })
+        // this.$router.push({
+        //   path: '/login',
+        // })
+        this.$store.commit('ShowLogin', true)
         return false
       }
       request
         .getCancelcollect({
           uid: this.userInfor.member_id,
           c_id: idx,
+          type: 1,
         })
         .then((res) => {
+          this.handdetail()
           this.$message({
             showClose: true,
             message: '取消成功',
@@ -358,37 +438,41 @@ export default {
 <style scoped>
 .swiper,
 .swiper-container {
-  width: 681px;
+  width: 675px;
   overflow: hidden;
-  margin: 10px 0 43px 0;
+  /* margin: 50px 0 43px 0; */
   position: relative;
   display: flex;
-  padding-left: 30px;
+  padding-left: 17px;
   box-sizing: border-box;
-  height: 136px;
+  height: 94px;
 }
 .swiper-wrapper {
   z-index: -1;
-  width: 201px;
 }
+.swiper-father {
+    width: 675px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 100px;
+    height: auto;
+  }
 .swiper-button-prev:after {
   color: #ffbf22;
+  font-size: 80px;
 }
 .swiper-button-next:after {
   color: #ffbf22;
+  font-size: 80px;
 }
 .swiper-button-prev.swiper-button-disabled,
 .swiper-button-next.swiper-button-disabled {
   opacity: 1;
 }
-.swiper-slide {
-  margin-left: 14px;
-  width: 202px !important;
-}
 .swiper-slide img {
-  width: 202px;
-  height: 136px;
-  margin-right: 14px;
+  width: 136px;
+  height: 94px;
+  /* margin-right: 14px; */
 }
 .builddetail {
   margin-top: 22px;
@@ -402,12 +486,16 @@ export default {
   line-height: 32px;
   padding: 14px 0;
   padding-left: 52px;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
   margin-bottom: 46px;
 }
 .build_img {
-  height: 520px;
+  height: 478px;
+  display: flex;
+  position: relative;
+  /* align-items: flex-end; */
+  /* margin-top: -154px; */
 }
 .build_img img {
   /* min-width: 686px; */
@@ -416,36 +504,48 @@ export default {
 .build_img h5 {
   font: 400 26px/36px 'Adobe Heiti Std';
   color: #313131;
-  width: 393px;
+  flex: 1;
 }
 .build_img .build_img_t span {
   display: block;
   width: 72px;
-  height: 31px;
-  line-height: 31px;
+  height: 30px;
+  line-height: 30px;
   background: #ffbf22;
   opacity: 0.98;
   border-radius: 16px;
   color: #fff;
-  margin-left: 18px;
   text-align: center;
+  font-size: 16px;
+  position: absolute;
+  bottom: 14px;
+  right: 0;
 }
 .build_img_r {
+  position: absolute;
+  right: 33px;
+  top: 0;
   background: #e8e8e8;
   text-align: left;
-  height: 520px;
+  height: 678px;
   box-sizing: border-box;
-  padding: 10px 0;
+  padding: 24px 0;
   padding-right: 14px;
   padding-left: 17px;
   box-sizing: border-box;
-  width: 514px;
+  padding-bottom: 0;
+  width: 40%;
+  padding-left: 25px;
+  border: 1px solid #a4a4a4;
 }
 .build_img_t {
+  position: relative;
   align-items: normal;
-  border-bottom: 1px solid #000;
-  padding-bottom: 12px;
-  margin-bottom: 113px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 50px;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #ccc;
+  margin-right: 15px;
 }
 .build_img_r p {
   font: 400 20px/26px 'Adobe Heiti Std';
@@ -464,12 +564,12 @@ export default {
   font: 400 16px/21px 'Adobe Heiti Std';
   color: #585858;
   opacity: 0.98;
-  width: 33.3%;
-  margin-bottom: 34px;
+  margin-bottom: 38px;
+  margin-right: 28px;
 }
 .tel {
   font: 400 26px/34px 'Adobe Heiti Std';
-  color: #000000;
+  color: #333000;
   margin-bottom: 25px;
 }
 .build_img_r button {
@@ -479,7 +579,7 @@ export default {
   border-radius: 10px;
   outline: none;
   border: 0;
-  font: 21px/28px 'Adobe Heiti Std';
+  font: 18px/28px 'Adobe Heiti Std';
   color: #fff;
 }
 .explain {
@@ -561,15 +661,16 @@ export default {
   color: #ff151b;
   font-size: 38px;
 }
-.detailpic img {
+/* .detailpic img {
   width: 100%;
   height: 100%;
-}
+} */
 .fengeline {
   border: 1px solid #b5b5b5;
   height: 4px;
   width: 100%;
   border-left-color: transparent;
   border-right-color: transparent;
+  margin-top: 80px;
 }
 </style>

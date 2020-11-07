@@ -152,6 +152,14 @@ const routes = [
       title:'支付成功',
     },
     component: (resolve) => require(['@/pages/paysucess'], resolve)
+  },
+  {
+    path:'/Display',
+    name:'Display',
+    meta:{
+      title:'建房百科专题',
+    },
+    component: (resolve) => require(['@/pages/Display'], resolve)
   }
 ]
 

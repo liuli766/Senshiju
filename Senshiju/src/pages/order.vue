@@ -2,25 +2,24 @@
   <!-- 订单 -->
   <div>
     <!-- 用户信息 -->
-    <div class="yellobg">
+    <div class="yellobg" v-if="token">
       <div class="userintro">
-        <img :src="headimg" v-if="headimg!==null" alt />
-        <img :src="userInfor.photo" v-if="headimg==null" alt />
+        <img :src="headimg" v-if="headimg !== null" alt />
+        <img :src="userInfor.photo" v-if="headimg == null" alt />
         <div class="username fl_center">
-          <span v-if="token">{{userInfor.nickname}}</span>
+          <span v-if="token">{{ userInfor.nickname }}</span>
           <span>普通用户</span>
         </div>
       </div>
     </div>
     <main>
       <nav class="nav">
-        <router-link to="/">首页</router-link>>
-        <span>用户中心</span>>
-        <span v-show="chosed==0" class="active">我的订单</span>
-        <span v-show="chosed==1" class="active">个人资料</span>
-        <span v-show="chosed==2" class="active">收货地址</span>
-        <span v-show="chosed==3" class="active">图纸收藏</span>
-        <span v-show="chosed==4" class="active">文章收藏</span>
+        <router-link to="/">首页</router-link>> <span>用户中心</span>>
+        <span v-show="chosed == 0" class="active">我的订单</span>
+        <span v-show="chosed == 1" class="active">个人资料</span>
+        <span v-show="chosed == 2" class="active">收货地址</span>
+        <span v-show="chosed == 3" class="active">图纸收藏</span>
+        <span v-show="chosed == 4" class="active">文章收藏</span>
       </nav>
       <!-- div -->
       <div class="order">
@@ -29,13 +28,13 @@
           <div class="usercenter">
             <h6>用户中心</h6>
             <div
-              v-for="(item,index) in chosedlist"
+              v-for="(item, index) in chosedlist"
               :key="index"
-              :class="{active:chosed==index}"
+              :class="{ active: chosed == index }"
               @click="hanchosed(index, typeid)"
             >
               <span v-html="item.i"></span>
-              {{item.name}}
+              {{ item.name }}
             </div>
           </div>
           <div class="kfcenter">
@@ -51,28 +50,39 @@
           </div>
           <div class="kferwm">
             <h6>客服热线</h6>
-            <img src='../assets/image/kefu.png' alt />
+            <img src="../assets/image/vx.svg" alt style="background: #fff" />
           </div>
         </div>
 
         <!-- 订单列表 -->
-        <div class="orderlist" v-show="chosed==0">
+        <div class="orderlist" v-show="chosed == 0">
           <h6>订单列表</h6>
           <div class="ordernav">
-            <span v-for="(item,index) in ordernavlist" :key="index">{{item}}</span>
+            <span
+              v-for="(item, index) in ordernavlist"
+              :key="index"
+              class="font16"
+              >{{ item }}</span
+            >
           </div>
-          <div v-if="ordercotentlist.length==0">没有订单</div>
-          <div v-for="(item,i) in ordercotentlist" :key="'1'+i" class="ordercont fl_ar" v-else>
-            <span>{{item.order_num}}</span>
-            <span>{{item.title}}</span>
-            <span>{{item.price}}</span>
-            <span>{{item.address}}</span>
-            <span>{{item.pay_time}}</span>
-            <span>{{item.status}}</span>
+          <div v-if="ordercotentlist.length == 0">没有订单</div>
+          <div v-else style="height:725px;overflow:auto">
+            <div
+              v-for="(item, i) in ordercotentlist"
+              :key="'1' + i"
+              class="ordercont fl_ar"
+            >
+              <span>{{ item.order_num }}</span>
+              <span>{{ item.title }}</span>
+              <span>{{ item.price }}</span>
+              <span>{{ item.address }}</span>
+              <span>{{ item.pay_time }}</span>
+              <span>{{ item.status }}</span>
+            </div>
           </div>
         </div>
         <!-- 个人资料 -->
-        <div v-show="chosed==1" class="orderlist">
+        <div v-show="chosed == 1" class="orderlist">
           <h6>个人信息</h6>
           <div class="personinfo">
             <div class="fl_be">
@@ -83,12 +93,16 @@
                 action="http://villa.jisapp.cn/index/User/up_image"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
-                :data="{uid:userInfor.member_id}"
+                :data="{ uid: userInfor.member_id }"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="headimg!==null" :src="headimg" class="photo" />
-                <img v-if="headimg==null" :src="userInfor.photo" class="photo" />
-                <i class="el-icon-arrow-right" style="margin-top: 20px;"></i>
+                <img v-if="headimg !== null" :src="headimg" class="photo" />
+                <img
+                  v-if="headimg == null"
+                  :src="userInfor.photo"
+                  class="photo"
+                />
+                <i class="el-icon-arrow-right" style="margin-top: 20px"></i>
               </el-upload>
             </div>
 
@@ -96,7 +110,11 @@
               <span>昵称</span>
               <div>
                 <span>
-                  <input type="text" v-model="userInfor.nickname" v-if="token" />
+                  <input
+                    type="text"
+                    v-model="userInfor.nickname"
+                    v-if="token"
+                  />
                 </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
@@ -106,7 +124,11 @@
               <div>
                 <span>
                   已绑定：
-                  <input type="text" v-model="userInfor.phone_num" v-if="token" />
+                  <input
+                    type="text"
+                    v-model="userInfor.phone_num"
+                    v-if="token"
+                  />
                 </span>
                 <i class="el-icon-arrow-right"></i>
               </div>
@@ -136,25 +158,35 @@
               <span>设置密码</span>
               <i class="el-icon-close poniter" @click="goclose"></i>
             </h5>
-            <input type="text" :value="userInfor.phone_num" class="ip" v-if="token" />
+            <input
+              type="text"
+              :value="userInfor.phone_num"
+              class="ip"
+              v-if="token"
+            />
             <div class="rel">
               <input type="text" class="ip" placeholder="请输入4位验证码" />
-              <div class="pos poniter" v-if="tmeValue==60" @click="time">
-                <div class="line"></div>获取验证码
+              <div class="pos poniter" v-if="tmeValue == 60" @click="getauth">
+                <div class="line"></div>
+                获取验证码
               </div>
               <div class="pos poniter" v-else>
                 <div class="line"></div>
                 {{ tmeValue }} s 后获取
               </div>
             </div>
-            <input type="text" placeholder="请输入新密码（8+20位，数字/字母/符号" class="ip" />
-            <input type="text" placeholder="再次确认新密码" class="ip" />
+            <input
+              type="password"
+              placeholder="请输入新密码（8+20位，数字/字母/符号"
+              class="ip"
+            />
+            <input type="password" placeholder="再次确认新密码" class="ip" />
             <div class="btn" @click="sure">确定</div>
           </div>
         </div>
 
         <!-- 收获地址 -->
-        <div v-show="chosed==2" class="orderlist">
+        <div v-show="chosed == 2" class="orderlist">
           <h6>收货地址</h6>
           <div class="address">
             <el-form
@@ -170,23 +202,29 @@
                   <select v-model="prov">
                     <option
                       :value="item.text"
-                      v-for="(item,pro) in provunce"
+                      v-for="(item, pro) in provunce"
                       :key="pro"
-                    >{{item.text}}</option>
+                    >
+                      {{ item.text }}
+                    </option>
                   </select>
                   <select v-model="city">
                     <option
                       :value="item.text"
-                      v-for="(item,cid) in cityArr"
+                      v-for="(item, cid) in cityArr"
                       :key="cid"
-                    >{{item.text}}</option>
+                    >
+                      {{ item.text }}
+                    </option>
                   </select>
                   <select v-model="district">
                     <option
                       :value="item.text"
-                      v-for="(item,pro) in districtArr"
+                      v-for="(item, pro) in districtArr"
                       :key="pro"
-                    >{{item.text}}</option>
+                    >
+                      {{ item.text }}
+                    </option>
                   </select>
                 </div>
               </el-form-item>
@@ -206,8 +244,15 @@
                 设置为默认收货地址
               </div>
               <el-form-item>
-                <el-button class="btn" v-if="!pulicid" @click="submitForm('ruleForm2')">新增</el-button>
-                <el-button class="btn" v-else @click="upd('ruleForm2')">提交</el-button>
+                <el-button
+                  class="btn"
+                  v-if="!pulicid"
+                  @click="submitForm('ruleForm2')"
+                  >新增</el-button
+                >
+                <el-button class="btn" v-else @click="upd('ruleForm2')"
+                  >提交</el-button
+                >
               </el-form-item>
             </el-form>
 
@@ -219,68 +264,85 @@
                 <span>手机/电话</span>
                 <span>操作</span>
               </div>
-              <div style="height: 118px;overflow: auto;">
-                <div class="ordercont fl_ar" v-for="(val,k) in addrlist" :key="k">
-                  <span>{{val.name}}</span>
-                  <span>{{val.province }}{{ val.city}} {{val.district}}</span>
-                  <span>{{val.address}}</span>
-                  <span>{{val.phone}}</span>
+              <div class="dbox">
+                <div
+                  class="ordercont fl_ar orderitem"
+                  v-for="(val, k) in addrlist"
+                  :key="k"
+                >
+                  <span>{{ val.name }}</span>
+                  <span
+                    >{{ val.province }}{{ val.city }} {{ val.district }}</span
+                  >
+                  <span>{{ val.address }}</span>
+                  <span>{{ val.phone }}</span>
                   <span>
-                    <span class="poi" @click="xiugai(val.id,k)">修改</span>|
+                    <span class="poi" @click="xiugai(val.id, k)">修改</span>|
                     <span @click="handdel(val.id)" class="poi">删除</span>
                   </span>
-                  <span v-if="val.is_default==0"></span>
-                  <span class="defut" @click="defut(val.id)" v-else>默认地址</span>
+                  <span v-if="val.is_default == 0"></span>
+                  <span class="defut" @click="defut(val.id)" v-else
+                    >默认地址</span
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
         <!-- 图纸收藏 -->
-        <div class="orderlist" v-show="chosed==3">
+        <div class="orderlist" v-show="chosed == 3">
           <h6>收藏的图纸</h6>
-          <div v-if="CollnectList.length==0">没有收藏的图纸</div>
+          <div v-if="CollnectList.length == 0">没有收藏的图纸</div>
           <div
             class="bodetail"
-            v-for="(item,k) in CollnectList"
+            v-for="(item, k) in CollnectList"
             :key="k"
             @click="gopicdetail(item)"
           >
             <div class="coll flx poniter">
               <img :src="item.cover" alt />
               <div class="center">
-                <p class="pppp">{{item.title}}</p>
+                <p class="pppp">{{ item.title }}</p>
                 <div class="fl_be">
-                  <span>￥{{item.cost}}</span>
-                  <span>{{item.add_time}}</span>
+                  <span>￥{{ item.cost }}</span>
+                  <span>{{ item.add_time }}</span>
                 </div>
               </div>
               <div
                 class="ycoll"
-                v-if="item.is_collect==1"
-                @click.stop="qxcollect(item.collect_id)"
-              >已收藏</div>
+                v-if="item.is_collect == 1"
+                @click.stop="qxcollect(item.object_id, 1)"
+              >
+                已收藏
+              </div>
             </div>
           </div>
         </div>
         <!-- 文章收藏 -->
-        <div class="orderlist" v-show="chosed==4">
+        <div class="orderlist" v-show="chosed == 4">
           <h6>收藏的文章</h6>
-          <div v-if="articleList.length==0">没有收藏的文章</div>
-          <div class="bodetail" v-for="(item,k) in articleList" :key="k" @click="goartic(item)">
+          <div v-if="articleList.length == 0">没有收藏的文章</div>
+          <div
+            class="bodetail"
+            v-for="(item, k) in articleList"
+            :key="k"
+            @click="goartic(item)"
+          >
             <div class="coll flx poniter">
               <img :src="item.cover" alt />
               <div class="center">
-                <p class="pppp">{{item.title}}</p>
+                <p class="pppp">{{ item.title }}</p>
                 <div class="fl_be">
-                  <span>{{item.add_time}}</span>
+                  <span>{{ item.add_time }}</span>
                 </div>
               </div>
               <div
                 class="ycoll"
-                v-if="item.is_collect==1"
-                @click.stop="qxcollect(item.collect_id)"
-              >已收藏</div>
+                v-if="item.is_collect == 1"
+                @click.stop="qxcollect(item.object_id, 2)"
+              >
+                已收藏
+              </div>
             </div>
           </div>
         </div>
@@ -332,11 +394,11 @@ export default {
           name: '收货地址',
         },
         {
-          i: '<i class="el-icon-location-outline"></i>',
+          i: '<i class="el-icon-picture-outline"></i>',
           name: '图纸收藏',
         },
         {
-          i: '<i class="el-icon-location-outline"></i>',
+          i: '<i class="el-icon-collection"></i>',
           name: '文章收藏',
         },
       ],
@@ -371,6 +433,8 @@ export default {
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
       headimg: (state) => state.headimg,
+      isShowlogin: (state) => state.isShowlogin,
+      isShowregister: (state) => state.isShowregister,
     }),
   },
   watch: {
@@ -387,9 +451,7 @@ export default {
   },
   created() {
     if (!this.token) {
-      this.$router.push({
-        path: '/login',
-      })
+      this.$store.commit('ShowLogin', true)
       return false
     }
     this.getshop()
@@ -433,40 +495,53 @@ export default {
       this.setpedflag = false
     },
     time() {
-      if (this.userInfor.phone_num !== '') {
-        let ph = /^1[3|5|7|8|][0-9]{9}$/
-        if (!ph.test(this.userInfor.phone_num)) {
-          this.$message({
-            showClose: true,
-            message: '手机号格式不正确',
-            type: 'warning',
+      //倒计时
+      this.tmeValue = this.tmeValue - 1
+      this.flag = 1
+      if (this.tmeValue <= 0) {
+        this.tmeValue = 60
+        this.flag = 0
+        return ''
+      } else {
+        setTimeout(() => {
+          this.time()
+        }, 1000)
+      }
+    },
+    getauth() {
+      if (/^1[34578]\d{9}$/.test(this.userInfor.phone_num)) {
+        request
+          .getCode({
+            phone_num: this.userInfor.phone_num,
           })
-        } else {
-          let phone_num = this.userInfor.phone_num
-          request
-            .getCode({ phone_num })
-            .then((res) => {
-              console.log(res, '获取验证码')
-            })
-            .catch((e) => {})
-            .finally(() => {})
-          //倒计时
-          this.tmeValue = this.tmeValue - 1
-          this.flag = 1
-          if (this.tmeValue <= 0) {
-            this.tmeValue = 60
-            this.flag = 0
-            return ''
-          } else {
-            setTimeout(() => {
+          .then((res) => {
+            if (res.code == 0) {
+              this.$message({
+                showClose: true,
+                message: '发送成功',
+                type: 'success',
+              })
               this.time()
-            }, 1000)
-          }
-        }
+            } else {
+              this.$message({
+                showClose: true,
+                message: '发送失败',
+                type: 'error',
+              })
+            }
+          })
+          .catch(() => {
+            this.$message({
+              showClose: true,
+              message: '发送失败',
+              type: 'error',
+            })
+          })
+          .finally(() => {})
       } else {
         this.$message({
           showClose: true,
-          message: '手机号不能为空',
+          message: '手机格式不正确',
           type: 'error',
         })
       }
@@ -475,9 +550,7 @@ export default {
     //修改个人资料
     preser() {
       if (!this.token) {
-        this.$router.push({
-          path: '/login',
-        })
+        this.$store.commit('ShowLogin', true)
         return false
       } else {
         request
@@ -667,11 +740,12 @@ export default {
         .finally(() => {})
     },
     //取消收藏
-    qxcollect(idx) {
+    qxcollect(idx, num) {
       request
         .getCancelcollect({
           uid: this.userInfor.member_id,
           c_id: idx,
+          type: num,
         })
         .then((res) => {
           if (this.chosed == 3) {
@@ -704,9 +778,7 @@ export default {
         message: '退出成功',
         type: 'success',
       })
-      this.$router.push({
-        path: '/login',
-      })
+      this.$store.commit('ShowLogin', true)
     },
     //
     goartic(item) {
@@ -1029,7 +1101,7 @@ nav {
 .orderlist {
   width: 906px;
   height: 49px;
-  line-height: 49px;
+  line-height: 48px;
   position: relative;
 }
 .setpwd {
@@ -1084,9 +1156,21 @@ nav {
   display: block;
   width: 145px;
   border-right: 1px solid #f5f5f5;
+  line-height: 42px;
+}
+.orderitem {
+  height: 118px;
+  border-bottom: 1px solid #f5f5f5;
+  line-height: 118px;
 }
 .centerbox {
   margin-right: 16px;
+}
+.dbox {
+  margin: 0 30px;
+  border: 1px solid #f5f5f5;
+  height: 326px;
+  overflow: auto;
 }
 .orderlist h6 {
   color: #434343;
@@ -1100,11 +1184,14 @@ nav {
   display: flex;
   justify-content: space-around;
   /* padding: 16px 0; */
+  background: #ebecf0;
+  margin: 0 30px;
 }
 .ordernav > span {
   display: block;
   width: 120px;
-  border-right: 1px solid #f5f5f5;
+  color: #444;
+  text-align: left;
 }
 .ordernav > div:nth-of-type(4) {
   padding: 0 96px;
@@ -1176,6 +1263,7 @@ form .btn {
   font-size: 18px;
   color: rgba(255, 15, 15, 1);
   cursor: pointer;
+  line-height: 48px;
 }
 .coll {
   background: #fff;

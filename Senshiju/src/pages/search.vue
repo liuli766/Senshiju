@@ -5,7 +5,7 @@
         <div class="hotlist_info">
           <img :src="info.cover" alt />
           <div class="lili">
-            <h5 class="bold">{{info.title}}</h5>
+            <h5 class="bold one-wrap">{{info.title}}</h5>
             <div class="font14 color98">{{info.style}} | {{info.area}} | {{info.cost}}</div>
             <div class="font14 color98 quotations two-wrap">{{info.intro}}</div>
             <div class="font20 theme price">￥{{info.price}}</div>
@@ -60,15 +60,26 @@ main{
   width: 1200px;
   margin: 10px auto;
   display: flex;
+  flex-wrap: wrap;
 }
 main>div{
-  margin-right: 15px;
+  margin-right: 8px;
+}
+.hotlist{
+  width: 30%;
+    margin-left: 2%;
+    margin-bottom: 35px;
+    float: left;
+    border-radius: 6px;
+    -webkit-box-shadow: 7px 5px 30px #f2f0f0;
+    box-shadow: 7px 5px 30px #f2f0f0;
+    overflow: hidden;
 }
 .hotlist_info {
-  width: 392px;
-  background: #fff;
-  margin-bottom: 30px;
-  height: 400px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 30px;
+    height: 428px;
 }
 .hotlist_info img {
   width: 100%;
@@ -76,7 +87,7 @@ main>div{
 }
 .bold {
   font: bold 22px/1 'Microsoft Ya Hei';
-  color: #000;
+  color: #333;
   margin: 20px 0;
   margin-top: 0;
   padding-top: 20px;
@@ -88,8 +99,6 @@ main>div{
 .quotations {
   margin-top: 20px;
   margin: 20px 0 0 20px;
-}
-.lili {
-  background: #f6f6f6;
+  line-height: 26px;
 }
 </style>

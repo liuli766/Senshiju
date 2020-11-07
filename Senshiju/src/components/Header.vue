@@ -1,42 +1,93 @@
 <template>
   <div class="nav">
     <nav class="header">
-      <img src="../assets/image/logo.png" alt />
+      <img
+        src="../assets/image/logo.png"
+        alt
+        style="width: 60px; height: 70px"
+        @click="handHome"
+      />
       <ul>
         <li
           class="poniter"
-          v-for="(item,index) in navList"
+          v-for="(item, index) in navList"
           :key="index"
-          @click="changeNav(item,index,$event)"
-          :class="[{li4:item.name==='建房百科'},[[hedeid==null?'bgcolor':[hedeid==index?'header-active':'']],]]"
+          @click="changeNav(item, index, $event)"
+          :class="[
+            { li4: item.name === '建房百科' },
+            [
+              [
+                hedeid == null
+                  ? 'bgcolor'
+                  : [hedeid == index ? 'header-active' : ''],
+              ],
+            ],
+          ]"
         >
-          {{item.name}}
+          {{ item.name }}
           <div class="dropdown">
-            <li v-for="(item,index) in meau" @click="handitem(index)" :key="index">{{item}}</li>
+            <li
+              v-for="(item, index) in meau"
+              @click="handitem(index)"
+              :key="index"
+            >
+              {{ item }}
+            </li>
           </div>
         </li>
       </ul>
       <div class="head poniter regieandlogin" v-if="token">
-        <img v-if="headimg!==null" :src="headimg" class="photo"  @click="goperson"/>
-        <img v-if="headimg==null" :src="userInfor.photo" class="photo"  @click="goperson"/>
+        <img
+          v-if="headimg !== null"
+          :src="headimg"
+          class="photo"
+          @click="goperson"
+        />
+        <img
+          v-if="headimg == null"
+          :src="userInfor.photo"
+          class="photo"
+          @click="goperson"
+        />
       </div>
       <div class="regieandlogin poniter" v-else>
-        <router-link to="/register">注册</router-link>|
-        <router-link to="/login">登录</router-link>
+        <span @click="handzhuce">注册</span>|
+        <span @click="hanlogin">登录</span>
+        <!-- <router-link to="/register">注册</router-link>|
+        <router-link to="/login">注册</router-link> -->
       </div>
 
       <div class="serch">
-        <input type="text" placeholder="请输入关键词" @keyup.enter="serch" v-model="search" @input="serch"/>
-        <img src="../assets/image/fixed/serch.png" alt class="serchimg" @click="serch" />
+        <input
+          type="text"
+          placeholder="请输入关键词"
+          @keyup.enter="serch"
+          v-model="search"
+          @input="serch"
+        />
+        <img
+          src="../assets/image/fixed/serch.png"
+          alt
+          class="serchimg"
+          @click="serch"
+        />
       </div>
     </nav>
+    <login v-if="isShowlogin"/>
+    <register v-if="isShowregister" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import request from '@/request.js'
+import login from '@/components/login.vue'
+import register from '@/components/register.vue'
 export default {
+   components: {
+    login,
+    register
+  },
   data() {
     return {
       li4: 'li4',
@@ -88,29 +139,43 @@ export default {
       userInfor: (state) => state.userInfor,
       serchlist: (state) => state.serchlist,
       headimg: (state) => state.headimg,
-      isfooter:(state) =>state.isfooter
+      isfooter: (state) => state.isfooter,
+      isShowlogin: (state) => state.isShowlogin,
+      isShowregister: (state) => state.isShowregister,
+
     }),
   },
   watch: {},
   created() {
-    console.log(this.hedeid)
-    if(this.$route.path=='/'){
-       this.$store.commit('changNav',true)
+    console.log(this.headimg, '头像')
+    if (this.$route.path == '/') {
+      this.$store.commit('changNav', true)
     }
   },
   methods: {
+    handzhuce(){
+        this.$store.commit('ShowRegister',true)
+    },
+    hanlogin(){
+       this.$store.commit('ShowLogin',true)
+    },
     // 点击导航栏
     changeNav(nav, index) {
       sessionStorage.setItem('idnum', index) // 保存下标
       this.$store.commit('headnav', parseInt(sessionStorage.getItem('idnum')))
       this.$router.push({ path: nav.url })
-      if(nav.url=='/'){
-       this.$store.commit('changNav',true)
-       console.log('true')
-    }else{
-      this.$store.commit('changNav',false)
-       console.log('false')
-    }
+      if (nav.url == '/') {
+        this.$store.commit('changNav', true)
+        console.log('true')
+      } else {
+        this.$store.commit('changNav', false)
+        console.log('false')
+      }
+    },
+    handHome() {
+      this.$router.push({
+        path: '/',
+      })
     },
     serch() {
       request
@@ -160,25 +225,26 @@ nav ul li {
   position: absolute;
   background: url('../assets/image/jfrz.png');
   background-size: 100% 100%;
-  width: 300px;
+  width: 200px;
   top: 38px;
-  right: -70px;
+  right: -50px;
   font-size: 24px;
-  height: 533px;
+  height: 300px;
   font-family: Microsoft YaHei;
   color: rgba(0, 0, 0, 1);
-  line-height: 40px;
+  line-height: 8px;
   display: none;
   z-index: 999;
 }
 .dropdown li:nth-of-type(1) {
-  margin-top: 94px;
+  margin-top: 28px;
 }
 .dropdown li {
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.3s;
-  margin: 0 47px 10px 47px;
+  margin: 0 20px 10px 20px;
+  font-size: 16px;
 }
 .dropdown li:hover {
   color: #f5c134;
@@ -195,6 +261,7 @@ nav {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  margin-top: 14px;
 }
 nav ul {
   width: 912px;
@@ -202,19 +269,18 @@ nav ul {
   align-items: center;
   justify-content: space-between;
   margin: 0 0 0 30px;
-  font-size: 24px;
+  font-size: 20px;
   position: relative;
-}
-nav img {
-  margin-top: 14px;
 }
 .serch {
   position: relative;
 }
 .serchimg {
   position: absolute;
-  top: -8px;
-  right: 9px;
+  top: 5px;
+  right: 18px;
+  width: 24px;
+  height: 24px;
 }
 .serch input {
   box-sizing: border-box;

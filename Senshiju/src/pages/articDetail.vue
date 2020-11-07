@@ -5,7 +5,7 @@
         <div class="ing">
           当前位置：
           <router-link to="/">首页</router-link>
-          > 建房资讯 > {{next}}
+          > 建房资讯 > {{this.$route.query.title}}
         </div>
         <div class="detail">
           <h6>
@@ -13,6 +13,7 @@
             <span
               class="poniter span2"
               v-if="detaillist.is_collect==true"
+              @click="qxcollect(detaillist.id)"
             >已收藏</span>
             <span
               class="poniter span1"
@@ -30,8 +31,8 @@
           <p v-html="detaillist.content"></p>
           <img :src="detaillist.cover" alt />
           <div class="fl_be poniter">
-            <span class="one-wrap" @click="gonext(prev_id)">上一篇:{{prev}}</span>
-            <span class="one-wrap" @click="goprev(next_id)">下一篇:{{next}}</span>
+            <span class="one-wrap" @click="gonext(prev_id,prev)">上一篇:{{prev}}</span>
+            <span class="one-wrap" @click="goprev(next_id,next)">下一篇:{{next}}</span>
           </div>
         </div>
       </div>
@@ -45,17 +46,11 @@
                 <p>{{item.title}}</p>
               </div>
             </div>
-            <div
-              class="p wrap"
-              v-if="prev!=='无'"
-              @click="gonext(prev_id)"
-            >{{item.id}}.{{prev}}</div>
-            <div
-              class="p wrap"
-              v-if="next!=='无'"
-              @click="gonext(next_id)"
-            >{{item.id}}.{{next}}</div>
           </div>
+          <div
+              class="p one-wrap"
+              v-for="(c,v) in ListItem" :key="v+'4'" @click="goself(c.id)"
+            >{{c.id}}.{{c.title}}</div>
         </div>
         <div class="hotnavbox">
           <span
@@ -79,7 +74,7 @@
                 {{item.moods}}
               </span>
             </div>
-            <p class="intro two-wrap">{{item.intro}}</p>
+            <p class="intro two-wrap">{{item.title}}</p>
           </div>
         </div>
       </div>
@@ -106,6 +101,7 @@ export default {
       prev: '',
       prev_id: '',
       newarr: [],
+      ListItem:[]
     }
   },
   computed: {
@@ -113,6 +109,8 @@ export default {
       token: (state) => state.token,
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
+      isShowlogin: (state) => state.isShowlogin,
+      isShowregister: (state) => state.isShowregister,
     }),
   },
   created() {
@@ -164,9 +162,7 @@ export default {
       // 收藏
 
       if (!this.token) {
-        this.$router.push({
-          path: '/login',
-        })
+        this.$store.commit('ShowLogin',true)
         return false
       }
       request
@@ -187,6 +183,31 @@ export default {
           this.$message({
             showClose: true,
             message: '收藏失败',
+            type: 'error',
+          })
+        })
+        .finally(() => {})
+    },
+    //取消收藏
+    qxcollect(idx) {
+      request
+        .getCancelcollect({
+          uid: this.userInfor.member_id,
+          c_id: idx,
+          type:2
+        })
+        .then((res) => {
+          this.getdetail()
+          this.$message({
+            showClose: true,
+            message: '取消成功',
+            type: 'success',
+          })
+        })
+        .catch((e) => {
+          this.$message({
+            showClose: true,
+            message: '取消失败',
             type: 'error',
           })
         })
@@ -227,6 +248,7 @@ export default {
         .then((res) => {
           console.log(res, '资讯')
           this.newarr = res.data.slice(0, 1)
+          this.ListItem=res.data.reverse()
         })
         .catch((e) => {})
         .finally(() => {})
@@ -242,7 +264,7 @@ export default {
         },
       })
     },
-    gonext(id) {
+    gonext(id,val) {
       //上一篇 文章详情
       console.log(id)
       if(id!==''){
@@ -250,19 +272,21 @@ export default {
           path: '/articDetail',
           query: {
             id: id,
+            title:val
           },
         })
         this.getdetail(id)
       }
        
     },
-    goprev(id) {
+    goprev(id,val) {
       //下一篇 文章详情
       if(id!==''){
           this.$router.push({
           path: '/articDetail',
           query: {
             id: id,
+            title:val
           },
         })
         this.getdetail(id)
@@ -292,12 +316,13 @@ export default {
 }
 .hotnavbox .intro {
   color: #4b4b4b;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 28px;
+  border-bottom: 1px dashed #B5B5B5;
 }
 .hotnav {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 30px;
   color: #3a3a3a;
   padding: 4px 23px;
@@ -347,9 +372,10 @@ export default {
 .detail h6 {
   font-weight: bold;
   font-size: 24px;
-  line-height: 1;
+  line-height: 2;
   color: #565656;
   margin: 35px 0 45px 0;
+  text-align: center;
 }
 .hotcontent img {
   width: 298px;
@@ -430,16 +456,18 @@ export default {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
   padding: 12px 3px 8px;
+  box-sizing: border-box;
 }
 .newinfo .info .block p {
-  font: 400 14px/23px 'Microsoft YaHei';
+  font: 400 16px/23px 'Microsoft YaHei';
   color: #fff;
   text-align: justify;
 }
 .newinfo .p {
   width: 268px;
   border-bottom: 1px dashed #bfbfbf;
-  line-height: 26px;
+  line-height: 40px;
   text-align: left;
+  font-size: 14px;
 }
 </style>
