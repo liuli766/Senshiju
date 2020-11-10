@@ -237,28 +237,22 @@
       </div>
     </div>
     <div class="display_box">
-      <div v-for="(item,v) in 5" :key="v" @click="GoDisplay(item)">
+      <div v-for="(item, v) in specialsList" :key="v" @click="GoDisplay(item)">
         <!-- 图片 -->
-        <div>
+        <div v-show="v < 3">
           <div class="display_child display_child1">
-            <img src="../assets/image/srdz2.png" class="display_img" alt="" />
-            <div class="display_block">详情</div>
+            <img :src="item.cover" class="display_img" alt="" />
+            <div class="display_block">{{ item.title }}</div>
           </div>
         </div>
         <!-- 标题 -->
         <div class="display_child">
-          <p class="display_p">提前狂欢</p>
+          <p class="display_p">{{ item.title }}</p>
         </div>
       </div>
-      <div class="presell_bottom" style="margin-top:70px">
-      <div
-        class="more poniter"
-        @click="handmore"
-      >
-        查看更多
+      <div class="presell_bottom" style="margin-top: 70px">
+        <div class="more poniter" @click="MoreList">查看更多</div>
       </div>
-      <!-- <div class="more poniter" v-else>没有更多了</div> -->
-    </div>
     </div>
     <!-- 首页联系客服 -->
     <div class="fixed">
@@ -331,6 +325,7 @@ export default {
       hotdata: [],
       hotnavList: ['新中式', '中式风格与四合院', '欧式', '现代'],
       getLunboList: [], //轮播数据
+      specialsList: [], //建房专题
       serviceList: [
         {
           img: require('../assets/image/liucheng/kf.png'),
@@ -473,8 +468,23 @@ export default {
       })
       .catch((e) => {})
       .finally(() => {})
+    this.list()
   },
   methods: {
+    list() {
+      // 首页建房专题
+      request
+        .getSpecials()
+        .then((res) => {
+          console.log(res, '首页建房专题')
+          this.specialsList = res.data
+        })
+        .catch((e) => {})
+        .finally(() => {})
+    },
+    MoreList() {
+      this.GoDisplay()
+    },
     getGoodsHref() {
       return `http://wpa.qq.com/msgrd?v=3&uin=${homeList.qq}&site=qq&menu=yes`
     },
@@ -645,11 +655,12 @@ export default {
         this.vdeoimg = true
       }
     },
-    GoDisplay(item){//跳转建房百科专题
-        this.$router.push({
-          path:'/Display'
-        })
-    }
+    GoDisplay(item) {
+      //跳转建房百科专题
+      this.$router.push({
+        path: '/Display',
+      })
+    },
   },
   mounted() {
     let nav = document.querySelector('.nav')
@@ -666,14 +677,13 @@ export default {
   background: #fff;
   padding: 56px 0 46px 0;
   overflow: hidden;
-
 }
-.display_box>div{
+.display_box > div {
   float: left;
   margin-bottom: 20px;
   cursor: pointer;
 }
-.display_box>div:nth-of-type(3n-1){
+.display_box > div:nth-of-type(3n-1) {
   margin: 0 74px;
 }
 .display_img {

@@ -235,6 +235,30 @@ function getLinks(data) {
   }
   return http.fetchPost('/api/Common/links', params)
 }
+function getHotCake(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Home/hot_cake', params)
+}
+function getSpecials(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Home/specials', params)
+}
+function getLists(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Special/lists', params)
+}
+function getSpecialInfo(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Special/info', params)
+}
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -275,4 +299,8 @@ export default {
   getzfb, //支付宝支付
   getzfbnotify, //支付宝回调
   getLinks,//底部链接
+  getHotCake,//爆款商品
+  getSpecials,//首页建房专题
+  getLists,//专题数据
+  getSpecialInfo,//专题信息
 }

@@ -11,11 +11,11 @@
 
 <script>
 export default {
-    data() {
-        return {
-            orderSuccess:true
-        }
-    },
+  data() {
+    return {
+      orderSuccess: true,
+    }
+  },
 }
 </script>
 

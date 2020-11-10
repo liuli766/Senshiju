@@ -9,28 +9,37 @@
     <!-- 设计师 -->
     <main>
       <div class="designeteam fl_be">
-        <div class="designe_item" v-for="(item,index) in moreList" :key="index">
+        <div
+          class="designe_item"
+          v-for="(item, index) in moreList"
+          :key="index"
+        >
           <div class="designeteam_l">
             <img :src="item.cover" alt />
           </div>
           <div class="designeteam_r">
-            <div style="width:370px">
+            <div style="width: 370px">
               <div class="tro">
                 <div>
-                  <span class="name">{{item.name}}</span>
-                  <span class="occupation">{{item.position}}</span>
+                  <span class="name">{{ item.name }}</span>
+                  <span class="occupation">{{ item.position }}</span>
                 </div>
                 <div class="tro_r poniter" @click="handetaail(item)">
                   <span class="details">查看详情</span>
                   <span class="ellipsis">...</span>
                 </div>
               </div>
-              <p class="color6e two-wrap">{{item.intro}}</p>
+              <p class="color6e two-wrap">{{ item.intro }}</p>
             </div>
             <div>
               <div class="works">作品精选</div>
               <div class="piclist">
-                <img :src="pic" alt v-for="(pic,idx) in item.works.slice(0,3)" :key="idx" />
+                <img
+                  :src="pic"
+                  alt
+                  v-for="(pic, idx) in item.works.slice(0, 3)"
+                  :key="idx"
+                />
               </div>
             </div>
           </div>
@@ -39,8 +48,10 @@
       <div
         class="poniter loadmore font22"
         @click="handmore"
-        v-if="moreList.length<teamList.length"
-      >加载更多</div>
+        v-if="moreList.length < teamList.length"
+      >
+        加载更多
+      </div>
       <div class="loadmore font22" v-else>没有更多了\(^o^)/~</div>
     </main>
   </div>

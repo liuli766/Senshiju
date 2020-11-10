@@ -1,26 +1,6 @@
 <template>
   <div style="background: #fafafa">
     <!--私人订制  -->
-    <!-- <div class="team">
-      <div class="nav1">
-        <div class="serchbox">
-          <div class="serch">
-            <input type="text" placeholder="请输入关键词" />
-          </div>
-        </div>
-        <nav class="header">
-          <img src="../assets/image/logo (1).png" alt />
-          <ul>
-            <li
-              v-for="(item,index) in navList"
-              :key="index"
-              @click="changeNav(item)"
-              :class="{'header-active':navActiveCode === item.code}"
-            >{{item.name}}</li>
-          </ul>
-        </nav>
-      </div>
-    </div>-->
     <img src="../assets/image/person.jpg" alt class="bannerimg" />
     <main>
       <!-- 私人订制申请 -->
@@ -126,7 +106,8 @@
         <h5>设计团队支持</h5>
         <p>更加专业，更加精细化，满足高品质的设计需求</p>
         <div class="teamsupport_box">
-          <div @click="GoTeamDetail(item)"
+          <div
+            @click="GoTeamDetail(item)"
             v-for="(item, index) in teamSupport"
             :key="index"
             class="poniter teamsupport_box_item"
@@ -141,7 +122,7 @@
       </div>
       <!-- 营业执照 -->
       <div class="license">
-        <img src="../assets/image/srdz-yyzz.png" alt="">
+        <img src="../assets/image/srdz-yyzz.png" alt="" />
       </div>
       <!-- 定制图纸展示 -->
       <div class="show">
@@ -275,23 +256,6 @@ export default {
       .catch((e) => {})
       .finally(() => {})
 
-    // // 定制图纸
-    // request
-    //   .teamDrawings({
-    //     page: 1,
-    //   })
-    //   .then((res) => {
-    //     console.log(res, '定制图纸')
-    //     this.picList = res.data
-    //     if (this.picList < 4) {
-    //       this.moreList = this.picList
-    //     } else {
-    //       this.moreList = this.picList.slice(0, 4)
-    //     }
-    //   })
-    //   .catch((e) => {})
-    //   .finally(() => {})
-
     // 设计团队
     request
       .getHomrdesign({})
@@ -303,8 +267,8 @@ export default {
       .finally(() => {})
   },
   methods: {
-    GoTeamDetail(src){
-        this.$router.push({
+    GoTeamDetail(src) {
+      this.$router.push({
         path: '/teamDetail',
         query: {
           id: src.id,

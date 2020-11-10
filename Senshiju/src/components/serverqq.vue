@@ -77,24 +77,24 @@ export default {
         this.accumulativeMachine()
       }, 8)
     },
-    getScroll(){
+    getScroll() {
       let scrollTop = document.documentElement.scrollTop
       let clientHeight = document.documentElement.clientHeight
       let scrollHeight = document.documentElement.scrollHeight
       let footer = document.querySelector('.footer111_img')
-      if (scrollTop > scrollHeight-1200) {
+      if (scrollTop > scrollHeight - 1200) {
         this.$nextTick(() => {
           this.accumulativeMachine()
         })
       }
-    }
+    },
   },
   mounted() {
-    window.addEventListener('scroll', this.getScroll);
+    window.addEventListener('scroll', this.getScroll)
   },
-  destroyed(){
-        window.removeEventListener('scroll', this.getScroll);
-    },
+  destroyed() {
+    window.removeEventListener('scroll', this.getScroll)
+  },
 }
 </script>
 

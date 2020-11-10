@@ -124,7 +124,7 @@
 
     <!-- 轮播 -->
 
-  <div class="swiper-father ">
+    <div class="swiper-father">
       <div class="swiper-container swiper-container1">
         <div class="swiper-wrapper">
           <div
@@ -139,22 +139,22 @@
         <!-- 如果需要导航按钮 -->
       </div>
       <span
-          class="swiper-button-prev"
-          style="background: transparent"
-          slot="button-prev"
-        ></span>
-        <span
-          class="swiper-button-next"
-          style="background: transparent; right: 8px"
-          slot="button-next"
-        ></span>
-  </div>
+        class="swiper-button-prev"
+        style="background: transparent"
+        slot="button-prev"
+      ></span>
+      <span
+        class="swiper-button-next"
+        style="background: transparent; right: 8px"
+        slot="button-next"
+      ></span>
+    </div>
 
     <!--  -->
     <div class="fengeline"></div>
     <div class="explain">图纸介绍</div>
     <p class="explain2">{{ detaillist.describe }}</p>
-    <div class="fengeline" style="margin-top: 12px;margin-bottom:20px"></div>
+    <div class="fengeline" style="margin-top: 12px; margin-bottom: 20px"></div>
     <!-- <div v-for="(val,k) in detaillist.imgs" :key="k" class="detailpic">
       <img :src="val" />
     </div> -->
@@ -216,6 +216,7 @@ export default {
     const mySwiper = new Swiper('.swiper-container', {
       observer: true,
       slidesPerView: 4,
+      loop: false,
       autoplay: {
         delay: 3000,
         disableOnInteraction: false, // 手动切换之后继续自动轮播
@@ -227,6 +228,10 @@ export default {
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
+      },
+      onSlideChangeStart: function (swipe) {
+        var index = swipe.realIndex
+        console.log(index)
       },
     })
   },
@@ -303,9 +308,6 @@ export default {
     //立即申请
     submitForm(formName) {
       if (!this.token) {
-        // this.$router.push({
-        //   path: '/login',
-        // })
         this.$store.commit('ShowLogin', true)
         return false
       }
@@ -392,9 +394,6 @@ export default {
     //取消收藏
     qxcollect(idx) {
       if (!this.token) {
-        // this.$router.push({
-        //   path: '/login',
-        // })
         this.$store.commit('ShowLogin', true)
         return false
       }
@@ -440,7 +439,6 @@ export default {
 .swiper-container {
   width: 675px;
   overflow: hidden;
-  /* margin: 50px 0 43px 0; */
   position: relative;
   display: flex;
   padding-left: 17px;
@@ -451,12 +449,12 @@ export default {
   z-index: -1;
 }
 .swiper-father {
-    width: 675px;
-    position: relative;
-    overflow: hidden;
-    margin-top: 100px;
-    height: auto;
-  }
+  width: 675px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 100px;
+  height: auto;
+}
 .swiper-button-prev:after {
   color: #ffbf22;
   font-size: 80px;
@@ -472,7 +470,6 @@ export default {
 .swiper-slide img {
   width: 136px;
   height: 94px;
-  /* margin-right: 14px; */
 }
 .builddetail {
   margin-top: 22px;

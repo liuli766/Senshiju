@@ -64,7 +64,7 @@
     <div class="footer">
       <main>
         <div>
-          <a href class="link" style="font-size:20px">友情链接</a>
+          <a href class="link" style="font-size: 20px">友情链接</a>
           <p class="likp">
             交换链接或商务合作请加QQ：1258131493（要求百度权重>=3）
           </p>
@@ -88,15 +88,15 @@
             <div style="margin-top: 12px">微信公众号</div>
           </div>
           <div class="design" style="border-left: 2px solid #999999">
-            <p class="font16" style="margin-top:30px">设计咨询：</p>
+            <p class="font16" style="margin-top: 30px">设计咨询：</p>
             <p class="bold">{{ homeList.design_phone }}</p>
-            <p class="font16" style="margin-top: 30px;">商务合作：</p>
+            <p class="font16" style="margin-top: 30px">商务合作：</p>
             <p class="bold">{{ homeList.team_phone }}</p>
           </div>
           <div class="design">
-            <p class="font16" style="margin-top:30px">施工咨询：</p>
+            <p class="font16" style="margin-top: 30px">施工咨询：</p>
             <p class="bold">{{ homeList.roadwork_phone }}</p>
-            <p class="font16" style="margin-top: 30px;">邮箱：</p>
+            <p class="font16" style="margin-top: 30px">邮箱：</p>
             <p class="bold">{{ homeList.e_mail }}</p>
           </div>
           <div class="design">
@@ -216,7 +216,7 @@ main .likp {
 }
 .footerwork {
   display: flex;
- margin: 40px 0 20px 0;
+  margin: 40px 0 20px 0;
 }
 .icp {
   margin-top: 12px;
@@ -263,11 +263,10 @@ main {
 .font16 {
   font-size: 14px !important;
   color: #fff !important;
-  opacity: .8;
+  opacity: 0.8;
 }
-.top20{
+.top20 {
   margin-top: 15px;
-  
 }
 .footer111_img {
   position: relative;

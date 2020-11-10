@@ -2,15 +2,20 @@
   <!-- 最新资讯 -->
   <div>
     <h6>最新资讯</h6>
-    <div v-for="(item,k) in inList" :key="k" @click="godetail(item)" class="poniter box">
+    <div
+      v-for="(item, k) in inList"
+      :key="k"
+      @click="godetail(item)"
+      class="poniter box"
+    >
       <div class="info">
         <img :src="item.cover" alt />
         <div class="block">
-          <p class="two-wrap">{{item.title}}</p>
+          <p class="two-wrap">{{ item.title }}</p>
         </div>
       </div>
-      <div class="p wrap two-wrap">{{item.title}}</div>
-      <div class="p wrap two-wrap">{{item.title}}</div>
+      <div class="p wrap two-wrap">{{ item.title }}</div>
+      <div class="p wrap two-wrap">{{ item.title }}</div>
     </div>
   </div>
 </template>
@@ -39,7 +44,7 @@ export default {
       request
         .getHomebaike({
           page: 1,
-          class:'',
+          class: '',
         })
         .then((res) => {
           console.log(res, '资讯')
@@ -49,13 +54,13 @@ export default {
         .catch((e) => {})
         .finally(() => {})
     },
-    godetail(item){
+    godetail(item) {
       //跳转文章详情
       this.$router.push({
         path: '/articDetail',
         query: item,
       })
-    }
+    },
   },
 }
 </script>
@@ -99,7 +104,7 @@ h6 {
   font-size: 14px;
   padding-left: 5px;
 }
-.box{
+.box {
   margin-bottom: 20px;
 }
 </style>

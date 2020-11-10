@@ -8,24 +8,26 @@
     <div class="zftype">
       <div class="payment flx">
         <div
-          v-for="(item,k) in navlist"
+          v-for="(item, k) in navlist"
           :key="k"
           class="paymentitem fl_center poniter"
-          :class="{navactive:choeid==k}"
+          :class="{ navactive: choeid == k }"
           @click="swichnav(k)"
         >
           <img :src="item.icon" alt />
-          <span>{{item.name}}</span>
+          <span>{{ item.name }}</span>
         </div>
       </div>
       <div class="cot">
         <!--微信 -->
-        <div class="wx" v-show="choeid==0">
+        <div class="wx" v-show="choeid == 0">
           <h6 class="flx">
             <img src="../assets/image/zf/wx.png" alt />
             <div class="flx col">
               <span>微信支付</span>
-              <span style="margin-top:15px">使用微信支付，请使用5.0版以上的微信</span>
+              <span style="margin-top: 15px"
+                >使用微信支付，请使用5.0版以上的微信</span
+              >
             </div>
           </h6>
           <div class="qrcode">
@@ -35,35 +37,42 @@
                 <img src="../assets/image/zf/扫一扫.png" alt />
                 <span>打开手机微信扫码继续支付</span>
               </div>
-              <div ref="qrCodeUrl" style="margin-top:20px"></div>
+              <div ref="qrCodeUrl" style="margin-top: 20px"></div>
             </div>
           </div>
           <img class="img" src="../assets/image/zf/对话框.png" alt />
         </div>
         <!-- 支付宝 -->
-        <div v-show="choeid==1" class="zfb">
+        <div v-show="choeid == 1" class="zfb">
           <img src="../assets/image/zf/zfbzf.png" alt />
           <p>单笔订单金额超过5万元，推荐您使用支付宝支付</p>
           <div class="btn" @click="gozhifubao">立即支付</div>
         </div>
-        <el-dialog :visible.sync="orderSuccess" width="21.35%" top="30vh" center>
+        <el-dialog
+          :visible.sync="orderSuccess"
+          width="21.35%"
+          top="30vh"
+          center
+        >
           <div class="dia-box">
             <img class="dia-img" src="../assets/image/pay-success.png" />
             <div class="title bold">支付成功</div>
           </div>
         </el-dialog>
         <!-- 对公账号 -->
-        <div v-show="choeid==2" class="dgzh">
+        <div v-show="choeid == 2" class="dgzh">
           <p>
             如果您需要使用对公账户转账，请联系
             <a
-              :href="'tencent://message/?uin='+serverqq.qq+'&Site=&Menu=yes'"
+              :href="
+                'tencent://message/?uin=' + serverqq.qq + '&Site=&Menu=yes'
+              "
               target="_blank"
             >
               <img
-                :src="'http://wpa.qq.com/pa?p=2:'+serverqq.qq+':41'"
+                :src="'http://wpa.qq.com/pa?p=2:' + serverqq.qq + ':41'"
                 alt="点击这里给我发消息"
-                style="display: none;"
+                style="display: none"
               />
               <span>在线客服</span>
             </a>
@@ -117,7 +126,7 @@ export default {
   },
   created() {
     if (!this.token) {
-       this.$store.commit('ShowLogin',true)
+      this.$store.commit('ShowLogin', true)
       return false
     }
   },
@@ -176,14 +185,14 @@ export default {
           id: this.$route.query.data,
         })
         .then((res) => {
-          if (res.code==0) {
-            this.orderSuccess=true
+          if (res.code == 0) {
+            this.orderSuccess = true
             this.$router.push({
-              path:'/order'
+              path: '/order',
             })
-            return true;
-          }else{
-            return false;
+            return true
+          } else {
+            return false
           }
         })
         .catch((e) => {})
@@ -216,7 +225,7 @@ export default {
       this.orderpay()
     }
 
-    this.timer = setInterval(this.weixin, 1000*10)
+    this.timer = setInterval(this.weixin, 1000 * 10)
   },
 
   beforeDestroy() {

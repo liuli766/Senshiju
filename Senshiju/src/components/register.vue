@@ -3,56 +3,65 @@
   <div class="modlue">
     <div class="login_box">
       <div class="register">
-    <div class="register_logo">
-      <img src="../assets/image/logo (1).svg" alt />
-      <i class="el-icon-close" @click="handclose"></i>
-    </div>
-    <div class="register_bot">
-      <div class="erwm">
-        <h6>手机扫码登录</h6>
-        <wxlogin style="height:300px"
-          :appid="'wxe960929de0880424'"
-          :scope="'snsapi_userinfo'"
-          :redirect_uri="'http://villa.jisapp.cn/index/Login/wx_login'"
-        ></wxlogin>
-        <p>打开手机微信APP 在【首页—扫一扫】扫描二维码登录</p>
-      </div>
-      <div class="swich">
-        <div class="navnav">
-          <span
-            v-for="(item,index) in navlist"
-            :key="index"
-            :class="[index===navid?'navactive':'']"
-            @click="handswich(index)"
-          >{{item}}</span>
+        <div class="register_logo">
+          <img src="../assets/image/logo (1).svg" alt />
+          <i class="el-icon-close" @click="handclose"></i>
         </div>
-        <div>
-          <p id="red" v-if="p1">请输入手机号</p>
-          <p id="red" v-if="p4">请输入正确的手机</p>
-          <input
-            type="text"
-            class="input"
-            placeholder="请输入手机号"
-            v-model="userinfo.phone"
-            @change="inp1"
-          />
-          <p id="red" v-if="p2">请输入密码</p>
-          <div class="rel">
-            <input type="text" class="input" placeholder="请输入四位验证码" v-model="code" @change="inp3" />
-            <div class="pos poniter" @click="getauth" v-if="tmeValue==60">
-              <div class="line"></div>获取验证码
+        <div class="register_bot">
+          <div class="erwm">
+            <h6>手机扫码登录</h6>
+            <wxlogin
+              style="height: 300px"
+              :appid="'wxe960929de0880424'"
+              :scope="'snsapi_userinfo'"
+              :redirect_uri="'http://villa.jisapp.cn/index/Login/wx_login'"
+            ></wxlogin>
+            <p>打开手机微信APP 在【首页—扫一扫】扫描二维码登录</p>
+          </div>
+          <div class="swich">
+            <div class="navnav">
+              <span
+                v-for="(item, index) in navlist"
+                :key="index"
+                :class="[index === navid ? 'navactive' : '']"
+                @click="handswich(index)"
+                >{{ item }}</span
+              >
             </div>
-            <div class="pos poniter" v-else>
-              <div class="line"></div>
-              {{ tmeValue }} s后获取
+            <div>
+              <p id="red" v-if="p1">请输入手机号</p>
+              <p id="red" v-if="p4">请输入正确的手机</p>
+              <input
+                type="text"
+                class="input"
+                placeholder="请输入手机号"
+                v-model="userinfo.phone"
+                @change="inp1"
+              />
+              <p id="red" v-if="p2">请输入密码</p>
+              <div class="rel">
+                <input
+                  type="text"
+                  class="input"
+                  placeholder="请输入四位验证码"
+                  v-model="code"
+                  @change="inp3"
+                />
+                <div class="pos poniter" @click="getauth" v-if="tmeValue == 60">
+                  <div class="line"></div>
+                  获取验证码
+                </div>
+                <div class="pos poniter" v-else>
+                  <div class="line"></div>
+                  {{ tmeValue }} s后获取
+                </div>
+              </div>
             </div>
+            <button @click="handsubmit">注册</button>
+            <p>未注册的手机号验证后将自动登录 登录后即表示同意《服务协议》</p>
           </div>
         </div>
-        <button @click="handsubmit">注册</button>
-        <p>未注册的手机号验证后将自动登录 登录后即表示同意《服务协议》</p>
       </div>
-    </div>
-  </div>
     </div>
   </div>
 </template>
@@ -63,7 +72,7 @@ import request from '@/request.js'
 import wxlogin from 'vue-wxlogin'
 import login from '@/components/login.vue'
 export default {
-  components: { wxlogin ,login},
+  components: { wxlogin, login },
   data() {
     return {
       userinfo: {
@@ -88,7 +97,7 @@ export default {
       islogin: (state) => state.islogin,
       userInfor: (state) => state.userInfor,
       isShowregister: (state) => state.isShowregister,
-       isShowlogin: (state) => state.isShowlogin,
+      isShowlogin: (state) => state.isShowlogin,
     }),
   },
   created() {
@@ -101,7 +110,7 @@ export default {
       .finally(() => {})
   },
   methods: {
-    handclose(){
+    handclose() {
       this.$store.commit('ShowRegister', false)
       // this.$router.push({
       //     path: '/',
@@ -183,7 +192,7 @@ export default {
           })
           .then((res) => {
             console.log(res, '')
-             this.$store.commit('settoken', res.data)
+            this.$store.commit('settoken', res.data)
             localStorage.setItem('istoken', res.data.token)
             console.log(localStorage.getItem('istoken'))
             this.$message({
@@ -194,7 +203,7 @@ export default {
             this.$router.push({
               path: '/',
             })
-            this.$store.commit('ShowRegister',false)
+            this.$store.commit('ShowRegister', false)
           })
           .catch((e) => {
             this.$message({
@@ -209,11 +218,11 @@ export default {
     // 切换登录与注册
     handswich(idx) {
       if (idx == 0) {
-        this.$store.commit('ShowRegister',true)
-        this.$store.commit('ShowLogin',false)
+        this.$store.commit('ShowRegister', true)
+        this.$store.commit('ShowLogin', false)
       } else {
-        this.$store.commit('ShowRegister',false)
-        this.$store.commit('ShowLogin',true)
+        this.$store.commit('ShowRegister', false)
+        this.$store.commit('ShowLogin', true)
       }
     },
     inp1() {
@@ -407,17 +416,17 @@ input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #787878;
 }
-.modlue{
+.modlue {
   width: 100%;
   height: 100%;
   position: fixed;
-  background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, 0.5);
   overflow-y: hidden;
-  top:0;
+  top: 0;
   z-index: 99;
   left: 0;
 }
-.login_box{
+.login_box {
   background: #fff;
   width: 976px;
   height: 640px;

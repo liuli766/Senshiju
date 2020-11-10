@@ -7,20 +7,29 @@
           <img :src="designList.cover" alt />
           <div class="bordersan_r">
             <div>
-              <h5>{{designList.name}}</h5>
-              <div class="color98">{{designList.position}}</div>
+              <h5>{{ designList.name }}</h5>
+              <div class="color98">{{ designList.position }}</div>
               <article>
-                <p>毕业院校:{{designList.school}}</p>
-                <p>{{designList.intro}}</p>
+                <p>毕业院校:{{ designList.school }}</p>
+                <p>{{ designList.intro }}</p>
               </article>
             </div>
             <div class="fl_be_al starrating">
-              <img src="../assets/image/xx.png" alt="" style="width:18px;height:18px;margin-right:6px">
+              <img
+                src="../assets/image/xx.png"
+                alt=""
+                style="width: 18px; height: 18px; margin-right: 6px"
+              />
               <div class="fl_be_al star">
                 评价星级：
-                <el-rate v-model="value" disabled show-score text-color="#ff9900"></el-rate>
+                <el-rate
+                  v-model="value"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                ></el-rate>
               </div>
-              <div>从业年限：{{designList.job_year}}</div>
+              <div>从业年限：{{ designList.job_year }}</div>
             </div>
           </div>
         </div>
@@ -35,18 +44,18 @@ export default {
   data() {
     return {
       value: 5,
-      designList:[]
+      designList: [],
     }
   },
   created() {
     console.log(this.$route)
     request
       .getDesign({
-        id:this.$route.query.id
+        id: this.$route.query.id,
       })
       .then((res) => {
-        console.log(res,'设计师详情')
-        this.designList=res.data
+        console.log(res, '设计师详情')
+        this.designList = res.data
       })
       .catch((e) => {})
       .finally(() => {})

@@ -8,30 +8,94 @@
       </div>
     </div>
     <div class="display_two comm_12">
-      <img src="../assets/image/display.png" alt="" />
+      <img :src="SpecialInfoList.cover" alt="" />
       <div class="display_two_box">
-        <h5>标题</h5>
+        <h5>{{ SpecialInfoList.title }}</h5>
         <p class="comm_one">
-          10万以下两层自建房大全提供2018年新款农村两层自建房设计图
-          造价10万元内，带外观效果图，含中式两层自建房图，欧式两层自建
+          {{ SpecialInfoList.intro }}
         </p>
         <div class="display_up comm_one">
-          <span class="upup">99748人点赞</span>
+          <span class="upup">{{ SpecialInfoList.like_num }}人点赞</span>
           <img src="../assets/image/up.png" alt="" />
         </div>
       </div>
     </div>
-    <!-- 自建房 -->
-    <div class="comm_12" style="overflow:hidden">
+    <!-- 专题数据 -->
+    <div
+      class="comm_12"
+      style="overflow: hidden"
+      v-for="(item, k) in Display_List"
+      :key="k"
+    >
       <div>
         <div class="display_self comm_12">
-          <div class="display_self_tit">{一层10万自建房}</div>
+          <div class="display_self_tit">
+            <span>{</span>{{ item.title }}<span>}</span>
+          </div>
           <div class="display_self_yell">European recommen</div>
         </div>
-        <div class="display_self_con" v-for="(item,v) in 5" :key="v">
-          <img src="../assets/image/jfbk.png" alt="" class="display_self_img" />
+        <div class="display_self_con" v-for="(c, v) in item.child" :key="v">
+          <img :src="c.cover" alt="" class="display_self_img" />
           <p class="display_self_p">
-            新农村自建二层楼房户型设计图 简单大气 外观漂亮精致
+            {{ c.title }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <div class="infoclass">
+      <div class="infoclass_one">
+        <img src="../assets/image/11.png" alt="" />
+        <div style="float: left">
+          <h5>专业:专做别墅18年</h5>
+          <p>
+            我们是国内唯一专注自建房设计的公司，集合行业顶尖资源客户满意率100%
+          </p>
+          <p>我们坚信只有只有专注才能做的最好</p>
+        </div>
+      </div>
+      <div class="infoclass_one two">
+        <img src="../assets/image/12.png" alt="" />
+        <div style="float: left">
+          <h5>放心：品牌运作 服务更好</h5>
+          <p>打造别墅设计第一品牌，服务全国34省级行政区，重视口碑和客户体验</p>
+          <p>售后一流，让自建房更简单</p>
+        </div>
+      </div>
+      <div class="infoclass_one three">
+        <img src="../assets/image/13.png" alt="" />
+        <div style="float: left">
+          <h5>省钱：模式创新，价格更亲民</h5>
+          <p>依托互联网高效、快捷、低成本的优势，颠覆传统设计公司一年不开张</p>
+          <p>开张吃半年模式，拒绝暴利，让老百姓设计的起</p>
+        </div>
+      </div>
+    </div>
+    <div class="serves">
+      <p>您是否想建房 却找不到<span>满意的图纸</span>？</p>
+      <p>不用愁!</p>
+      <p>加微信<span>17683242994</span></p>
+      <p>给您推荐<span>合适的款式</span></p>
+      <p>我们还有海量图纸可选，拿到<span>即可施工</span></p>
+      <p>还可根据宅基地<span>1对1定制出图</span></p>
+    </div>
+    <img src="" alt="" class="qrcode" />
+    <!-- 爆款商品 -->
+    <div class="comm_12" style="overflow: hidden">
+      <div>
+        <div class="display_self comm_12">
+          <div class="display_self_tit">{热门爆款商品}</div>
+          <div class="display_self_yell">European recommen</div>
+        </div>
+        <div
+          class="display_self_con"
+          v-for="(item, v) in hot_Cakelist"
+          :key="v"
+          @click="GoProduct(item.id)"
+        >
+          <img :src="item.cover" alt="" class="display_self_img" />
+          <p class="display_self_p">
+            {{ item.title }}
           </p>
         </div>
       </div>
@@ -40,7 +104,41 @@
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+import request from '@/request.js'
+export default {
+  data() {
+    return {
+      hot_Cakelist: [], //爆款商品
+      Display_List: [], //专题数据
+      SpecialInfoList: [], //专题信息
+    }
+  },
+  created() {
+    request.getHotCake().then((res) => {
+      console.log(res, '爆款商品')
+      this.hot_Cakelist = res.data
+    })
+    request.getLists().then((res) => {
+      console.log(res, '专题数据')
+      this.Display_List = res.data
+    })
+    request.getSpecialInfo().then((res) => {
+      console.log(res, '专题信息')
+      this.SpecialInfoList = res.data
+    })
+  },
+  methods: {
+    GoProduct(idname) {
+      this.$router.push({
+        path: '/productDetail',
+        query: {
+          id: idname,
+        },
+      })
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -130,7 +228,65 @@ export default {}
   font-size: 18px;
   line-height: 20px;
   color: #212121;
-  font-family: "Sim Hei";
+  font-family: 'Sim Hei';
   padding: 0 48px;
+}
+.infoclass {
+  width: 1150px;
+  margin: 0 auto;
+}
+.infoclass_one {
+  background: #fdd65b;
+  height: 208px;
+  padding: 27px 36px;
+  box-sizing: border-box;
+  margin-bottom: 34px;
+}
+.two {
+  background: #facc88;
+}
+.three {
+  background: #f7b550;
+}
+.infoclass_one img {
+  float: left;
+  margin-right: 56px;
+  width: 154px;
+  height: 154px;
+}
+.infoclass_one h5 {
+  font-size: 48px;
+  color: #201f1f;
+  margin-bottom: 22px;
+  font-weight: 400;
+  text-align: left;
+}
+.infoclass_one p {
+  font-size: 24px;
+  line-height: 40px;
+  color: #201f1f;
+  text-align: left;
+}
+.serves {
+  width: 866px;
+  margin: 0 auto;
+  height: 480px;
+  background: #f6f6f6;
+  border-radius: 4px;
+  padding: 45px 20px 23px 23px;
+  box-sizing: border-box;
+}
+.serves p {
+  font-size: 42px;
+  color: #201f1f;
+  line-height: 72px;
+}
+.serves p span {
+  color: #ff0000;
+}
+.qrcode {
+  width: 472px;
+  height: 472px;
+  margin: 46px 0 90px 0;
 }
 </style>

@@ -1,30 +1,34 @@
 <template>
-  <div style="padding-bottom:40px">
+  <div style="padding-bottom: 40px">
     <img src="../assets/image/jfbk.png" class="bannerimg" alt />
     <div class="main">
-      <main style=" margin-right: 15px;">
+      <main style="margin-right: 15px">
         <nav>
           <div class="line"></div>
-          <li v-for="(item,index) in meau" :key="index">
+          <li v-for="(item, index) in meau" :key="index">
             <span>|</span>
-            <span :class="{meauactice:meaunum===index}" @click="meauitem(index,classid)">{{item}}</span>
+            <span
+              :class="{ meauactice: meaunum === index }"
+              @click="meauitem(index, classid)"
+              >{{ item }}</span
+            >
           </li>
         </nav>
         <!-- 内容 -->
-        <div v-if="contlist.length==0">没有内容</div>
+        <div v-if="contlist.length == 0">没有内容</div>
         <div v-else>
           <div
             class="cont poniter"
-            v-for="(item,index) in contlist"
+            v-for="(item, index) in contlist"
             :key="index"
             @click="handarticdetail(item)"
           >
             <img :src="item.cover" alt />
             <div>
-              <h6>{{item.title}}</h6>
-              <p class="three-wrap" style="height:80px;">{{item.content}}</p>
+              <h6>{{ item.title }}</h6>
+              <p class="three-wrap" style="height: 80px">{{ item.content }}</p>
               <div class="timer">
-                <span>{{item.add_time}}</span>
+                <span>{{ item.add_time }}</span>
               </div>
             </div>
           </div>
@@ -76,7 +80,12 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="层      次：">
-              <el-select v-model="value" placeholder="不限" @change="handchange" class="myclass">
+              <el-select
+                v-model="value"
+                placeholder="不限"
+                @change="handchange"
+                class="myclass"
+              >
                 <el-option
                   v-for="item in options"
                   :key="item.cate_id"
@@ -94,10 +103,12 @@
                 placeholder="请输入建设面积"
               ></el-input>
             </el-form-item>
-            <el-button class="btn" @click="submitForm('ruleForm')">提交</el-button>
+            <el-button class="btn" @click="submitForm('ruleForm')"
+              >提交</el-button
+            >
             <p>
               已有
-              <span style="color:#EB7471">2315</span>人申请私人订制私人订制
+              <span style="color: #eb7471">2315</span>人申请私人订制私人订制
             </p>
           </el-form>
         </div>
@@ -106,18 +117,28 @@
           <h6>热门标签</h6>
           <div class="line"></div>
           <div class="tag_item">
-            <span v-for="(item,index) in tag" :key="index" @click="handTag(item)">{{item.label_name}}</span>
+            <span
+              v-for="(item, index) in tag"
+              :key="index"
+              @click="handTag(item)"
+              >{{ item.label_name }}</span
+            >
           </div>
         </div>
         <!-- 热销推荐 -->
         <div class="hot">
           <h6>热销·推荐</h6>
-          <div class="flx col poniter" v-for="(item,k) in hotprllList" :key="k" @click="godetail(item)">
+          <div
+            class="flx col poniter"
+            v-for="(item, k) in hotprllList"
+            :key="k"
+            @click="godetail(item)"
+          >
             <img :src="item.cover" alt />
-            <p class="two-wrap">{{item.intro}}</p>
-            <div style="width:100%" class="fl_be">
-              <span>{{item.plies}}别墅</span>
-              <span>风格：{{item.style}}</span>
+            <p class="two-wrap">{{ item.intro }}</p>
+            <div style="width: 100%" class="fl_be">
+              <span>{{ item.plies }}别墅</span>
+              <span>风格：{{ item.style }}</span>
             </div>
           </div>
         </div>
@@ -173,10 +194,10 @@ export default {
     }
   },
   watch: {
-    meaunum(oldnew){
+    meaunum(oldnew) {
       console.log(oldnew)
-       this.$store.commit('meauidfn', oldnew)
-    }
+      this.$store.commit('meauidfn', oldnew)
+    },
   },
   computed: mapState({
     meauid: (state) => state.meauid,
@@ -245,8 +266,8 @@ export default {
       request
         .getHomebaike({
           page: 1,
-          class: str?str:'',
-          label:this.lable
+          class: str ? str : '',
+          label: this.lable,
         })
         .then((res) => {
           console.log(res.data, '百科')
@@ -257,7 +278,7 @@ export default {
     },
     meauitem(idx, classid) {
       this.meaunum = idx
-       this.$store.commit('meauidfn', idx)
+      this.$store.commit('meauidfn', idx)
       if (idx == 0) {
         this.classid = '建房百科'
         this.getdata(this.classid)
@@ -337,7 +358,7 @@ export default {
         }
       })
     },
-    
+
     handchange(label) {
       //层次选择
       console.log(label)
@@ -359,11 +380,11 @@ export default {
         },
       })
     },
-    handTag(item){
+    handTag(item) {
       console.log(item)
-        this.lable=item.label_name
-        this.getdata({})
-    }
+      this.lable = item.label_name
+      this.getdata({})
+    },
   },
   mounted() {
     let nav = document.querySelector('.nav')
@@ -389,7 +410,6 @@ nav {
   display: flex;
   height: 64px;
   align-items: center;
-  /* justify-content: space-around; */
 }
 nav li {
   font-size: 16px;

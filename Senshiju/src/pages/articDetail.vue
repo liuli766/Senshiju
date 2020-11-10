@@ -5,76 +5,87 @@
         <div class="ing">
           当前位置：
           <router-link to="/">首页</router-link>
-          > 建房资讯 > {{this.$route.query.title}}
+          > 建房资讯 > {{ this.$route.query.title }}
         </div>
         <div class="detail">
           <h6>
-            {{this.$route.query.title}}
+            {{ this.$route.query.title }}
             <span
               class="poniter span2"
-              v-if="detaillist.is_collect==true"
+              v-if="detaillist.is_collect == true"
               @click="qxcollect(detaillist.id)"
-            >已收藏</span>
+              >已收藏</span
+            >
             <span
               class="poniter span1"
-              v-if="detaillist.is_collect==false"
+              v-if="detaillist.is_collect == false"
               @click.stop="collect(detaillist.id)"
-            >收藏</span>
+              >收藏</span
+            >
           </h6>
           <div class="fl_be detailtj">
             <span>
               <i class="el-icon-view"></i>
-              浏览数：{{detaillist.view}}人已读
+              浏览数：{{ detaillist.view }}人已读
             </span>
-            <span>{{detaillist.add_time}}</span>
+            <span>{{ detaillist.add_time }}</span>
           </div>
           <p v-html="detaillist.content"></p>
           <img :src="detaillist.cover" alt />
           <div class="fl_be poniter">
-            <span class="one-wrap" @click="gonext(prev_id,prev)">上一篇:{{prev}}</span>
-            <span class="one-wrap" @click="goprev(next_id,next)">下一篇:{{next}}</span>
+            <span class="one-wrap" @click="gonext(prev_id, prev)"
+              >上一篇:{{ prev }}</span
+            >
+            <span class="one-wrap" @click="goprev(next_id, next)"
+              >下一篇:{{ next }}</span
+            >
           </div>
         </div>
       </div>
       <div>
         <div class="newinfo poniter">
           <h6>小编精选</h6>
-          <div v-for="(item,k) in newarr" :key="k" @click="goself(item.id)">
+          <div v-for="(item, k) in newarr" :key="k" @click="goself(item.id)">
             <div class="info">
               <img :src="item.cover" alt />
               <div class="block">
-                <p>{{item.title}}</p>
+                <p>{{ item.title }}</p>
               </div>
             </div>
           </div>
           <div
-              class="p one-wrap"
-              v-for="(c,v) in ListItem" :key="v+'4'" @click="goself(c.id)"
-            >{{c.id}}.{{c.title}}</div>
+            class="p one-wrap"
+            v-for="(c, v) in ListItem"
+            :key="v + '4'"
+            @click="goself(c.id)"
+          >
+            {{ c.id }}.{{ c.title }}
+          </div>
         </div>
         <div class="hotnavbox">
           <span
             class="hotnav poniter"
             @click="handhotnav(index)"
-            :class="{hotactive:hotnavid===index}"
-            v-for="(item,index) in hotlist"
+            :class="{ hotactive: hotnavid === index }"
+            v-for="(item, index) in hotlist"
             :key="index"
-          >{{item}}</span>
+            >{{ item }}</span
+          >
           <div
-            v-for="(item,idx) in hotmoney"
-            :key="'1'+idx"
+            v-for="(item, idx) in hotmoney"
+            :key="'1' + idx"
             class="hotcontent poniter"
             @click="godetail(item)"
           >
             <img :src="item.cover" alt />
             <div class="fl_be hotnum poniter">
-              <span>{{item.price}}</span>
+              <span>{{ item.price }}</span>
               <span>
                 <b>销量:</b>
-                {{item.moods}}
+                {{ item.moods }}
               </span>
             </div>
-            <p class="intro two-wrap">{{item.title}}</p>
+            <p class="intro two-wrap">{{ item.title }}</p>
           </div>
         </div>
       </div>
@@ -101,7 +112,7 @@ export default {
       prev: '',
       prev_id: '',
       newarr: [],
-      ListItem:[]
+      ListItem: [],
     }
   },
   computed: {
@@ -125,7 +136,7 @@ export default {
       if (!this.token) {
         request
           .getInfo({
-            id: this.$route.query.id?this.$route.query.id:id,
+            id: this.$route.query.id ? this.$route.query.id : id,
           })
           .then((res) => {
             this.detaillist = res.data.detail
@@ -133,8 +144,8 @@ export default {
             this.next_id = res.data.next_id
             this.prev = res.data.prev
             this.prev_id = res.data.prev_id
-              console.log(this.next_id)
-              console.log(this.prev_id)
+            console.log(this.next_id)
+            console.log(this.prev_id)
           })
           .catch((e) => {})
           .finally(() => {})
@@ -151,8 +162,8 @@ export default {
             this.next_id = res.data.next_id
             this.prev = res.data.prev
             this.prev_id = res.data.prev_id
-              console.log(this.next_id)
-              console.log(this.prev_id)
+            console.log(this.next_id)
+            console.log(this.prev_id)
           })
           .catch((e) => {})
           .finally(() => {})
@@ -162,7 +173,7 @@ export default {
       // 收藏
 
       if (!this.token) {
-        this.$store.commit('ShowLogin',true)
+        this.$store.commit('ShowLogin', true)
         return false
       }
       request
@@ -194,7 +205,7 @@ export default {
         .getCancelcollect({
           uid: this.userInfor.member_id,
           c_id: idx,
-          type:2
+          type: 2,
         })
         .then((res) => {
           this.getdetail()
@@ -248,7 +259,7 @@ export default {
         .then((res) => {
           console.log(res, '资讯')
           this.newarr = res.data.slice(0, 1)
-          this.ListItem=res.data.reverse()
+          this.ListItem = res.data.reverse()
         })
         .catch((e) => {})
         .finally(() => {})
@@ -264,46 +275,43 @@ export default {
         },
       })
     },
-    gonext(id,val) {
+    gonext(id, val) {
       //上一篇 文章详情
       console.log(id)
-      if(id!==''){
-          this.$router.push({
+      if (id !== '') {
+        this.$router.push({
           path: '/articDetail',
           query: {
             id: id,
-            title:val
+            title: val,
           },
         })
         this.getdetail(id)
       }
-       
     },
-    goprev(id,val) {
+    goprev(id, val) {
       //下一篇 文章详情
-      if(id!==''){
-          this.$router.push({
+      if (id !== '') {
+        this.$router.push({
           path: '/articDetail',
           query: {
             id: id,
-            title:val
+            title: val,
           },
         })
         this.getdetail(id)
       }
-      
     },
     goself(id) {
-      if(id!==''){
-          this.$router.push({
-        path: '/articDetail',
-        query: {
-          id,
-        },
-      })
-      this.getdetail(id)
+      if (id !== '') {
+        this.$router.push({
+          path: '/articDetail',
+          query: {
+            id,
+          },
+        })
+        this.getdetail(id)
       }
-      
     },
   },
 }
@@ -318,7 +326,7 @@ export default {
   color: #4b4b4b;
   font-size: 14px;
   line-height: 28px;
-  border-bottom: 1px dashed #B5B5B5;
+  border-bottom: 1px dashed #b5b5b5;
 }
 .hotnav {
   font-weight: bold;

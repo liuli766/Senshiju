@@ -73,7 +73,7 @@
         />
       </div>
     </nav>
-    <login v-if="isShowlogin"/>
+    <login v-if="isShowlogin" />
     <register v-if="isShowregister" />
   </div>
 </template>
@@ -84,9 +84,9 @@ import request from '@/request.js'
 import login from '@/components/login.vue'
 import register from '@/components/register.vue'
 export default {
-   components: {
+  components: {
     login,
-    register
+    register,
   },
   data() {
     return {
@@ -142,7 +142,6 @@ export default {
       isfooter: (state) => state.isfooter,
       isShowlogin: (state) => state.isShowlogin,
       isShowregister: (state) => state.isShowregister,
-
     }),
   },
   watch: {},
@@ -153,11 +152,11 @@ export default {
     }
   },
   methods: {
-    handzhuce(){
-        this.$store.commit('ShowRegister',true)
+    handzhuce() {
+      this.$store.commit('ShowRegister', true)
     },
-    hanlogin(){
-       this.$store.commit('ShowLogin',true)
+    hanlogin() {
+      this.$store.commit('ShowLogin', true)
     },
     // 点击导航栏
     changeNav(nav, index) {

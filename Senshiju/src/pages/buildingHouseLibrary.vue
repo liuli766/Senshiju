@@ -3,49 +3,53 @@
     <div>
       <div class="content">
         <div class="hot">
-          <img src="../assets/image/jfh1.png" alt="">
+          <img src="../assets/image/jfh1.png" alt="" />
         </div>
         <!--  -->
         <div class="build">
-          <div class="bulid_child" v-for="(v,k) in filterList" :key="k">
-            <span class="style">{{v.cate_name}}</span>
+          <div class="bulid_child" v-for="(v, k) in filterList" :key="k">
+            <span class="style">{{ v.cate_name }}</span>
             <div class="line_h">
               <li
-                :class="{'bg_active': val.active}"
-                @click="tabClick(val,key,k)"
+                :class="{ bg_active: val.active }"
+                @click="tabClick(val, key, k)"
                 v-for="(val, key) in v.child"
                 :key="key"
-              >{{val.cate_name}}</li>
+              >
+                {{ val.cate_name }}
+              </li>
             </div>
           </div>
         </div>
       </div>
       <!--  -->
       <div class="build_bg">
-        <div class="fl_be font16" style="height:50px">
-          <span v-if="filterSelData===''" style="color:#FFD02D">
+        <div class="fl_be font16" style="height: 50px">
+          <span v-if="filterSelData === ''" style="color: #ffd02d">
             已选条件：
             <span
-              v-for="(item,index) in filterList"
+              v-for="(item, index) in filterList"
               :key="index"
-              style="margin-right:15px;color:#FFD02D"
+              style="margin-right: 15px; color: #ffd02d"
             ></span>
           </span>
-          <div v-else style="color:#FFD02D">
+          <div v-else style="color: #ffd02d">
             已选条件：
             <span
-              v-for="(val,k) in filterSelData"
+              v-for="(val, k) in filterSelData"
               :key="k"
-              style="margin-right:15px;color:#FFD02D"
-            >{{val}}</span>
+              style="margin-right: 15px; color: #ffd02d"
+              >{{ val }}</span
+            >
           </div>
           <span class="fl_center poniter" @click="handdel">
-            <img src="../assets/image/del.png" alt style="margin-right:15px;" /> 清空
+            <img src="../assets/image/del.png" alt style="margin-right: 15px" />
+            清空
           </span>
         </div>
         <img src="../assets/image/bg.png" alt />
         <div class="build_fiflter">
-          <span class="font24">别墅图纸共有{{newarr.length}}套</span>
+          <span class="font24">别墅图纸共有{{ newarr.length }}套</span>
           <div class="theme font16">
             <span @click="handsort">排序</span>
             <span @click="handmoods('moods')">
@@ -67,28 +71,28 @@
       <div class="drawing_box">
         <div
           class="drawing poniter"
-          v-for="(item,index) in newarr"
+          v-for="(item, index) in newarr"
           :key="index"
           @click="handdetail(item.id)"
         >
           <img :src="item.cover" alt />
-          <p class="one-wrap">{{item.title}}</p>
+          <p class="one-wrap">{{ item.title }}</p>
           <div class="bot">
             <span>
               占地面积：
-              <i>{{item.area}}</i>
+              <i>{{ item.area }}</i>
             </span>
             <span>
               图纸编号：
-              <i>{{item.number.toUpperCase()}}</i>
+              <i>{{ item.number.toUpperCase() }}</i>
             </span>
           </div>
         </div>
       </div>
     </div>
-    <div style="margin-left: 38px;">
+    <div style="margin-left: 38px">
       <newdesign />
-      <newinfo :newarr='newarr'/>
+      <newinfo :newarr="newarr" />
     </div>
   </div>
 </template>
@@ -112,8 +116,7 @@ export default {
       filterSelData: '', // 过滤选中的数据
       newarr: [], //筛选
       viewlist: '', //style
-      sortnum:0,
-
+      sortnum: 0,
     }
   },
   created() {
@@ -170,8 +173,8 @@ export default {
     },
 
     // 别墅图纸
-    getpic(val, sort,src) {
-      console.log(val,sort,src)
+    getpic(val, sort, src) {
+      console.log(val, sort, src)
       request
         .getHots({
           page: 1,
@@ -184,7 +187,7 @@ export default {
           structure: val[7],
           cost: val[6],
           sort,
-          by_away:src
+          by_away: src,
         })
         .then((res) => {
           this.newarr = res.data
@@ -230,18 +233,15 @@ export default {
     },
     // moods-人气；area-面积；add_time-最新
     handmoods(moods) {
-      
-      this.getpic(this.filterSelData,moods) 
-       
+      this.getpic(this.filterSelData, moods)
     },
     handsort() {
       this.sortnum++
-      if(this.sortnum%2==1){
-           this.getpic(this.filterSelData,'desc')
-      }else{
-         this.getpic(this.filterSelData,'asc')
+      if (this.sortnum % 2 == 1) {
+        this.getpic(this.filterSelData, 'desc')
+      } else {
+        this.getpic(this.filterSelData, 'asc')
       }
-       
     },
   },
   mounted() {
@@ -356,7 +356,7 @@ export default {
 .theme span + span {
   margin-left: 40px;
 }
-.theme span{
+.theme span {
   display: inline-block;
   cursor: pointer;
 }
@@ -365,27 +365,22 @@ export default {
   height: 334px;
   transition: all 0.3s;
   padding-bottom: 10px;
-  /* margin-left: 15px; */
   box-shadow: 4px 4px 4px #b6b5b5;
   margin-bottom: 20px;
-  /* border-radius: 6px; */
   overflow: hidden;
   margin-left: 13px;
-  transition: all .2s;
+  transition: all 0.2s;
 }
-.drawing:nth-of-type(3n){
+.drawing:nth-of-type(3n) {
   margin-right: 0px;
 }
 .drawing:hover {
-  /* box-shadow: 10px 10px 5px #e2e1e1, 10px -10px 5px #e2e1e1,
-    -10px 10px 5px #e2e1e1, -10px -10px 5px #e2e1e1; */
-    margin-top: -10px;
-    transition: all .2s;
+  margin-top: -10px;
+  transition: all 0.2s;
 }
 .drawing img {
   width: 300px;
   height: 210px;
- 
 }
 .drawing p {
   width: 239px;

@@ -29,7 +29,7 @@
                   :class="[navidx == k ? 'checked' : '']"
                 />
               </span>
-              {{ item.name }}{{ k + 1 }}份{{Price(k)}}元
+              {{ item.name }}{{ k + 1 }}份{{ Price(k) }}元
             </div>
           </div>
         </div>

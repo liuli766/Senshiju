@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 // 解决导航组件重复点击报错， 更改原型上的push方法，进行了catch处理
 const routerPush = Router.prototype.push
-Router.prototype.push = function push (location) {
+Router.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error => error)
 }
 const routes = [
@@ -130,14 +130,6 @@ const routes = [
     component: (resolve) => require(['@/pages/orderpay'], resolve)
   },
   {
-    path: '/serveQQ',
-    name: 'serveQQ',
-    meta: {
-      title: '联系客服'
-    },
-    component: (resolve) => require(['@/pages/serveQQ'], resolve)
-  },
-  {
     path: '/orderzfb',
     name: 'orderzfb',
     meta: {
@@ -146,18 +138,18 @@ const routes = [
     component: (resolve) => require(['@/pages/orderzfb'], resolve)
   },
   {
-    path:'/paysucess',
-    name:'paysucess',
-    meta:{
-      title:'支付成功',
+    path: '/paysucess',
+    name: 'paysucess',
+    meta: {
+      title: '支付成功',
     },
     component: (resolve) => require(['@/pages/paysucess'], resolve)
   },
   {
-    path:'/Display',
-    name:'Display',
-    meta:{
-      title:'建房百科专题',
+    path: '/Display',
+    name: 'Display',
+    meta: {
+      title: '建房百科专题',
     },
     component: (resolve) => require(['@/pages/Display'], resolve)
   }

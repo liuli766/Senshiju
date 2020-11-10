@@ -18,7 +18,7 @@
           <span>C337</span>
         </p>
         <div class="layer fl_be">
-          <span v-for="(item,index) in arr" :key="index">{{item}}</span>
+          <span v-for="(item, index) in arr" :key="index">{{ item }}</span>
         </div>
         <div class="tel">: 176-8324-2994</div>
         <div class="button fl_be">
@@ -30,56 +30,56 @@
     <!-- 轮播 -->
     <div class="swiper">
       <div class="swiper_slide">
-        <img :src="item" alt v-for="(item,index) in listdata" :key="index" />
+        <img :src="item" alt v-for="(item, index) in listdata" :key="index" />
       </div>
       <img src="../assets/image/back.png" alt @click="handprve" />
       <img src="../assets/image/back.png" alt @click="handnext" />
     </div>
     <!--  -->
     <div class="explain">购图前重要说明：</div>
-    <p
-      class="p"
-    >购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。</p>
+    <p class="p">
+      购买本套图纸仅提供打印好的图纸一份，我们不出售电子文件、光盘。我们设计的图纸非常详细，用A3规格打印图纸，比传统蓝图更清晰、容易复印、方便收藏，可以直接应用到施工现场。售后服务仅为图纸答疑，不包任何修改，因为只要其中一张图纸改变，其它图纸相应均需修改，工作量较大，所以我们不包修改。如果您个性要求较多需按要求订做设计，请查看别墅设计业务流程，并联系设计客服咨询设计收费标准。
+    </p>
   </div>
 </template>
 
 <script>
-import request from '@/request.js' 
+import request from '@/request.js'
 export default {
-  data () {
+  data() {
     return {
       arr: [
         '主体参考造价：25~30万左右',
         '主体参考造价：25~30万左右',
         '主体参考造价：25~30万左右',
         '主体参考造价：25~30万左右',
-        '主体参考造价：25~30万左右'
+        '主体参考造价：25~30万左右',
       ],
       pic: [
         require('../assets/image/1.png'),
         require('../assets/image/1.png'),
         require('../assets/image/1.png'),
-        require('../assets/image/1.png')
+        require('../assets/image/1.png'),
       ],
-      listdata: []
+      listdata: [],
     }
   },
-  created () {
+  created() {
     this.listdata = this.pic.slice(0, 2)
     setInterval(this.handprve, 1000)
   },
   methods: {
-    handprve () {
+    handprve() {
       let first = this.pic.shift()
       this.pic.push(first)
       this.listdata = this.pic.slice(0, 2)
     },
-    handnext () {
+    handnext() {
       let last = this.pic.pop()
       this.pic.unshift(last)
       this.listdata = this.pic.slice(0, 2)
-    }
-  }
+    },
+  },
 }
 </script>
 
