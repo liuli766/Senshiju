@@ -92,6 +92,7 @@
           v-for="(item, v) in hot_Cakelist"
           :key="v"
           @click="GoProduct(item.id)"
+          style="cursor: pointer;"
         >
           <img :src="item.cover" alt="" class="display_self_img" />
           <p class="display_self_p">
@@ -218,6 +219,7 @@ export default {
   height: 332px;
   margin: 0 26px;
   float: left;
+  /* cursor: pointer; */
 }
 .display_self_img {
   width: 100%;
