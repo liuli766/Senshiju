@@ -8,7 +8,7 @@
     </div>
     <!--  -->
     <div class="build_img">
-      <img :src="detaillist.cover" alt style="width: 686px; height: 478px" />
+      <img :src="detaillist.cover" alt style="width: 686px; height: 478px"  />
       <div class="build_img_r">
         <div class="fl_be build_img_t">
           <h5>{{ detaillist.title }}</h5>
@@ -25,7 +25,7 @@
             >收藏</span
           >
         </div>
-        <p
+        <p v-if="detaillist.status==1"
           style="
             font-size: 25px;
             letter-spacing: 3px;
@@ -38,7 +38,20 @@
             >￥{{ detaillist.price }}</span
           >
         </p>
-        <p
+        <p v-if="detaillist.status==2"
+          style="
+            font-size: 25px;
+            letter-spacing: 3px;
+            color: #707070;
+            margin-bottom: 16px;
+          "
+        >
+          {{detaillist.status==1?'':'全款预售'}}<span
+            style="font-size: 38px; letter-spacing: 2px; color: #fe5303"
+            >￥{{ detaillist.price }}</span
+          >
+        </p>
+        <p v-if="detaillist.status==1"
           style="
             font-size: 20px;
             letter-spacing: 1px;
@@ -47,7 +60,18 @@
             margin-bottom: 44px;
           "
         >
-          付款后3天内发货
+           {{detaillist.status==1?'':`付款后${detaillist.deliver}天发货`}}
+        </p>
+        <p v-if="detaillist.status==2"
+          style="
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: #fe5303;
+            font-weight: 300;
+            margin-bottom: 44px;
+          "
+        >
+          付款后10天内发货
         </p>
         <div class="layer fl_be">
           <span>别墅层数:{{ detaillist.plies }}</span>
@@ -155,9 +179,6 @@
     <div class="explain">图纸介绍</div>
     <p class="explain2">{{ detaillist.describe }}</p>
     <div class="fengeline" style="margin-top: 12px; margin-bottom: 20px"></div>
-    <!-- <div v-for="(val,k) in detaillist.imgs" :key="k" class="detailpic">
-      <img :src="val" />
-    </div> -->
     <div v-html="detaillist.imgs" class="detailpic"></div>
   </div>
 </template>
@@ -213,9 +234,9 @@ export default {
     this.handdetail()
   },
   mounted() {
-    const mySwiper = new Swiper('.swiper-container', {
+    var mySwiper = new Swiper('.swiper-container', {
       observer: true,
-      slidesPerView: 4,
+      slidesPerView: 3,
       loop: false,
       autoplay: {
         delay: 3000,
@@ -229,10 +250,11 @@ export default {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       },
-      onSlideChangeStart: function (swipe) {
-        var index = swipe.realIndex
-        console.log(index)
-      },
+    })
+    mySwiper.on('slideChangeTransitionEnd', function () {
+      let swiperIndex = mySwiper.activeIndex
+      console.log('索引值：' + swiperIndex)
+
     })
   },
   methods: {
@@ -491,8 +513,7 @@ export default {
   height: 478px;
   display: flex;
   position: relative;
-  /* align-items: flex-end; */
-  /* margin-top: -154px; */
+
 }
 .build_img img {
   /* min-width: 686px; */

@@ -247,18 +247,19 @@ function getSpecials(data) {
   }
   return http.fetchPost('/index/Home/specials', params)
 }
-function getLists(data) {
-  let params = {
-    ...data
-  }
-  return http.fetchPost('/index/Special/lists', params)
-}
 function getSpecialInfo(data) {
   let params = {
     ...data
   }
   return http.fetchPost('/index/Special/info', params)
 }
+function getToLike(data) {
+  let params = {
+    ...data
+  }
+  return http.fetchPost('/index/Special/to_like', params)
+}
+
 export default {
   getLunbo,  // 首页轮播数据
   getCode, //发送短信获取验证码
@@ -301,6 +302,6 @@ export default {
   getLinks,//底部链接
   getHotCake,//爆款商品
   getSpecials,//首页建房专题
-  getLists,//专题数据
   getSpecialInfo,//专题信息
+  getToLike,//专题点赞
 }

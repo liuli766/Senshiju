@@ -30,25 +30,6 @@ const upload = axios.create({
 Vue.prototype.$upload = upload;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 new Vue({
   el: '#app',
   router,

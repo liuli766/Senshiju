@@ -11,10 +11,8 @@
       <img :src="SpecialInfoList.cover" alt="" />
       <div class="display_two_box">
         <h5>{{ SpecialInfoList.title }}</h5>
-        <p class="comm_one">
-          {{ SpecialInfoList.intro }}
-        </p>
-        <div class="display_up comm_one">
+        <p class="comm_one" v-html="SpecialInfoList.intro"></p>
+        <div class="display_up comm_one" @click="Dianz(SpecialInfoList)">
           <span class="upup">{{ SpecialInfoList.like_num }}人点赞</span>
           <img src="../assets/image/up.png" alt="" />
         </div>
@@ -24,7 +22,7 @@
     <div
       class="comm_12"
       style="overflow: hidden"
-      v-for="(item, k) in Display_List"
+      v-for="(item, k) in infolist"
       :key="k"
     >
       <div>
@@ -79,7 +77,7 @@
       <p>我们还有海量图纸可选，拿到<span>即可施工</span></p>
       <p>还可根据宅基地<span>1对1定制出图</span></p>
     </div>
-    <img src="" alt="" class="qrcode" />
+    <img :src="qrcode" alt="" class="qrcode" />
     <!-- 爆款商品 -->
     <div class="comm_12" style="overflow: hidden">
       <div>
@@ -92,7 +90,7 @@
           v-for="(item, v) in hot_Cakelist"
           :key="v"
           @click="GoProduct(item.id)"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         >
           <img :src="item.cover" alt="" class="display_self_img" />
           <p class="display_self_p">
@@ -111,22 +109,27 @@ export default {
   data() {
     return {
       hot_Cakelist: [], //爆款商品
-      Display_List: [], //专题数据
       SpecialInfoList: [], //专题信息
+      qrcode: '', //二维码
+      infolist: [],
     }
   },
+  computed: {
+    ...mapState({
+      userInfor: (state) => state.userInfor,
+      token: (state) => state.token,
+    }),
+  },
   created() {
+    console.log(this.$route.query.id)
     request.getHotCake().then((res) => {
       console.log(res, '爆款商品')
       this.hot_Cakelist = res.data
     })
-    request.getLists().then((res) => {
-      console.log(res, '专题数据')
-      this.Display_List = res.data
-    })
-    request.getSpecialInfo().then((res) => {
-      console.log(res, '专题信息')
-      this.SpecialInfoList = res.data
+    this.SpecialInfo()
+    request.getHomeindex({}).then((res) => {
+      this.qrcode = res.data.qr_code
+      console.log(res, 'pc端首页')
     })
   },
   methods: {
@@ -137,6 +140,37 @@ export default {
           id: idname,
         },
       })
+    },
+    SpecialInfo() {
+      request
+        .getSpecialInfo({
+          id: this.$route.query.id,
+        })
+        .then((res) => {
+          console.log(res, '专题信息')
+          this.SpecialInfoList = res.data.info
+          this.infolist = res.data.list
+        })
+    },
+    Dianz(item) {
+      console.log(1)
+      if (!this.token) {
+        this.$store.commit('ShowLogin', true)
+        return false
+      }
+      request
+        .getToLike({
+          uid: this.userInfor.member_id,
+          id: item.id,
+        })
+        .then((res) => {
+          this.$message({
+            showClose: true,
+            message: res.message,
+            type: 'none',
+          })
+          this.SpecialInfo()
+        })
     },
   },
 }
@@ -191,6 +225,7 @@ export default {
   float: right;
   margin-top: 52px;
   line-height: 24px;
+  cursor: pointer;
 }
 .display_up .upup {
   line-height: 40px;

@@ -34,9 +34,11 @@
     <!-- 新中式 -->
     <div>
       <transition-group class="parent" name="bounce" mode="out-in">
-        <hotlist :info="item" v-for="item in hotlist" :key="item.id"></hotlist>
+        <hotlist :info="item" v-for="item in hotdata" :key="item.id"></hotlist>
       </transition-group>
     </div>
+    <!-- <div @click="onBottom">查看更多</div> -->
+    <!-- <scroll :onBottom="onBottom"></scroll> -->
     <!-- 设计师 -->
     <swiper :options="swiperOption">
       <swiper-slide v-for="(item, k) in designlist" :key="k">
@@ -100,7 +102,7 @@
       <div class="presell_child">
         <img
           class="img"
-          v-for="(item, index) in morelist"
+          v-for="(item, index) in picList"
           :key="index"
           :src="item.cover"
           alt
@@ -112,11 +114,9 @@
       <div
         class="more poniter"
         @click="handmore"
-        v-if="morelist.length < hotdata.length"
       >
-        查看更多
+        {{loadtext}}
       </div>
-      <div class="more poniter" v-else>没有更多了</div>
     </div>
 
     <!-- 服务流程 -->
@@ -256,9 +256,6 @@
     </div>
     <!-- 首页联系客服 -->
     <div class="fixed">
-      <!-- <a href="javascript:void(0)" id="contactQQ">
-        
-      </a>-->
       <a
         :href="'tencent://message/?uin=' + homeList.qq + '&Site=&Menu=yes'"
         target="_blank"
@@ -289,12 +286,14 @@
       </div>
     </div>
     <login v-if="isShowlogin" />
+    
   </div>
 </template>
 
 <script>
 import hotlist from '@/components/hostList.vue'
 import login from '@/components/login.vue'
+// import scroll from "@/components/onBottom.vue";
 
 import { mapState } from 'vuex'
 import request from '@/request.js'
@@ -303,10 +302,12 @@ export default {
   components: {
     hotlist,
     login,
+    // scroll
   },
   data() {
     return {
       link: 'http://villa.jisapp.cn',
+      loadtext:'',
       swiperOption: {
         pagination: {
           el: '.swiper-pagination',
@@ -407,6 +408,9 @@ export default {
       vdeoimg: true,
       homeList: [],
       designlist: [], //设计师轮播
+      page:1,
+      picList:[],
+      pages:1
     }
   },
   watch: {},
@@ -414,14 +418,6 @@ export default {
     ...mapState({
       isShowlogin: (state) => state.isShowlogin,
     }),
-    hotlist: {
-      get: function () {
-        let list = [...this.hotdata]
-        list = list.filter((item) => item.style === this.type)
-        return list
-      },
-      set: function () {},
-    },
   },
   created() {
     // 联系客服
@@ -431,18 +427,7 @@ export default {
       selector: 'contactQQ', //触发聊天的标签id
     })
     //热销推荐
-    request
-      .getHots({
-        page: 1,
-        style: this.type,
-      })
-      .then((res) => {
-        this.hotdata = res.data
-        this.morelist = [...this.hotdata.slice(0, 3)]
-      })
-      .catch((e) => {})
-      .finally(() => {})
-
+    this.gethots()
     // pc网站首页
     request
       .getHomeindex({})
@@ -471,6 +456,10 @@ export default {
     this.list()
   },
   methods: {
+    // onBottom() {
+    //   this.pages++;
+    //    this.gethots()
+    // },
     list() {
       // 首页建房专题
       request
@@ -483,7 +472,7 @@ export default {
         .finally(() => {})
     },
     MoreList() {
-      this.GoDisplay()
+      this.GoDisplay(1)
     },
     getGoodsHref() {
       return `http://wpa.qq.com/msgrd?v=3&uin=${homeList.qq}&site=qq&menu=yes`
@@ -492,21 +481,32 @@ export default {
       //热销推荐
       request
         .getHots({
-          page: 1,
+          page: this.pages,
           style: this.type,
         })
         .then((res) => {
-          this.hotdata = res.data
+          
+          // if (this.page == 1) {
+            this.hotdata = res.data
+          // }
+
+          // if (this.page > 1) {
+          //   this.hotdata = [...this.hotdata, ...res.data];
+          // }
+
+          // if (res.data.length == 0) {
+          //   // alert('没有了')
+          // }
         })
         .catch((e) => {})
         .finally(() => {})
     },
-    getzixun(src) {
+    getzixun() {
       //资讯
       request
         .getHomebaike({
           page: 1,
-          class: src,
+          class: this.typeinfor,
         })
         .then((res) => {
           console.log(res, '资讯')
@@ -522,10 +522,24 @@ export default {
       //图纸预售
       request
         .getPresell({
-          page: 1,
+          page: this.page,
         })
         .then((res) => {
           console.log(res, '图纸预售')
+          
+          if (this.page == 1) {
+            this.picList = res.data;
+          }
+
+          if (this.page > 1) {
+            this.picList = [...this.picList, ...res.data];
+          }
+
+          if (res.data.length == 0) {
+             this.loadtext='没有更多了'
+          }else{
+            this.loadtext='查看更多'
+          }
         })
         .catch((e) => {})
         .finally(() => {})
@@ -545,43 +559,23 @@ export default {
 
     // 切换新中式
     handhotnav(nav) {
-      let list = [...this.hotdata] // 拷贝原数组
-      list = list.filter((item) => item.style === nav)
       this.type = nav
+      this.pages=1
+      this.hotdata=[]
       this.gethots()
-      this.hotlist = list
+      
     },
 
     // 别墅资讯
     handInfor(nav, k) {
       this.typeinfor = nav
-      if (k == 0) {
-        this.typeinfor = '建房百科'
-        this.getzixun(this.typeinfor)
-      } else if (k == 1) {
-        this.typeinfor = '设计百科'
-        this.getzixun(this.typeinfor)
-      } else if (k == 2) {
-        this.typeinfor = '装修百科'
-        this.getzixun(this.typeinfor)
-      } else if (k == 3) {
-        this.typeinfor = '施工百科'
-        this.getzixun(this.typeinfor)
-      } else if (k == 4) {
-        this.typeinfor = '风水百科'
-        this.getzixun(this.typeinfor)
-      } else if (k == 5) {
-        this.typeinfor = '建房日志'
-        this.getzixun(this.typeinfor)
-      }
+      this.getzixun()
     },
 
     // 查看更多
     handmore() {
-      // 每点击一次增加一条内容
-      this.idx++
-      let list = [...this.morelist]
-      this.morelist = [...list, ...this.hotdata.slice(this.idx++, this.idx + 3)]
+      this.page++;
+      this.getprell();
     },
     handprve() {
       let first = this.inList.shift()
@@ -659,6 +653,9 @@ export default {
       //跳转建房百科专题
       this.$router.push({
         path: '/Display',
+        query:{
+          id:item.id||1
+        }
       })
     },
   },
