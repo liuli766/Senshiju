@@ -16,7 +16,7 @@
     "es6-promise": "^4.2.8",
     "jquery": "^3.5.1",
     "qrcodejs2": "0.0.2",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "swiper": "^5.4.3",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^4.1.1",
